@@ -1,0 +1,24 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  overflow: auto;
+  min-height: 300vh;
+}
+
+img {
+  width: clamp(300px, 40vmin, 8rem);
+  aspect-ratio: 1;
+  animation: reveal both linear;
+  animation-timeline: view();
+  animation-range: entry;
+}
+
+@keyframes reveal {
+  0% {
+    scale: 0;
+  }
+}

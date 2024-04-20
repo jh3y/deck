@@ -1,0 +1,60 @@
+---
+import "./_style.css"
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>parachute-bears</title>
+  </head>
+  <body>
+    <div class="menu">
+      <button popovertarget="menu" popovertargetaction="toggle">
+        <span class="nosey-pen"></span>
+        <div class="parachute-pen"></div>
+        <span class="menu__heading">
+          <span class="gesture" role="img">🥣</span>
+          <span class="text">Cook?</span>
+          <svg aria-hidden="true" class="marker" viewBox="0 0 400 80">
+            <rect rx="40" x="0" y="0" height="80" width="240" fill="black"
+            ></rect>
+            <rect rx="40" x="160" y="0" height="80" width="240" fill="black"
+            ></rect>
+          </svg>
+        </span>
+      </button>
+      <div id="menu" popover>
+        <div class="option-box">
+          <div class="bear bear--handle"></div>
+          <div class="options">
+            <button popovertarget="menu">
+              <span class="gesture" role="img">🇨🇳</span>
+              <span class="text">Congee</span>
+            </button>
+            <button popovertarget="menu">
+              <span class="gesture" role="img">🇺🇸</span>
+              <span class="text">Grits</span>
+            </button>
+            <button popovertarget="menu">
+              <span class="gesture" role="img">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span>
+              <span class="text">Oatmeal</span>
+            </button>
+            <button popovertarget="menu">
+              <span class="gesture" role="img">🇿🇦</span>
+              <span class="text">Pap</span>
+            </button>
+            <button popovertarget="menu">
+              <span class="gesture" role="img">🇮🇹</span>
+              <span class="text">Polenta</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>

@@ -1,0 +1,470 @@
+---
+import "@styles/transitions.css";
+import "@styles/main.css";
+import "@styles/night-owl.css";
+import "@styles/code-block.css";
+import { getCollection } from "astro:content";
+import { ViewTransitions } from "astro:transitions";
+import Slide from "@components/Slide";
+import { getDeckSlides } from "@utils/slides";
+
+// Default fallback slide color
+export const DEFAULT_SLIDE_COLOR = "hsl(0 0% 20%)";
+// String used to split slides in Markdown
+export const SLIDE_SEPARATOR = "---";
+// String character used to identify attributes for slides and elements
+export const ATTRIBUTE_DECORATOR = "@";
+// String character for splitting code steps in Markdown [1>2]
+export const CODE_STEP_SPLITTER = ">";
+// A default deck size to use for scaling in the DOM
+export const DEFAULT_DECK_SIZE = [960, 700];
+
+export async function getStaticPaths() {
+  const toCreate = [];
+  const decks = await getCollection("decks");
+  const allSlides = await Astro.glob("/src/slides/**/*.md");
+  for (let d = 0; d < decks.length; d++) {
+    const deck = decks[d];
+    const deckSlides = await getDeckSlides(deck, allSlides);
+    toCreate.push(...deckSlides);
+  }
+  return toCreate;
+}
+
+const { entry } = Astro.props;
+---
+
+<html
+  lang="en"
+  data-transition={entry.metadata.transition || "slide"}
+  data-theme={entry.metadata.theme || "light"}
+  transition:name="root"
+  transition:animate="initial"
+>
+  <head>
+    <meta charset="utf-8" />
+    <title>{entry.title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:title" content="Jhey's Deck" />
+    <meta name="author" content="Jhey Tompkins" />
+    <meta name="image" content="https://deck0.vercel.app/images/og.png" />
+    <meta
+      name="image"
+      property="og:image"
+      content="https://deck0.vercel.app/images/og.png"
+    />
+    <meta name="og:image" content="https://deck0.vercel.app/images/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jhey.dev/" />
+    <meta name="twitter:title" content="Jhey's Deck" />
+    <meta name="twitter:description" content="Slides from Jhey Tompkins" />
+    <meta
+      name="twitter:image"
+      content="https://deck0.vercel.app/images/og.png?tweet=true"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@jh3yy" />
+    <ViewTransitions />
+  </head>
+  <body>
+    <a
+      transition:name="bear"
+      class="bear-link fixed bottom-4 left-4 z-10"
+      href="https://twitter.com/intent/follow?screen_name=jh3yy"
+      target="_blank"
+      rel="noreferrer noopener"
+    >
+      <svg
+        class="w-12"
+        viewBox="0 0 969 955"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="161.191"
+          cy="320.191"
+          r="133.191"
+          stroke="currentColor"
+          stroke-width="20"></circle>
+        <circle
+          cx="806.809"
+          cy="320.191"
+          r="133.191"
+          stroke="currentColor"
+          stroke-width="20"></circle>
+        <circle cx="695.019" cy="587.733" r="31.4016" fill="currentColor"
+        ></circle>
+        <circle cx="272.981" cy="587.733" r="31.4016" fill="currentColor"
+        ></circle>
+        <path
+          d="M564.388 712.083C564.388 743.994 526.035 779.911 483.372 779.911C440.709 779.911 402.356 743.994 402.356 712.083C402.356 680.173 440.709 664.353 483.372 664.353C526.035 664.353 564.388 680.173 564.388 712.083Z"
+          fill="currentColor"></path>
+        <rect
+          x="310.42"
+          y="448.31"
+          width="343.468"
+          height="51.4986"
+          fill="#FF1E1E"></rect>
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M745.643 288.24C815.368 344.185 854.539 432.623 854.539 511.741H614.938V454.652C614.938 433.113 597.477 415.652 575.938 415.652H388.37C366.831 415.652 349.37 433.113 349.37 454.652V511.741L110.949 511.741C110.949 432.623 150.12 344.185 219.845 288.24C289.57 232.295 384.138 200.865 482.744 200.865C581.35 200.865 675.918 232.295 745.643 288.24Z"
+          fill="currentColor"></path>
+      </svg>
+    </a>
+    <main
+      transition:name="content"
+      transition:animate="initial"
+      class="absolute inset-0"
+    >
+      <Slide content={entry.content} metadata={entry.metadata} />
+    </main>
+    <div class="controls flex fixed bottom-4 right-4">
+      <div
+        transition:name="previous"
+        class="prev relative w-12 aspect-square grid place-items-center hover:[--intent:1] focus-visible:[--intent:1] [&[aria-hidden=true]]:opacity-0"
+        aria-hidden={!entry.prev}
+      >
+        <a
+          class={`absolute cursor-pointer inset-0 ${!entry.prev ? "hidden" : "block"}`}
+          data-link="previous"
+          aria-label="Previous slide"
+          href={entry.prev
+            ? `/decks/${Astro.params.deck}/slides/${entry.prev}`
+            : undefined}
+        >
+          <span class="sr-only">Previous</span>
+        </a>
+        <svg
+          class="w-3/4 opacity-[calc(0.25+var(--intent,0))]"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+        </svg>
+      </div>
+      <div
+        transition:name="next"
+        class="next relative w-12 aspect-square grid place-items-center hover:[--intent:1] focus-visible:[--intent:1] [&[aria-hidden=true]]:opacity-0"
+        aria-hidden={!entry.next}
+      >
+        <a
+          class={`absolute cursor-pointer inset-0 ${!entry.next ? "hidden" : "block"}`}
+          data-link="next"
+          aria-label="Next slide"
+          href={entry.next
+            ? `/decks/${Astro.params.deck}/slides/${entry.next}`
+            : undefined}
+        >
+          <span class="sr-only">Next</span>
+        </a>
+        <svg
+          class="w-3/4 opacity-[calc(0.25+var(--intent,0))]"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+        </svg>
+      </div>
+    </div>
+    <progress
+      value={entry.progress}
+      max="100"
+      class="[--accent:hsl(0_100%_50%)] fixed bottom-0 left-0 w-full origin-left h-1 appearance-none [&::-webkit-progress-bar]:bg-[var(--accent)] [&::-webkit-progress-value]:bg-[var(--accent)] [&::-moz-progress-bar]:bg-[var(--accent)]"
+      style={{
+        scale: `clamp(0.001, ${parseInt(entry.progress, 10) / 100}, 1) 1`,
+      }}
+      transition:name="progress"
+      transition:animate="initial"></progress>
+    <script>
+      import { navigate } from "astro:transitions/client";
+      import { getSlideSteps } from "@utils/clientSlides";
+      import type { SlideStep } from "@utils/clientSlides";
+      let steps: SlideStep[] = [];
+      // let activeStep: number;
+      let anchors: NodeListOf<HTMLAnchorElement>;
+
+      const move = async (direction: number) => {
+        /**
+         * Movement consists of two parts:
+         * 1. If we have steps, iterate through them
+         * 2. Else make the move to the next step, etc.
+         */
+        // If there are steps and the direction mismatches the
+        // active steps, etc. handle that. Else do a target flip.
+
+        if (
+          steps.length !== 0 && // No steps so do normal
+          !(direction < 0 && !steps[0].active) && // Go back and first step inactive
+          !(direction > 0 && steps[steps.length - 1].active) // Go forward and last step active
+        ) {
+          // Going forward, knock the next step to "active"
+          if (direction > 0) {
+            const stepToActivate = steps.filter((step) => !step.active)[0];
+
+            // const stepIndex = steps.indexOf(stepToActivate);
+            // activeStep = stepIndex;
+            // Can we save this to the page somehow with queryString?
+            // window.location.hash = `${that.current}/${stepIndex}`;
+
+            // Activate the step
+            stepToActivate.active = true;
+
+            // If it isn't a code block, set it active
+            if (!stepToActivate.linesToHighlight) {
+              stepToActivate.element.dataset.stepActive = "true";
+            } else if (
+              stepToActivate.linesToHighlight &&
+              stepToActivate.element.tagName === "CODE"
+            ) {
+              // Else you've got a code block and you need to step it
+              const CODE_BLOCK = stepToActivate.element;
+              const lines = CODE_BLOCK.querySelectorAll(
+                "[data-code-block-line]",
+              ) as NodeListOf<HTMLElement>;
+              lines.forEach((line, index) => {
+                if (stepToActivate.linesToHighlight) {
+                  line.dataset.codeLineHighlighted = Boolean(
+                    stepToActivate.linesToHighlight.indexOf("*") !== -1 ||
+                      stepToActivate.linesToHighlight.indexOf(index + 1) !== -1,
+                  ).toString();
+                }
+              });
+            }
+          } else if (direction < 0) {
+            const stepsToDeactivate = steps.filter((step) => step.active);
+            const stepToDeactivate =
+              stepsToDeactivate[stepsToDeactivate.length - 1];
+
+            // const stepIndex = steps.indexOf(stepToDeactivate);
+            // activeStep = stepIndex;
+            // window.location.hash = `${that.current}/${stepIndex}`;
+
+            stepToDeactivate.active = false;
+
+            if (!stepToDeactivate.linesToHighlight) {
+              stepToDeactivate.element.dataset.stepActive = "false";
+            } else if (
+              stepToDeactivate.linesToHighlight &&
+              stepToDeactivate.element.tagName === "CODE"
+            ) {
+              // Unhighlight lines of code and highlight the ones before. If the preceding step isn't a CODE
+              // Then you need to unfocus the CODE block...
+
+              // If you're unhighlighting, you need the lines from the previous step
+              const previousHighlight =
+                stepsToDeactivate[stepsToDeactivate.length - 2];
+              if (previousHighlight?.element === stepToDeactivate.element) {
+                const CODE_BLOCK = stepToDeactivate.element;
+                const lines = CODE_BLOCK.querySelectorAll(
+                  "[data-code-block-line]",
+                ) as NodeListOf<HTMLElement>;
+                lines.forEach((line, index) => {
+                  if (previousHighlight.linesToHighlight) {
+                    line.dataset.codeLineHighlighted = Boolean(
+                      previousHighlight.linesToHighlight.indexOf("*") !== -1 ||
+                        previousHighlight.linesToHighlight.indexOf(
+                          index + 1,
+                        ) !== -1,
+                    ).toString();
+                  }
+                });
+              } else {
+                const CODE_BLOCK = stepToDeactivate.element;
+                const lines = CODE_BLOCK.querySelectorAll(
+                  "[data-code-block-line]",
+                ) as NodeListOf<HTMLElement>;
+                lines.forEach((line) => {
+                  delete line.dataset.codeLineHighlighted;
+                });
+              }
+            }
+          }
+          syncAnchorVisibility();
+        } else {
+          const target = document.querySelector(
+            `[data-link="${direction < 0 ? "previous" : "next"}"]`,
+          ) as HTMLAnchorElement | undefined;
+          if (target && target.href) {
+            document.body.dataset.direction =
+              direction < 0 ? "back" : "forward";
+
+            navigate(target.href);
+
+            // If you need to flip out
+            // const next = await (await fetch(target.href)).text();
+            // const nextDoc = new DOMParser().parseFromString(next, "text/html");
+            // if (nextDoc.documentElement.dataset.transition === "flip") {
+            //   console.info("parent flip");
+            //   window.top.document.documentElement.dataset.transition = "flip";
+            //   window.top.document.startViewTransition(() =>
+            //     navigate(target.href),
+            //   );
+            // } else {
+            //   console.info("child flip");
+            //   window.top.document.documentElement.removeAttribute(
+            //     "data-transition",
+            //   );
+            //   navigate(target.href);
+            // }
+          }
+        }
+      };
+
+      const syncAnchorVisibility = () => {
+        const anchors = document.querySelectorAll(
+          "[data-link]",
+        ) as NodeListOf<HTMLAnchorElement>;
+        anchors.forEach((anchor) => {
+          if (anchor.dataset.link === "next" && !anchor.href) {
+            const lastActive =
+              (steps.length > 0 && steps[steps.length - 1].active) ||
+              steps.length === 0;
+            anchor.classList[lastActive ? "add" : "remove"]("hidden");
+            if (!lastActive) {
+              (anchor.parentNode as HTMLElement)?.removeAttribute(
+                "aria-hidden",
+              );
+            } else {
+              (anchor.parentNode as HTMLElement)?.setAttribute(
+                "aria-hidden",
+                "true",
+              );
+            }
+          } else if (anchor.dataset.link === "previous" && !anchor.href) {
+            const allInactive =
+              (steps.length > 0 && !steps[0].active) || steps.length === 0;
+            anchor.classList[allInactive ? "add" : "remove"]("hidden");
+            if (!allInactive) {
+              (anchor.parentNode as HTMLElement)?.removeAttribute(
+                "aria-hidden",
+              );
+            } else {
+              (anchor.parentNode as HTMLElement)?.setAttribute(
+                "aria-hidden",
+                "true",
+              );
+            }
+          }
+        });
+      };
+
+      const calibrateControls = () => {
+        anchors = document.querySelectorAll("[data-link]");
+        anchors.forEach((anchor) => {
+          anchor.addEventListener("click", (event) => {
+            event.preventDefault();
+            move(anchor.dataset.link === "next" ? 1 : -1);
+          });
+        });
+        syncAnchorVisibility();
+      };
+
+      const syncSteps = (doc: Document) => {
+        steps = getSlideSteps({
+          slide: doc.body as HTMLBodyElement,
+          direction: doc.documentElement.dataset.direction === "back" ? -1 : 1,
+          activeStep: undefined,
+        });
+        // Need to make sure all the controls that are active, are revealed, etc.
+        for (const step of steps) {
+          if (step.active) {
+            step.element.dataset.stepActive = "true";
+            if (step.element.tagName === "CODE" && step.linesToHighlight) {
+              const lines = step.element.querySelectorAll(
+                "[data-code-block-line]",
+              ) as NodeListOf<HTMLElement>;
+              lines.forEach((line, index) => {
+                if (step.linesToHighlight) {
+                  line.dataset.codeLineHighlighted = Boolean(
+                    step.linesToHighlight.indexOf(index + 1) !== -1,
+                  ).toString();
+                }
+              });
+            }
+          }
+        }
+      };
+
+      // @ts-ignore Astro swap events adds extra keys to the event
+      document.addEventListener(
+        "astro:before-swap",
+        (
+          event: Event & {
+            swap: () => void;
+            to: { href: string };
+            from: { href: string };
+            newDocument: Document;
+          },
+        ) => {
+          const to = parseInt(
+            event.to.href.slice(event.to.href.lastIndexOf("-") + 1),
+            10,
+          );
+          const from = parseInt(
+            event.from.href.slice(event.from.href.lastIndexOf("-") + 1),
+            10,
+          );
+
+          event.newDocument.documentElement.dataset.preme =
+            document.documentElement.dataset.theme;
+
+          event.newDocument.documentElement.dataset.direction =
+            to - from > 0 ? "forward" : "back";
+          document.documentElement.dataset.direction =
+            to - from > 0 ? "forward" : "back";
+
+          syncSteps(event.newDocument);
+        },
+      );
+
+      document.addEventListener("astro:page-load", () => {
+        syncSteps(document);
+        // calibrate page anchors. If they're hidden when there are steps, fix that
+        calibrateControls();
+      });
+
+      // Keyboard event listening to make things "move"
+      const handleNav = (event: KeyboardEvent) => {
+        // Need to work out the steps on each render realistically.
+        switch (event.key) {
+          case "ArrowRight":
+          case "ArrowUp":
+            move(1);
+            break;
+          case "ArrowLeft":
+          case "ArrowDown":
+            move(-1);
+            break;
+          default:
+            return false;
+        }
+      };
+      window.addEventListener("keydown", handleNav);
+    </script>
+    <script is:inline data-astro-rerun>
+      // window.top.document.documentElement.removeAttribute("data-transition");
+      window.top.history.replaceState(
+        undefined,
+        undefined,
+        `#${window.location.href.slice(window.location.href.lastIndexOf("-") + 1)}`,
+      );
+    </script>
+  </body>
+</html>

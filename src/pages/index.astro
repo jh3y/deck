@@ -1,0 +1,66 @@
+---
+import "@styles/main.css";
+import { getCollection } from "astro:content";
+
+const allDecks = await getCollection("decks");
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>deck | Jhey Tompkins</title>
+    <meta property="og:title" content="Jhey's Deck" />
+    <meta name="author" content="Jhey Tompkins" />
+    <meta name="image" content="https://deck0.vercel.app/images/og.png" />
+    <meta
+      name="image"
+      property="og:image"
+      content="https://deck0.vercel.app/images/og.png"
+    />
+    <meta name="og:image" content="https://deck0.vercel.app/images/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jhey.dev/" />
+    <meta name="twitter:title" content="Jhey's Deck" />
+    <meta name="twitter:description" content="Slides from Jhey Tompkins" />
+    <meta
+      name="twitter:image"
+      content="https://deck0.vercel.app/images/og.png?tweet=true"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@jh3yy" />
+  </head>
+  <body>
+    <main
+      class="flex flex-col justify-center w-[70ch] max-w-[calc(100%-2rem)] mx-auto min-h-[100svh]"
+    >
+      <h1>deck.</h1>
+      <ul class="list-disc list-inside">
+        {
+          allDecks.map((deck) => {
+            return (
+              <li>
+                <a
+                  class="underline hover:text-red-500"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href={`/decks/${deck.id}`}
+                >
+                  {deck.data.title}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </main>
+    <iframe
+      class="-z-10 fixed inset-0 w-full h-full pointer-events-none"
+      src="/demos/balloon-bear/"
+      title="Balloon Bear"></iframe>
+  </body>
+</html>

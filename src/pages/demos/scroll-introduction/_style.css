@@ -1,0 +1,846 @@
+@import "normalize.css";
+
+:root {
+  /* typography */
+  --font-size-min: 17;
+  --font-size-max: 20;
+  --font-ratio-min: 1.2;
+  --font-ratio-max: 1.618;
+  --font-width-min: 320;
+  --font-width-max: 1500;
+  /* shadow */
+  --base: hsl(var(--tint, 214) 80% 27% / calc(var(--alpha, 4) * 1%));
+  /**
+    * Use relative syntax to get to: hsl(221 25% 22% / 40%)
+  */
+  --shade: hsl(from var(--base) calc(h + 8) 25 calc(l - 5));
+  --perfect-shadow: 0 0 0 1px var(--base), 0 1px 1px -0.5px var(--shade),
+    0 3px 3px -1.5px var(--shade), 0 6px 6px -3px var(--shade),
+    0 12px 12px -6px var(--base), 0 24px 24px -12px var(--base);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  background: canvas;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  color: canvasText;
+  min-height: 100svh;
+}
+
+body::before {
+  --size: 40px;
+  --line: color-mix(in lch, canvasText 25%, hsl(0 0% 100% / 0.5));
+  content: "";
+  height: 100svh;
+  width: 100vw;
+  position: fixed;
+  background:
+    linear-gradient(90deg, var(--line) 1px, transparent 1px var(--size)) 50% 50% /
+      var(--size) var(--size),
+    linear-gradient(var(--line) 1px, transparent 1px var(--size)) 50% 50% /
+      var(--size) var(--size);
+  mask: linear-gradient(-25deg, transparent 65%, white);
+  top: 0;
+  transform-style: flat;
+  pointer-events: none;
+  z-index: -1;
+}
+
+section {
+}
+
+.section__content {
+  margin: 0 auto;
+  width: 80%;
+  max-width: calc(100vw - 2rem);
+}
+
+section:first-of-type h2 {
+  align-self: flex-start;
+  justify-self: start;
+  text-wrap: balance;
+  text-align: left;
+}
+
+:is(h1, h2, h3, h4, h5, .fluid) {
+  --fluid-min: calc(
+    var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+  );
+  --fluid-max: calc(
+    var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+  );
+  --fluid-preferred: calc(
+    (var(--fluid-max) - var(--fluid-min)) /
+      (var(--font-width-max) - var(--font-width-min))
+  );
+  --fluid-type: clamp(
+    (var(--fluid-min) / 16) * 1rem,
+    ((var(--fluid-min) / 16) * 1rem) -
+      (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+      (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+    (var(--fluid-max) / 16) * 1rem
+  );
+  line-height: 1;
+  font-size: var(--fluid-type);
+  font-weight: 900;
+}
+
+h1 {
+  --font-level: 4;
+}
+
+h2 {
+  --font-level: 3;
+}
+
+h3 {
+  --font-level: 2;
+}
+
+.section__backdrop {
+  position: fixed;
+  inset: 0;
+}
+
+/* Scroller stuff goes herre... */
+section {
+  min-height: 100vh;
+  width: 100vw;
+}
+
+main {
+  overflow: auto;
+  overflow-x: hidden;
+  height: 100vh;
+  width: 100vw;
+  /*	scale: 0.5;*/
+  outline: 1rem dashed red;
+}
+
+.section__content {
+  min-height: 100vh;
+  /* width: 100vw; */
+  display: grid;
+  place-items: center;
+  align-content: center;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+}
+
+section:nth-of-type(1),
+.sign-off:nth-of-type(3) {
+  color: hsl(0 0% 0%);
+}
+
+section:nth-of-type(1) .section__content {
+  overflow: hidden;
+}
+
+section:nth-of-type(2) {
+  z-index: 2;
+  color: hsl(0 0% 0%);
+  min-height: 200vh;
+  background: hsl(0 0% 0%);
+}
+
+section:nth-of-type(2) p {
+  --opacity: 1;
+  --font-level: 3;
+  text-wrap: balance;
+  color: hsl(0 0% 100%);
+  letter-spacing: 0;
+  font-weight: bold;
+  line-height: 1;
+  width: 30ch;
+  max-width: calc(100% - 4rem);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+section:nth-of-type(1) h2 {
+  --opacity: 1;
+  transform-origin: 50% 50%;
+  /* width: 100%;
+  height: 100%; */
+  position: fixed;
+  /* top: 50%;
+  left: 50%; */
+  top: 50%;
+  translate: 0 -50%;
+  /* opacity: 0.4; */
+  margin: 0;
+  /* transform: translate(-50%, -50%); */
+  overflow: hidden;
+}
+
+section:nth-of-type(3) {
+  z-index: 4;
+}
+
+.sign-off h2 {
+  text-align: center;
+  margin: 0;
+}
+
+.sign-off h2 span {
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+.sign-off svg {
+  width: 30vmin;
+  position: fixed;
+  stroke: hsl(0 0% 0%);
+  right: 10%;
+  bottom: 10%;
+  rotate: 10deg;
+}
+
+.sign-off {
+  accent-color: red;
+  z-index: 10;
+  height: 300vh;
+}
+
+.control {
+  display: flex;
+  gap: 1rem;
+  --font-level: 3;
+}
+
+[type="checkbox"] {
+  scale: 2;
+}
+
+section:nth-of-type(1) .section__content {
+  overflow: hidden;
+}
+
+svg text {
+  font-size: clamp(2rem, 6vw + 1rem, 6rem);
+  font-weight: 600;
+}
+
+section:nth-of-type(1) {
+  height: 200vh;
+}
+
+.video-wrap {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+}
+
+.video-wrap::after {
+  content: "";
+  background: hsl(0 0% 0% / 0.65);
+  inset: 0;
+  position: absolute;
+}
+
+video {
+  object-fit: cover;
+  width: 100%;
+  height: 100vh;
+  filter: saturate(1) brightness(1);
+}
+
+/* Signature */
+
+.signature path {
+  --draw: 1.025;
+  --end: 1.025;
+  stroke-dasharray: var(--end);
+  stroke-dashoffset: var(--draw);
+}
+
+.signature :is(.eye, .nose) {
+  fill: transparent;
+}
+
+.explainer {
+  background: hsl(0 0% 0%);
+  color: white;
+  height: 300vh;
+}
+
+.explainer .section__content {
+  position: sticky;
+  top: 0;
+}
+
+@supports (animation-timeline: scroll()) {
+  section {
+    view-timeline-name: --section;
+  }
+
+  section:nth-of-type(1) h2 {
+    transform: unset;
+    translate: 0 -50%;
+    animation: blow-out forwards ease-in;
+    animation-timeline: --section;
+    animation-range: exit-crossing 10% exit 0%;
+  }
+
+  section:nth-of-type(1) .section__content {
+    animation: fade-out both linear;
+    animation-timeline: --section;
+    animation-range: exit 100% 150%;
+  }
+
+  section:nth-of-type(2) p {
+    animation:
+      fade-in both linear,
+      fade-out both linear;
+    animation-timeline: --section;
+    animation-range:
+      entry 10% entry 35%,
+      exit 0% exit 25%;
+  }
+
+  .video-wrap {
+    pointer-events: none;
+    animation:
+      fade-in both linear,
+      fade-out both linear;
+    animation-timeline: --section;
+    animation-range:
+      entry 0% entry 25%,
+      exit 10% exit 35%;
+  }
+
+  .video-wrap::after {
+    opacity: 0;
+  }
+
+  .signature path {
+    animation: draw both linear;
+    animation-timeline: --section;
+    animation-range: entry 250% entry 280%;
+  }
+
+  .signature :is(.eye, .nose) {
+    animation:
+      draw both linear,
+      fill both linear;
+    animation-timeline: --section;
+  }
+
+  .signature :is(.ear, .eye) {
+    animation-range: entry 280% entry 290%;
+  }
+
+  .signature .nose {
+    animation-range: entry 290% entry 300%;
+  }
+
+  @keyframes fade {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fade-in {
+    to {
+      opacity: var(--opacity, 0.2);
+    }
+  }
+
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes fill {
+    to {
+      fill: currentColor;
+    }
+  }
+
+  @keyframes blow-out {
+    0%,
+    95% {
+      background: transparent;
+      opacity: 1;
+    }
+
+    to {
+      /* transform: translateZ(99vh); */
+      scale: 100;
+      background: black;
+      /* opacity: 0; */
+    }
+  }
+
+  @keyframes remove {
+    100% {
+      color: transparent;
+    }
+  }
+
+  :root:has(:checked) .section__content {
+    border: 4px dashed red;
+  }
+
+  :root:has(:checked) section {
+    border: 4px dashed hotpink;
+  }
+}
+
+.chrome {
+  aspect-ratio: 16 / 9;
+  background: red;
+  border-radius: 0 0 6px 6px;
+  width: clamp(300px, 100%, 500px);
+  position: relative;
+  border: 1px solid hsl(0 0% 50%);
+  container-type: size;
+  background: hsl(0 0% 10%);
+}
+
+.chrome__toolbar {
+  border-radius: 6px 6px 0 0;
+  position: absolute;
+  bottom: 100%;
+  left: -1px;
+  right: -1px;
+  height: 16px;
+  background: hsl(0 0% 30%);
+  text-align: center;
+  font-size: 12px;
+  z-index: 2;
+  border: 1px solid hsl(0 0% 50%);
+  border-bottom: 0;
+}
+
+.chrome__actions {
+  display: flex;
+  position: absolute;
+  left: 0.5rem;
+  gap: 0.25rem;
+  top: 50%;
+  translate: 0 -50%;
+  height: 60%;
+}
+
+.chrome__scroller {
+  position: absolute;
+  right: 2px;
+  height: 10%;
+  width: 4px;
+  border-radius: 50px;
+  background: red;
+  top: var(--top, 1rem);
+}
+
+.chrome__actions div {
+  height: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: red;
+}
+
+.chrome__actions div:nth-of-type(1) {
+  background: hsl(0 84% 60%);
+}
+
+.chrome__actions div:nth-of-type(2) {
+  background: hsl(38 92% 50%);
+}
+
+.chrome__actions div:nth-of-type(3) {
+  background: hsl(142 71% 45%);
+}
+
+.animated {
+  width: 15cqi;
+  outline: 4px dashed hsl(0 100% 50% / 0.5);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.explainer--view .animated {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  animation: move-view both linear;
+  animation-timeline: --section;
+  animation-range: entry 100% exit 0%;
+}
+
+.explainer svg {
+  fill: currentColor;
+}
+
+.explainer--view {
+  --scroll: 250%;
+  --top: 25%;
+}
+
+.explainer--scroll {
+  --scroll: calc(100cqh - 0.2rem - 100% - 2px);
+  --top: 0.2rem;
+}
+
+.chrome__scroller {
+  animation: scroll both linear;
+  animation-timeline: --section;
+  animation-range: entry 100% exit 0%;
+}
+
+@keyframes scroll {
+  to {
+    translate: var(--x, 0) var(--scroll);
+  }
+}
+
+.explainer--view .animated svg {
+  width: 50%;
+  animation: scale-up both linear;
+  animation-timeline: --section;
+  animation-range: entry 100% exit 0%;
+  fill: white;
+}
+
+@keyframes scale-up {
+  0%,
+  100% {
+    scale: 0.25;
+    opacity: 0.25;
+  }
+
+  25%,
+  75% {
+    opacity: 1;
+  }
+
+  50% {
+    scale: 2;
+  }
+}
+
+@keyframes move-view {
+  to {
+    translate: -50% calc(-100cqh + -100%);
+  }
+}
+
+.explainer--scroll .animated {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  animation: spin-scroll both linear;
+  animation-timeline: --section;
+  animation-range: entry 100% exit 0%;
+}
+
+@keyframes spin-scroll {
+  to {
+    rotate: var(--r, 720deg);
+  }
+}
+
+.explainer--sticky {
+  --top: 25cqh;
+  --scroll: 50cqh;
+}
+
+.sticker {
+  height: 200%;
+  width: 80%;
+  outline: 4px dashed hsl(0 100% 50% / 0.5);
+  outline-offset: 4px;
+  top: 25%;
+  left: 50%;
+  --x: -50%;
+  translate: var(--x) 0;
+  position: absolute;
+  animation: scroll both linear;
+  animation-timeline: --section;
+  animation-range: entry 100% exit 0%;
+  --scroll: -200cqh;
+}
+
+.sticker__section {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  animation: stuck-scroll both linear;
+  animation-timeline: --section;
+  animation-range: entry 100% exit 0%;
+}
+
+.sticker__travel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 4px dashed white;
+  animation: travel-scroll both linear;
+  animation-timeline: --section;
+  animation-range: entry 100% exit 0%;
+  display: grid;
+  place-items: center;
+}
+
+.explainer--sticky .animated {
+  animation: stuck-spin both linear;
+  animation-timeline: --section;
+  animation-range: entry 100% exit 0%;
+}
+
+@keyframes stuck-spin {
+  0%,
+  12.5% {
+    rotate: 0deg;
+  }
+
+  62.5%,
+  100% {
+    rotate: 360deg;
+  }
+}
+
+@keyframes stuck-scroll {
+  0%,
+  12.5% {
+    translate: 0 0;
+  }
+
+  100% {
+    translate: 0 175cqh;
+  }
+}
+
+@keyframes travel-scroll {
+  0%,
+  62.5% {
+    translate: 0 0;
+  }
+
+  100% {
+    translate: 0 -75cqh;
+  }
+}
+
+.explainer--fixed {
+  --top: 30%;
+  --scroll: 50cqh;
+}
+
+.explainer--fixed .animated {
+  width: 10cqh;
+  top: 1rem;
+  left: 1rem;
+  position: absolute;
+  --r: 360deg;
+  animation: spin-scroll both linear;
+  animation-timeline: --section;
+  animation-range: entry 100% exit 0%;
+}
+
+.viewer {
+  width: 50%;
+  height: 25%;
+  position: absolute;
+  top: 100%;
+  border: 4px dashed white;
+  left: 50%;
+  translate: -50% 0;
+  animation: move-view both linear;
+  animation-timeline: --section;
+  animation-range: entry 100% exit 0%;
+}
+
+.explainer--text {
+  --scroll-padding: 100;
+  --char-total: 43;
+  --word-total: 18;
+  --pixels-per-character: 350;
+  --delay-multiplier: 0.25;
+  view-timeline: --texter;
+  height: calc(
+    100vh + (var(--scroll-padding) * 2px) +
+      (
+        (
+            var(--word-total) *
+              (var(--pixels-per-character) * var(--delay-multiplier))
+          ) * 1px
+      )
+  );
+}
+
+@property --active {
+  inherits: true;
+  syntax: "<number>";
+  initial-value: 0;
+}
+
+.explainer--text .word:not(:last-of-type) {
+  /* To calculate a delay, use "sin" against the entire range of the start? */
+  /* calc(sin((var(--index) / 12) * 45deg) * 0.475s); */
+  display: inline-block;
+  --start: calc(
+    100vh + (var(--scroll-padding) * 1px) +
+      (
+        (
+            sin((var(--word-index) / var(--word-total)) * 45deg) *
+              (
+                var(--word-total) *
+                  (var(--pixels-per-character) * var(--delay-multiplier))
+              )
+          ) * 1px
+      )
+  );
+  --end: calc(var(--start) + (var(--pixels-per-character) * 1px));
+  animation: texter both steps(1);
+  animation-timeline: --texter;
+  animation-range: var(--start) var(--end);
+}
+
+.explainer--text .word:not(:last-of-type) .char {
+  opacity: calc(var(--active) + 0.4);
+  transition: opacity 0.1s;
+}
+
+.word:last-of-type .char:nth-of-type(1) {
+  --index: calc(var(--word-index) + 1);
+}
+
+.word:last-of-type .char:nth-of-type(2) {
+  --index: calc(var(--word-index) + 2);
+}
+
+.word:last-of-type .char:nth-of-type(3) {
+  --index: calc(var(--word-index) + 3);
+}
+
+.word:last-of-type .char:nth-of-type(4) {
+  --index: calc(var(--word-index) + 4);
+}
+
+.word:last-of-type .char:nth-of-type(5) {
+  --index: calc(var(--word-index) + 5);
+}
+
+.word:last-of-type .char:nth-of-type(6) {
+  --index: calc(var(--word-index) + 6);
+}
+
+.word:last-of-type .char {
+  --start: calc(
+    100vh + (var(--scroll-padding) * 1px) +
+      (
+        (
+            sin((var(--index) / var(--word-total)) * 45deg) *
+              (
+                var(--word-total) *
+                  (var(--pixels-per-character) * var(--delay-multiplier))
+              )
+          ) * 1px
+      )
+  );
+  --end: calc(var(--start) + (var(--pixels-per-character) * 1px));
+  position: relative;
+  animation: texter both steps(1);
+  color: transparent;
+  animation-timeline: --texter;
+  animation-range: var(--start) var(--end);
+}
+
+.word:last-of-type .char::after {
+  content: attr(data-char);
+  position: absolute;
+  height: 100%;
+  left: 0;
+  opacity: calc(var(--active) + 0.4);
+  transition: opacity 0.1s;
+  /* color: red; */
+  color: transparent;
+  background: linear-gradient(
+    #f24e1e 0 20%,
+    #ff7262 0 40%,
+    #a259ff 0 60%,
+    #1abcfe 0 80%,
+    #0acf83
+  );
+  /* background-attachment: fixed; */
+  background-clip: text;
+}
+
+@keyframes texter {
+  to {
+    --active: 1;
+  }
+}
+
+.ender {
+  color: white;
+  position: relative;
+  padding: 2rem;
+  --font-level: 4;
+}
+
+.closer {
+  position: relative;
+  clip-path: inset(-100% 0 0 0);
+}
+
+.closer .bear {
+  position: absolute;
+  width: 25%;
+  right: 0;
+  bottom: 45%;
+  rotate: 15deg;
+  translate: 0 200%;
+  animation: pop-out both linear;
+  animation-timeline: --section;
+  animation-range: entry 200% entry 250%;
+  z-index: -1;
+}
+
+@keyframes pop-out {
+  to {
+    translate: 0 0;
+  }
+}
+
+.ender::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: red;
+  z-index: -1;
+  animation: reveal-red both linear;
+  animation-timeline: --section;
+  animation-range: entry 100% entry 200%;
+  scale: 1 0;
+  transform-origin: 50% 100%;
+}
+
+@keyframes reveal-red {
+  to {
+    scale: 1 1;
+  }
+}

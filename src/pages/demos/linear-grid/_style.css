@@ -1,0 +1,170 @@
+@import "normalize.css";
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+:root {
+  --accent: hsl(0 100% 50%);
+  --delay: 0.2s;
+}
+
+body {
+  color: canvas;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: "SF Pro Text", "SF Pro Icons", "AOS Icons", "Helvetica Neue",
+    Helvetica, Arial, sans-serif, system-ui;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.arena {
+  --capacity: 120px;
+  width: var(--capacity);
+  height: var(--capacity);
+  border-radius: 0px;
+  container-type: size;
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+  scale: 0.625;
+  background: canvas;
+  border: 1px solid canvasText;
+}
+
+.x {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.y {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.s {
+  stroke: var(--accent);
+}
+
+.l {
+  stroke: var(--accent);
+  clip-path: inset(-50% 100% -50% 0);
+}
+
+[aria-hidden="true"] {
+  pointer-events: none;
+}
+
+#app {
+  display: flex;
+  place-items: center;
+  min-height: 100vh;
+}
+
+.eases {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 2rem 0;
+  margin-top: 5rem;
+  align-items: center;
+  justify-content: center;
+  width: 90ch;
+  max-width: calc(100vw - 2rem);
+}
+
+.box {
+  background: canvasText;
+  width: 10cqi;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  translate: calc(100cqw + 100%) 50%;
+  translate: -50% 50%;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+@keyframes x {
+  to {
+    translate: 1px 0;
+  }
+}
+
+@keyframes y {
+  to {
+    translate: 0 1px;
+  }
+}
+
+@keyframes draw {
+  to {
+    clip-path: inset(-50% 0 -50% 0);
+  }
+}
+
+@keyframes animate-x {
+  to {
+    translate: calc(100cqw - 50%) 50%;
+  }
+}
+@keyframes animate-y {
+  to {
+    transform: translateY(calc(-100cqh + 0%));
+  }
+}
+
+.graph {
+  position: absolute;
+  inset: 0;
+  overflow: visible !important;
+  scale: 1 -1;
+}
+
+div.tp-dfwv {
+  position: fixed;
+  width: 290px;
+}
+
+.copy {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.copy:focus-visible {
+  outline: 2px dashed canvasText;
+}
+
+.copy:is(:hover, :focus-visible) {
+  .box {
+    opacity: 1;
+    animation:
+      animate-x calc(var(--transition, 2) * 1s) var(--delay) infinite linear,
+      animate-y calc(var(--transition, 2) * 1s) var(--delay) infinite
+        var(--ease);
+  }
+  .s {
+    opacity: 0.25;
+  }
+
+  .l {
+    animation: draw calc(var(--transition, 2) * 1s) var(--delay) infinite linear;
+  }
+}

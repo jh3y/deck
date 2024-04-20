@@ -1,0 +1,178 @@
+@import "normalize.css";
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --accent: red;
+  --color: hsl(0 0% 90%);
+  --bg: hsl(0 0% 0%);
+  --text: linear-gradient(hsl(0 0% 100%), hsl(0 0% 60%));
+  --text: hsl(0 0% 75%);
+  --active-bg: hsl(0 0% 4%);
+  --active-outline: hsl(0 0% 25%);
+  --active-control: hsl(0 0% 25%);
+  --placeholder: hsl(0 0% 40%);
+  --outline: hsl(0 0% 20%);
+  --selection: hsl(0 0% 40%);
+}
+
+body {
+  display: grid;
+  min-height: 100vh;
+  place-items: end;
+  font-weight: 80;
+  justify-content: center;
+  font-family: "SF Pro Text", "SF Pro Icons", "AOS Icons", "Helvetica Neue",
+    Helvetica, Arial, sans-serif, system-ui;
+  padding-bottom: calc(50vh - 4lh);
+  font-size: 1.5rem;
+}
+
+button {
+  font-weight: 80;
+}
+
+#textarea {
+  font-weight: 80;
+  field-sizing: content;
+  background: transparent;
+  padding: 1rem 0;
+  min-height: 3lh;
+  border: 0;
+  resize: none;
+  width: 100%;
+  font-family: monospace;
+  outline: 1px solid transparent;
+  color: var(--text);
+  caret-shape: underscore;
+  caret-color: var(--color);
+  transition: all 0.2s;
+  line-height: 1.5lh;
+  scrollbar-color: var(--accent) transparent;
+  scrollbar-width: thin;
+  scroll-padding-block: 1rem;
+}
+
+[data-horizontal="false"][data-constrain="true"] #textarea {
+  min-height: calc(var(--min) * 1lh);
+  max-height: calc(var(--max) * 1lh);
+}
+
+input {
+  font-family: monospace;
+}
+
+.input-controls:is(:focus-within) {
+  --glow-alpha: 0;
+  background: var(--active-bg);
+  outline: 1px solid var(--active-outline);
+  box-shadow: 0 0.5px hsl(0 0% 100% / 1) inset;
+}
+
+::placeholder {
+  color: var(--placeholder);
+}
+
+textarea::selection {
+  background: var(--selection);
+  color: var(--color);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(4, auto) 1fr;
+  gap: 0.25rem;
+}
+
+.input-controls button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--placeholder);
+  aspect-ratio: 1;
+  font-size: inherit;
+  width: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  padding: 0;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.input-controls button:last-of-type {
+  justify-self: end;
+  width: fit-content;
+  padding: 0 1rem;
+  height: auto;
+  font-size: 0.875rem;
+  aspect-ratio: auto;
+  font-family: monospace;
+  font-weight: 120;
+}
+
+.input-controls button svg {
+  width: 50%;
+}
+
+.input-controls {
+  min-width: 40ch;
+  background: hsl(0 0% 0% / 1);
+  border: 2px solid var(--outline);
+  transition:
+    outline 0.2s,
+    background 0.2s,
+    box-shadow 0.2s;
+  outline: 1px solid transparent;
+  box-shadow: 0 0.5px hsl(0 0% 100% / 0.75) inset;
+  font-weight: 300;
+  padding: 1rem;
+  position: relative;
+  border-radius: 12px;
+  color: hsl(0 0% 92%);
+  /*  translate: 0 2lh;*/
+  min-height: 140px;
+  display: grid;
+}
+
+.input-controls::after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 12px;
+  background: radial-gradient(
+    100px 100px at calc(var(--x) * 1px) calc(var(--y) * 1px),
+    var(--accent),
+    transparent
+  );
+  background-attachment: fixed;
+  z-index: 2;
+  border: 4px solid transparent;
+  mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+  mask-clip: padding-box, border-box;
+  mask-composite: intersect;
+  opacity: var(--glow-alpha, 1);
+  transition: opacity 0.2s;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+button:is(:hover, :focus-visible) {
+  background: var(--active-control);
+  color: var(--color);
+}

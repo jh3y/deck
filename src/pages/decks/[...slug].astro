@@ -1,0 +1,64 @@
+---
+import "@styles/transitions.css";
+import "@styles/main.css";
+import { getCollection } from "astro:content";
+import { getDeckSlides } from "@utils/slides";
+
+export async function getStaticPaths() {
+  const decks = await getCollection("decks");
+  return decks.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const allSlides = await Astro.glob("/src/slides/**/*.md");
+const slides = await getDeckSlides(entry, allSlides);
+const startingPoint = `/decks/${Astro.params.slug}/slides/${slides[0].params.slide}`;
+---
+
+<html lang="en" style="view-transition-name: main;" data-deck-root="true">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{entry.data.title}</title>
+    <meta property="og:title" content="Jhey's Deck" />
+    <meta name="author" content="Jhey Tompkins" />
+    <meta name="image" content="https://deck0.vercel.app/images/og.png" />
+    <meta
+      name="image"
+      property="og:image"
+      content="https://deck0.vercel.app/images/og.png"
+    />
+    <meta name="og:image" content="https://deck0.vercel.app/images/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jhey.dev/" />
+    <meta name="twitter:title" content="Jhey's Deck" />
+    <meta name="twitter:description" content="Slides from Jhey Tompkins" />
+    <meta
+      name="twitter:image"
+      content="https://deck0.vercel.app/images/og.png?tweet=true"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@jh3yy" />
+  </head>
+  <body>
+    <iframe
+      class="m-0 border-0 w-full h-full min-h-screen absolute inset-0 z-10"
+      allowtransparency="true"
+      src={startingPoint}></iframe>
+  </body>
+</html>
+<script>
+  const slideIndex = window.location.hash.slice(1);
+  const viewer = document.querySelector("iframe");
+  if (slideIndex && viewer) {
+    const newSrc = `${viewer?.src.substring(0, viewer.src.lastIndexOf("-"))}-${slideIndex}`;
+    viewer.src = newSrc;
+  }
+</script>

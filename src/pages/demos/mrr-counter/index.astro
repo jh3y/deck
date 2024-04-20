@@ -1,0 +1,23 @@
+---
+import "./_style.css"
+import MRRCounter from "./_mrr.jsx"
+
+const defaultValue = (Math.random() * 20_000).toFixed(2)
+---
+
+<!doctype html>
+<html lang="en" data-default-value={defaultValue}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mrr-counter</title>
+  </head>
+  <body>
+    <div id="app">
+      <MRRCounter defaultValue={defaultValue} />
+    </div>
+  </body>
+  <script>
+    import "./_script.js";
+  </script>
+</html>

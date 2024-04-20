@@ -1,0 +1,181 @@
+---
+import "./_style.css"
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>drop-down</title>
+  </head>
+  <body>
+    <button popovertarget="pop">
+      <span>Style:</span>
+      <span>Minimalist</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+      </svg>
+    </button>
+    <div id="pop" popover="auto">
+      <div class="popover__content">
+        <ul>
+          <li>
+            <button
+              data-value="Minimalist"
+              data-selected="true"
+              popovertarget="pop"
+              autofocus
+            >
+              Minimalist<svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m4.5 12.75 6 6 9-13.5"></path>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <button data-value="Vintage" popovertarget="pop">
+              Vintage<svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m4.5 12.75 6 6 9-13.5"></path>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <button data-value="Modern" popovertarget="pop">
+              Modern<svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m4.5 12.75 6 6 9-13.5"></path>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <button data-value="Gothic" popovertarget="pop">
+              Gothic<svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m4.5 12.75 6 6 9-13.5"></path>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <button data-value="Art Deco" popovertarget="pop">
+              Art Deco<svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m4.5 12.75 6 6 9-13.5"></path>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <button data-value="Industrial" popovertarget="pop">
+              Industrial<svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m4.5 12.75 6 6 9-13.5"></path>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <button data-value="Rustic" popovertarget="pop">
+              Rustic<svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m4.5 12.75 6 6 9-13.5"></path>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <button data-value="Nouveau" popovertarget="pop">
+              Nouveau<svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m4.5 12.75 6 6 9-13.5"></path>
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>

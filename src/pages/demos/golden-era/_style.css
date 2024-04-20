@@ -1,0 +1,109 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.transcript {
+  font-weight: bold;
+  font-size: 4rem;
+  color: hsl(0 0% 98%);
+  font-family: "Impact", sans-serif;
+  text-transform: uppercase;
+  max-width: 30ch;
+}
+
+.awesome {
+  background: red;
+  padding: 1rem;
+}
+
+.record {
+  width: 48px;
+  aspect-ratio: 1;
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  background: transparent;
+  border: 0;
+}
+
+.record:after {
+  content: "";
+  position: absolute;
+  inset: 10%;
+  background: red;
+  border-radius: 50%;
+}
+
+[data-recording="true"] .record:after {
+  animation: pulse 1.25s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.1;
+    scale: 0.9;
+  }
+}
+
+.golden {
+  --shadow: hsl(35 100% 47%);
+  --hover: 1;
+  --font-size: 4rem;
+  color: hsl(45 97% 54%);
+  transform: translate(
+    calc(var(--hover) * (var(--font-size) * 0.1)),
+    calc(var(--hover) * (var(--font-size) * -0.1))
+  );
+  text-shadow:
+    calc(var(--hover) * (var(--font-size) * -0))
+      calc(var(--hover) * (var(--font-size) * 0)) var(--shadow),
+    calc(var(--hover) * (var(--font-size) * -0.02))
+      calc(var(--hover) * (var(--font-size) * 0.02)) var(--shadow),
+    calc(var(--hover) * (var(--font-size) * -0.04))
+      calc(var(--hover) * (var(--font-size) * 0.04)) var(--shadow),
+    calc(var(--hover) * (var(--font-size) * -0.06))
+      calc(var(--hover) * (var(--font-size) * 0.06)) var(--shadow),
+    calc(var(--hover) * (var(--font-size) * -0.08))
+      calc(var(--hover) * (var(--font-size) * 0.08)) var(--shadow),
+    calc(var(--hover) * (var(--font-size) * -0.1))
+      calc(var(--hover) * (var(--font-size) * 0.1)) var(--shadow);
+}
+.golden {
+  --glare: hsl(0 0% 100% / 0.8);
+  position: relative;
+  display: inline-block;
+}
+.golden span {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+        108deg,
+        transparent 0 55%,
+        var(--glare) 55% 60%,
+        transparent 60% 70%,
+        var(--glare) 70% 85%,
+        transparent 85%
+      )
+      calc(var(--pos, 0) * -200%) 0% / 200% 100%,
+    var(--color, transparent);
+  -webkit-background-clip: text;
+  color: transparent;
+  z-index: 2;
+  text-shadow: none;
+  animation: shine 0.6s linear;
+  /*  transform: translate(calc(var(--hover) * (var(--font-size) * 0.10)), calc(var(--hover) * (var(--font-size) * -0.10)));*/
+}
+
+@keyframes shine {
+  to {
+    background-position: -200% 0;
+  }
+}

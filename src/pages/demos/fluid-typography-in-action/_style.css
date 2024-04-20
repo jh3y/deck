@@ -1,0 +1,125 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap'); */
+@import "normalize.css";
+
+:root {
+  --font-size-min: 17;
+  --font-size-max: 20;
+  --font-ratio-min: 1.2;
+  --font-ratio-max: 1.33;
+  --font-width-min: 320;
+  --font-width-max: 1500;
+}
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+@property --size {
+  initial-value: 0;
+  inherits: true;
+  syntax: "<length>";
+}
+:where(dd) {
+  --fluid-min: calc(
+    var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+  );
+  --fluid-max: calc(
+    var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+  );
+  --fluid-preferred: calc(
+    (var(--fluid-max) - var(--fluid-min)) /
+      (var(--font-width-max) - var(--font-width-min))
+  );
+  --fluid-type: clamp(
+    (var(--fluid-min) / 16) * 1rem,
+    ((var(--fluid-min) / 16) * 1rem) -
+      (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+      (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+    (var(--fluid-max) / 16) * 1rem
+  );
+  font-size: var(--fluid-type);
+}
+
+[data-container="true"] :where(dd) {
+  --variable-unit: 100cqi;
+}
+
+/* dd {
+  --font-level: 3;
+} */
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  background: canvas;
+  padding: 1rem;
+  color: color-mix(in lch, canvasText, canvas 25%);
+  min-height: 100vh;
+  font-family: "SF Pro Text", "SF Pro Icons", "AOS Icons", "Helvetica Neue",
+    Helvetica, Arial, sans-serif, system-ui;
+}
+
+.levels {
+  max-width: 100%;
+  scale: var(--scale, 0.75);
+}
+
+[data-container="true"] .levels {
+  resize: both;
+  overflow: scroll;
+  container-type: size;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  outline: 2px dashed color-mix(in lch, canvasText, transparent);
+  outline-offset: 0.5rem;
+}
+
+pre {
+  margin: 0;
+  white-space: normal;
+  line-height: 1.5;
+}
+
+.code {
+  color: rgb(199, 146, 234);
+}
+
+.level {
+  color: rgb(247, 140, 108);
+}
+
+dt {
+  font-size: 1rem;
+  font-weight: 600;
+  font-variant: small-caps;
+  color: white;
+  background: hsl(210 10% 22%);
+  padding: 0.5rem;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+dd {
+  margin: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+dd:not(:last-of-type) {
+  margin-bottom: 1rem;
+}
+
+dl {
+  display: grid;
+}
+
+div.tp-dfwv {
+  position: fixed;
+}

@@ -1,0 +1,37 @@
+.code-block .linenumber {
+  opacity: 0.5;
+  min-width: 2.2rem !important;
+}
+
+.code-block code {
+  font-family: "JetBrains Mono", monospace;
+  font-style: normal;
+}
+
+[data-code-block-line] {
+  transition: opacity 0.25s;
+}
+
+[data-code-line-highlighted="false"] {
+  opacity: 0.2;
+}
+
+.code-block {
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: monospace;
+  background: hsl(210 10% 22%);
+  padding: 1rem;
+  border-radius: 0 0 6px 6px;
+  color: hsl(0 0% 90%);
+  margin: 0;
+  max-width: 100%;
+  overflow: auto;
+  tab-size: 2;
+}
+
+.code-blocks {
+  display: grid;
+  gap: 1rem;
+}

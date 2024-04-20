@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.balloon-bear {
+  width: clamp(200px, 50vmin, 400px);
+  position: absolute;
+  right: 15%;
+  top: 100%;
+  animation: float 6s infinite linear;
+}
+
+@keyframes float {
+  100% {
+    translate: 0 calc(-100vh - 100%);
+  }
+}
+
+.switcher {
+  animation: switch 24s infinite steps(1);
+  fill: #f24e1e;
+}
+
+@keyframes switch {
+  25% {
+    fill: #0acf83;
+  }
+  50% {
+    fill: #a259ff;
+  }
+  75% {
+    fill: #1abcfe;
+  }
+}

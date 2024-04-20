@@ -1,0 +1,284 @@
+@import "normalize.css";
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: "SF Pro Text", "SF Pro Icons", "AOS Icons", "Helvetica Neue",
+    Helvetica, Arial, sans-serif, system-ui;
+}
+
+.menu {
+  --transition: 0.4s;
+  anchor-name: --menu;
+  position: relative;
+  /* display: none; */
+}
+
+.menu:has(:popover-open)::after {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path calc(var(--transition) * 0.1);
+}
+
+.menu:has(:popover-open) > [popovertarget="menu"] {
+  box-shadow: 0 0 0 #0000;
+}
+
+.text {
+  flex: 1;
+  text-align: left;
+}
+
+.menu > [popovertarget="menu"] {
+  padding: 0.5rem;
+  width: 160px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px;
+  border: 0;
+  box-shadow: var(--shadow-2);
+  background: canvas;
+  border: 1px solid color-mix(in lch, canvas, canvasText);
+  outline-color: color-mix(in lch, canvas, canvasText);
+  position: relative;
+  cursor: pointer;
+  outline-width: 0;
+}
+
+.menu__heading {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  gap: calc(0.5rem + 3px);
+}
+
+.menu__heading .gesture {
+  translate: 0 -15%;
+}
+
+.menu [popover] {
+  overflow: visible;
+  border-radius: 6px;
+  border: 1px solid red;
+  padding: 0;
+  margin: 0;
+  inset: unset;
+  bottom: anchor(--menu bottom);
+  left: anchor(--menu left);
+  width: anchor-size(--menu width);
+  /*  opacity: var(--open, 0);*/
+  /*  translate: 0 calc(var(--open, 0) * 5%);*/
+  translate: 0 0;
+  border: 0;
+  border: 3px solid transparent;
+  clip-path: inset(calc(100% + 0px) -100% -100vh -100%);
+  padding: 0;
+  overflow: visible;
+  background: transparent;
+  transition:
+    display var(--transition),
+    overlay var(--transition);
+  transition-behavior: allow-discrete;
+}
+
+.parachute-pen {
+  position: absolute;
+  inset: 0;
+  z-index: 99999;
+}
+
+.option-box {
+  position: relative;
+  transform: translate(0, calc(-50% + (var(--open, 0) * 150%)));
+  transition: transform var(--transition);
+}
+
+.bear {
+  width: 48px;
+  position: absolute;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.bear__container {
+  width: 48px;
+  background: green;
+  position: absolute;
+  pointer-events: none;
+  overflow: visible;
+  top: 0;
+  clip-path: inset(-100vh -100vh 100% -100vh);
+  left: calc(var(--pos, 50) * 1%);
+}
+
+.bear--parachuter {
+  top: 0;
+  left: calc(var(--pos, 50) * 1%);
+}
+
+.cap-strap {
+  fill: hsl(var(--hue, 10) 100% 50%);
+}
+
+.nosey-pen {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(-100vh -100vw 100% -100vw);
+}
+
+.nosey-pen .bear {
+  translate: 0 calc((10 - (var(--show-bear, 0) * 55)) * 1%);
+  rotate: calc(var(--rot, 0) * 1deg);
+  left: calc(var(--pos, 0) * 1%);
+  transition: translate 0.2s;
+}
+
+/*selectmenu:has(:focus):has([popover]:not(:popover-open)),*/
+.menu:hover:has([popover]:not(:popover-open)) {
+  --show-bear: 1;
+}
+
+.bear--handle .parachute,
+.nosey-pen .parachute,
+.bear--handle .feature-set {
+  display: none;
+}
+
+.eyes {
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+  animation: blink 6s calc(var(--eye-delay, 0) * -1s) infinite;
+}
+
+@keyframes blink {
+  0%,
+  46%,
+  48%,
+  50%,
+  100% {
+    scale: 1 1;
+  }
+
+  47%,
+  49% {
+    scale: 1 0.01;
+  }
+}
+
+.parachuter {
+  background: red;
+  height: 100%;
+  width: 100%;
+}
+
+.bear--handle {
+  width: 48px;
+  position: absolute;
+  top: 100%;
+  left: calc(var(--pos, 50) * 1%);
+  z-index: -1;
+}
+
+.bear--handle .bear {
+  position: static;
+  rotate: calc(var(--rot, 0) * 180deg);
+  transition: translate var(--transition);
+  translate: 0 calc(-100% + (var(--open, 0) * (25% + (var(--rot, 0) * 20%))));
+}
+
+.options {
+  background: canvas;
+  box-shadow: var(--shadow-3);
+  transform-origin: 50% 0;
+  transition: transform var(--transition);
+  border-radius: 0 0 6px 6px;
+  border: 1px solid color-mix(in lch, canvas, canvasText);
+  cursor: -webkit-grab;
+  overflow: hidden;
+}
+
+.menu [popover]:popover-open .option-box {
+  @starting-style {
+    --open: 0;
+  }
+
+  --open: 1;
+}
+
+.menu [popover]:popover-open .bear--handle {
+  @starting-style {
+    --open: 0;
+  }
+
+  --open: 1;
+}
+
+.menu [popover]:popover-open {
+  @starting-style {
+    --open: 0;
+  }
+
+  --open: 1;
+}
+
+.gesture {
+  font-size: 24px;
+  width: 24px;
+  line-height: 0.8;
+}
+
+.menu button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  outline-width: 0;
+  color: canvasText;
+  width: 100%;
+  border: 0;
+  background: canvas;
+  border-radius: 0px;
+  cursor: inherit;
+}
+
+.options button:hover {
+  background-color: color-mix(in lch, canvas, canvasText 6%);
+}
+
+.menu:has(:popover-open) .marker {
+  --active: 1;
+}
+
+.marker {
+  width: 12px;
+  color: color-mix(in lch, canvas, canvasText);
+  overflow: visible !important;
+  transform-origin: 50% 50%;
+  translate: 0 calc((50 - (var(--active, 0) * 100)) * 1%);
+  transition: translate var(--transition);
+}
+
+.marker rect {
+  fill: currentColor;
+  transform-box: fill-box;
+  transition: rotate calc(var(--transition) * 0.5);
+}
+
+.marker rect:nth-of-type(1) {
+  transform-origin: 83% 50%;
+  rotate: calc((45 - (var(--active, 0) * 90)) * 1deg);
+}
+
+.marker rect:nth-of-type(2) {
+  transform-origin: 17% 50%;
+  rotate: calc((315 + (var(--active, 0) * 90)) * 1deg);
+}

@@ -1,0 +1,140 @@
+---
+import "./_style.css"
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>anchor-positioning-album</title>
+  </head>
+  <body>
+    <h1>drag & scroll.</h1>
+    <div class="playing">
+      <img src="/images/the-cell.jpeg" alt="Album cover for 'The Cell: C2C'" />
+      <div class="playing__meta">
+        <div class="details">
+          <div>The Cell</div>
+          <div>C2C</div>
+        </div>
+        <div class="actions">
+          <button popovertarget="context" id="anchor">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                fill="none"
+                stroke-width="2"
+                stroke-linejoin="round"
+                d="M4.5 15.75l7.5-7.5 7.5 7.5"></path>
+            </svg>
+            <span class="sr-only">Toggle menu</span>
+          </button>
+          <nav popover="auto" id="context">
+            <ul>
+              <li>Add to queue</li>
+              <hr />
+              <li>Go to song radio</li>
+              <li>Go to artist</li>
+              <li>Go to album</li>
+              <hr />
+              <li>Save to your Liked Songs</li>
+              <li>
+                <button popovertarget="playlist">
+                  <span>Add to playlist</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      fill="none"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                      d="M4.5 15.75l7.5-7.5 7.5 7.5"></path>
+                  </svg>
+                </button>
+              </li>
+              <hr />
+              <li>
+                <button popovertarget="share">
+                  <span>Share</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      fill="none"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                      d="M4.5 15.75l7.5-7.5 7.5 7.5"></path>
+                  </svg>
+                </button>
+              </li>
+            </ul>
+          </nav>
+          <div popover="auto" id="share">
+            <ul>
+              <li>
+                <a
+                  href="https://twitter.com/intent/follow?screen_name=jh3yy"
+                  target="_blank"
+                  rel="noopener noreferrer">Share on X</a
+                >
+              </li>
+              <li>Copy Song Link</li>
+              <li>Embed track</li>
+            </ul>
+          </div>
+          <div popover="auto" id="playlist">
+            <ul>
+              <li>
+                <input type="search" placeholder="Find a playlist" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    fill="none"
+                    stroke="var(--text-1)"
+                    stroke-linejoin="round"
+                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                  ></path>
+                </svg>
+              </li>
+              <li>Create playlist</li>
+              <hr />
+              <li>Lofi</li>
+              <li>Chill</li>
+              <li>Liked</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>

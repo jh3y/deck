@@ -1,0 +1,93 @@
+/* @import "normalize.css"; */
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+  outline-color: red;
+}
+
+:root {
+  --size: 300px;
+  accent-color: red;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  scale: 1;
+}
+
+[type="range"] {
+  width: 100%;
+}
+
+[type="range"]:hover ~ .trombone-bear {
+  opacity: 0.25;
+}
+
+.bear {
+  position: relative;
+  transition: margin 0.5s;
+}
+
+.bear:hover {
+  margin-block: 10vh;
+}
+
+[popover]::backdrop {
+  background: hsl(0 0% 10% / 0.5);
+}
+
+svg {
+  overflow: visible !important;
+}
+
+.trombone-bear {
+  transition: opacity 0.25s;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -60%;
+  pointer-events: none;
+  width: var(--size);
+  opacity: 0;
+}
+
+.trombone-bear__cap {
+  scale: 1.025;
+  transform-box: fill-box;
+  transform-origin: center;
+  translate: 0 -4%;
+}
+
+.trombone-bear__dummy-torso {
+  display: none;
+}
+
+.trombone-bear__eyes {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: blink 6s -2s infinite;
+}
+
+@keyframes blink {
+  0%,
+  46%,
+  48%,
+  50%,
+  100% {
+    scale: 1 1;
+  }
+  47%,
+  49% {
+    scale: 1 0.01;
+  }
+}
+
+.container {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+}

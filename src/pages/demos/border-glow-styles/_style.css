@@ -1,0 +1,302 @@
+:root {
+  --radius: 12;
+  --width: 50;
+  --height: 40;
+  --border: 4;
+  --blur: 10;
+  --alpha: 0;
+  --gradient: conic-gradient(
+    from 180deg at 50% 70%,
+    hsla(0, 0%, 98%, 1) 0deg,
+    #eec32d 72.0000010728836deg,
+    #ec4b4b 144.0000021457672deg,
+    #709ab9 216.00000858306885deg,
+    #4dffbf 288.0000042915344deg,
+    hsla(0, 0%, 98%, 1) 1turn
+  );
+  --x: 0, --y: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  transform-style: preserve-3d;
+}
+
+html {
+  color-scheme: dark only;
+  background: color-mix(in lch, canvas, canvasText 0%);
+}
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  font-family:
+    sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  overflow: hidden;
+  background: transparent;
+}
+
+.wrapper::after,
+.wrapper::before {
+  position: absolute;
+  left: 130%;
+  top: 50%;
+  translate: 0 -50%;
+  font-size: 2rem;
+  color: hsl(0 0% 50%);
+  opacity: 0;
+  white-space: nowrap;
+}
+
+.wrapper::after {
+  content: "Masked Border Element";
+}
+
+.wrapper::before {
+  content: "Element";
+}
+
+.obfuscated {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  font-size: clamp(3rem, 6vw + 1rem, 12rem);
+  font-weight: bold;
+  color: hsl(0 0% 90%);
+  margin: 0;
+}
+
+@supports (background-clip: text) {
+  .obfuscated {
+    background: linear-gradient(canvasText, hsl(0 0% 40%));
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.gradient-border {
+  width: clamp(300px, calc(var(--width) * 1vmin), 400px);
+  height: clamp(200px, calc(var(--height) * 1vmin), 300px);
+  background: hsl(280 0% 0% / var(--bg-alpha, 0.25));
+  border-radius: calc(var(--radius) * 1px);
+  position: relative;
+  border: 0;
+  translate: calc(var(--x) * 1%) calc(var(--y) * 1%);
+  transition: background 0.2s;
+}
+
+.gradient-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--radius) * 1px);
+  border: calc(var(--border) * 1px) solid hsl(0 0% 15%);
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  border-radius: calc(var(--radius) * 1px);
+}
+
+[data-style="mask-rotate"] .gradient::after {
+  animation: mask-rotate calc(var(--duration, 2) * 1s) infinite linear;
+}
+
+@property --mask {
+  initial-value: 0deg;
+  syntax: "<angle>";
+  inherits: true;
+}
+
+@keyframes mask-rotate {
+  to {
+    --mask: 360deg;
+  }
+}
+
+[data-style="mask-rotate"] .gradient::after {
+  --bg-size: calc(100% + (2px * var(--border)));
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: var(--gradient) center center / var(--bg-size) var(--bg-size);
+  border-radius: calc(var(--radius) * 1px);
+  border: calc(var(--border) * 1px) solid transparent;
+  mask: linear-gradient(
+      hsl(0 0% 100% / var(--alpha)),
+      hsl(0 0% 100% / var(--alpha))
+    ),
+    linear-gradient(#000, #000),
+    conic-gradient(
+      from var(--mask, 0deg),
+      #0000,
+      #000 calc(var(--spread) * 1%),
+      #0000 calc(var(--spread) * 1%)
+    );
+  mask-clip: padding-box, border-box, border-box;
+  mask-composite: intersect;
+}
+
+[data-style="offset"] .gradient,
+[data-style="rotate"] .gradient {
+  border: calc(var(--border) * 1px) solid transparent;
+  mask: linear-gradient(
+      hsl(0 0% 100% / var(--alpha)),
+      hsl(0 0% 100% / var(--alpha))
+    ),
+    linear-gradient(#000, #000);
+  mask-clip: padding-box, border-box, border-box;
+  mask-composite: intersect;
+}
+
+[data-style="rotate"] .gradient::after {
+  content: "";
+  width: 200%;
+  aspect-ratio: 1;
+  position: absolute;
+  background: conic-gradient(
+    #0000,
+    red calc(var(--spread) * 1%),
+    #0000 calc(var(--spread) * 1%)
+  );
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  animation: spin calc(var(--duration, 2) * 1s) infinite linear;
+}
+
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+[data-remove-mask="true"] .gradient {
+  mask: none;
+}
+
+[data-style="offset"][data-debug="true"] .gradient::after {
+  outline: 4px dashed white;
+}
+
+[data-style="offset"] .gradient::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--size) * 1%);
+  aspect-ratio: 1 / 0.8;
+  /* border-radius: 50%; */
+  background: radial-gradient(
+    100% 100% at right,
+    white 0 10px,
+    hsl(0 100% 50%),
+    transparent 50%
+  );
+  /* background: linear-gradient(90deg, transparent, red); */
+  /* offset-path: rect(0 100% 100% 0 round calc(var(--radius) * 1px)); */
+  offset-path: xywh(0 0 100% 100% round calc(var(--radius) * 1px));
+  offset-anchor: calc(var(--anchorx) * 1%) calc(var(--anchory) * 1%);
+  animation: journey calc(var(--duration, 2) * 1s) infinite linear;
+}
+
+@keyframes journey {
+  to {
+    offset-distance: 100%;
+  }
+}
+
+/* Transitions */
+section {
+  transition: transform 1s 2s;
+}
+
+.obfuscated,
+.gradient,
+.gradient-border::after {
+  transition: transform 0.5s 1s;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(calc(var(--blur) * 1px));
+  border-radius: calc(var(--radius) * 1px);
+  overflow: hidden;
+  translate: translate3d(0, 0, 0);
+}
+
+:root {
+  --distance: 200px;
+}
+
+[data-exploded] section {
+  transform: translate3d(0, 0, 100vmin) rotateX(65deg) rotate(35deg);
+  transition: transform 1s 0.5s;
+}
+
+[data-exploded] .obfuscated {
+  transform: translate3d(0, 0, calc(var(--distance) * -1));
+  transition: transform 1s 2s;
+}
+
+[data-exploded] .gradient,
+[data-exploded] .gradient-border::after {
+  transform: translate3d(0, 0, var(--distance));
+  transition: transform 1s 2s;
+}
+
+.wrapper::after {
+  transform: translate3d(0, 0, var(--distance));
+}
+
+[data-exploded] .wrapper::after,
+[data-exploded] .wrapper::before {
+  opacity: 1;
+  transition: opacity 1s 2.5s;
+}
+
+.wrapper::after,
+.wrapper::before {
+  transition: opacity 1s 0s;
+}
+
+@layer {
+  .dg .c {
+    width: 50% !important;
+  }
+
+  .dg .property-name {
+    width: 50% !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .gradient-border {
+    --bg-alpha: 0.8;
+  }
+}
+
+div.tp-dfwv {
+  width: 320px;
+}

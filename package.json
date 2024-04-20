@@ -1,0 +1,46 @@
+{
+  "name": "deck",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "lint": "astro check && npx @biomejs/biome check --apply-unsafe --verbose src",
+    "preview": "astro preview",
+    "new-demo": "plop",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.7.0",
+    "@astrojs/react": "^3.6.0",
+    "@astrojs/tailwind": "^5.1.0",
+    "@mdn/browser-compat-data": "^5.5.34",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "astro": "^4.9.2",
+    "axios": "^1.7.2",
+    "color": "^4.2.3",
+    "colorjs.io": "^0.5.0",
+    "gsap": "file:gsap-bonus.tgz",
+    "matter-js": "^0.20.0",
+    "normalize.css": "^8.0.1",
+    "plop": "^4.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^9.0.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.0",
+    "splitting": "^1.1.0",
+    "tailwindcss": "^3.4.3",
+    "tweakpane": "^4.0.3",
+    "typescript": "^5.4.5",
+    "unist-util-visit": "^5.0.0",
+    "web-audio-daw": "^4.13.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.7.3"
+  }
+}

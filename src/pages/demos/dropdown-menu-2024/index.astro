@@ -1,0 +1,101 @@
+---
+import "./_style.css"
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dropdown-menu-2024</title>
+  </head>
+  <body>
+    <!-- <h1>z-index: calc(2 * Infinity + var(--beyond));</h1> -->
+    <h1>It's resilient.</h1>
+    <button popovertarget="dropdown" id="trigger">
+      <img
+        src="https://avatars.githubusercontent.com/u/842246"
+        width="48"
+        alt="Avatar"
+      />
+      <span class="sr-only">Open user menu</span>
+    </button>
+    <div popover="auto" id="dropdown">
+      <ul>
+        <li class="details">
+          <span>jh3yy</span>
+          <a
+            href="mailto:config@jhey.dev"
+            target="_blank"
+            rel="noreferrer noopener">config@jhey.dev</a
+          >
+        </li>
+        <li>
+          <a
+            class="links"
+            href="https://jhey.dev/links"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Links
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"></path>
+            </svg>
+          </a>
+          <hr />
+          <li class="options">
+            <label for="scheme">Color scheme</label>
+            <select id="scheme">
+              <option value="system">System</option>
+              <option value="light" selected>Light</option>
+              <option value="dark">Dark</option>
+            </select>
+            <label for="backdrop">Backdrop</label>
+            <label for="backdrop" class="switch">
+              <input
+                class="sr-only"
+                type="checkbox"
+                role="switch"
+                id="backdrop"
+              />
+            </label>
+          </li>
+          <hr />
+          <li>
+            <a
+              class="sponsor button invert"
+              href="https://github.com/sponsors/jh3y"
+              rel="noreferrer noopener"
+              target="_blank"
+              >Sponsor
+            </a>
+          </li>
+          <li>
+            <a
+              class="follow button"
+              href="https://twitter.com/intent/follow?screen_name=jh3yy"
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              Follow
+            </a>
+          </li>
+        </li>
+      </ul>
+
+      <script>
+        import "./_script.js";
+      </script>
+    </div>
+  </body>
+</html>

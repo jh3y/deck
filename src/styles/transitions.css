@@ -1,0 +1,314 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    view-transition-name: none;
+    --view-transition-speed: 0.5s;
+  }
+
+  .controls {
+    view-transition-name: controls;
+  }
+  ::view-transition-group(controls) {
+    animation: none;
+    mix-blend-mode: normal;
+    height: 100%;
+    cursor: pointer;
+  }
+  ::view-transition-old(controls) {
+    animation: none;
+    cursor: pointer;
+    z-index: 2;
+  }
+  ::view-transition-new(controls) {
+    z-index: 2;
+    display: none;
+    animation: none;
+  }
+
+  ::view-transition-group(root),
+  ::view-transition-new(root),
+  ::view-transition-old(root) {
+    animation-duration: var(--view-transition-speed);
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-new(root) {
+    z-index: 2;
+  }
+
+  /* Transition styles */
+  [data-transition="slide"]::view-transition-old(content),
+  [data-transition="slide"]::view-transition-new(content) {
+    animation: slide var(--view-transition-speed);
+  }
+
+  [data-transition="slide"]::view-transition-new(content) {
+    --origin: 100% 0;
+  }
+  [data-direction="back"][data-transition="slide"]::view-transition-new(
+      content
+    ) {
+    --origin: -100% 0;
+  }
+
+  [data-transition="slide"]::view-transition-old(content) {
+    --destination: -100% 0;
+  }
+  [data-direction="back"][data-transition="slide"]::view-transition-old(
+      content
+    ) {
+    --destination: 100% 0;
+  }
+
+  @keyframes slide {
+    0% {
+      translate: var(--origin, 0 0);
+    }
+    100% {
+      translate: var(--destination, 0 0);
+    }
+  }
+
+  /* Scaling should be one that differs on direction */
+  [data-transition="scale"]::view-transition-old(content),
+  [data-transition="scale"]::view-transition-new(content) {
+    animation: scale var(--view-transition-speed);
+  }
+
+  [data-transition="scale"]::view-transition-new(content) {
+    z-index: 2;
+    --start-scale: 0;
+    --start-opacity: 0;
+  }
+  [data-direction="back"][data-transition="scale"]::view-transition-new(
+      content
+    ) {
+    --start-scale: 4;
+    --start-opacity: 0;
+  }
+
+  [data-transition="scale"]::view-transition-old(content) {
+    --end-scale: 4;
+    --end-opacity: 0;
+  }
+  [data-direction="back"][data-transition="scale"]::view-transition-old(
+      content
+    ) {
+    --end-scale: 0;
+    --end-opacity: 0;
+  }
+
+  @keyframes scale {
+    0% {
+      scale: var(--start-scale, 1);
+      opacity: var(--start-opacity, 1);
+    }
+    100% {
+      scale: var(--end-scale, 1);
+      opacity: var(--end-opacity, 1);
+    }
+  }
+
+  [data-transition="shrink"]::view-transition-old(content),
+  [data-transition="shrink"]::view-transition-new(content) {
+    animation: shrink var(--view-transition-speed);
+  }
+
+  [data-transition="shrink"]::view-transition-new(content) {
+    z-index: -1;
+    animation: none;
+  }
+  [data-direction="back"][data-transition="shrink"]::view-transition-old(
+      content
+    ) {
+    transform-origin: 100% 0;
+  }
+
+  [data-transition="shrink"]::view-transition-old(content) {
+    transform-origin: 0 0;
+  }
+
+  @keyframes shrink {
+    100% {
+      scale: 0;
+    }
+  }
+
+  [data-transition="swap"]::view-transition-old(content),
+  [data-transition="swap"]::view-transition-new(content) {
+    animation: swap var(--view-transition-speed);
+  }
+
+  [data-transition="swap"]::view-transition-new(content) {
+    --start-x: 50%;
+    --start-scale: 0.5;
+    --start-opacity: 0;
+  }
+  [data-direction="back"][data-transition="swap"]::view-transition-new(
+      content
+    ) {
+    --start-x: -50%;
+    --start-scale: 0.5;
+    --start-opacity: 0;
+  }
+
+  [data-transition="swap"]::view-transition-old(content) {
+    --end-x: -50%;
+    --end-scale: 0.5;
+    --end-opacity: 0;
+  }
+  [data-direction="back"][data-transition="swap"]::view-transition-old(
+      content
+    ) {
+    --end-x: 50%;
+    --end-scale: 0.5;
+    --end-opacity: 0;
+  }
+
+  @keyframes swap {
+    0% {
+      translate: var(--start-x, 0) 0;
+      scale: var(--start-scale, 1);
+      opacity: var(--start-opacity, 1);
+    }
+    100% {
+      translate: var(--end-x, 0) 0;
+      scale: var(--end-scale, 1);
+      opacity: var(--end-opacity, 1);
+    }
+  }
+
+  /* Drop */
+  [data-transition="bounce"]::view-transition-old(content),
+  [data-transition="bounce"]::view-transition-new(content),
+  [data-transition="drop"]::view-transition-old(content),
+  [data-transition="drop"]::view-transition-new(content) {
+    animation: drop var(--view-transition-speed);
+  }
+
+  [data-transition="bounce"]::view-transition-old(content),
+  [data-transition="bounce"]::view-transition-new(content) {
+    animation-duration: 1s;
+    animation-timing-function: linear(
+      0 0%,
+      0.0039 2.27%,
+      0.0157 4.55%,
+      0.0352 6.82%,
+      0.0625 9.09%,
+      0.1407 13.64%,
+      0.25 18.18%,
+      0.3908 22.73%,
+      0.5625 27.27%,
+      0.7654 31.81%,
+      1 36.36%,
+      0.8907 40.9%,
+      0.8125 45.45%,
+      0.7852 47.72%,
+      0.7657 49.99%,
+      0.7539 52.27%,
+      0.75 54.55%,
+      0.7539 56.82%,
+      0.7657 59.1%,
+      0.7852 61.37%,
+      0.8125 63.64%,
+      0.8905 68.18%,
+      1 72.73%,
+      0.9727 75%,
+      0.9532 77.27%,
+      0.9414 79.55%,
+      0.9375 81.82%,
+      0.9414 84.09%,
+      0.9531 86.36%,
+      0.9726 88.63%,
+      1 90.91%,
+      0.9883 93.19%,
+      0.9844 95.46%,
+      0.9883 97.73%,
+      1 100%
+    );
+  }
+  [data-direction="back"][data-transition="bounce"]::view-transition-new(
+      content
+    ),
+  [data-transition="bounce"]::view-transition-new(content),
+  [data-direction="back"][data-transition="drop"]::view-transition-new(content),
+  [data-transition="drop"]::view-transition-new(content) {
+    --start-y: -150%;
+    --start-scale: 0.5;
+  }
+  [data-transition="bounce"]::view-transition-old(content),
+  [data-direction="back"][data-transition="bounce"]::view-transition-old(
+      content
+    ),
+  [data-transition="drop"]::view-transition-old(content),
+  [data-direction="back"][data-transition="drop"]::view-transition-old(
+      content
+    ) {
+    --end-y: 250%;
+    --end-scale: 1;
+  }
+
+  @keyframes drop {
+    0% {
+      translate: 0 var(--start-y, 0);
+      scale: var(--start-scale, 1);
+    }
+    100% {
+      translate: 0 var(--end-y, 0);
+      scale: var(--end-scale, 1);
+    }
+  }
+
+  /*  The flipper should be handled at the parent level */
+  [data-deck-root][data-transition="flip"]:root {
+    --size: 45px;
+    --line: color-mix(in lch, white, transparent 85%);
+    background:
+      linear-gradient(90deg, var(--line) 1px, transparent 1px var(--size)) 50%
+        50% / var(--size) var(--size),
+      linear-gradient(var(--line) 1px, transparent 1px var(--size)) 50% 50% /
+        var(--size) var(--size),
+      hsl(210 70% 34%);
+  }
+
+  [data-transition="flip"]::view-transition-new(body),
+  [data-transition="flip"]::view-transition-old(body) {
+    animation: pan 1s ease-in-out;
+    backface-visibility: hidden;
+    box-shadow: 2.2px 61.3px 73.1px -2px hsl(0 0% 0% / 0.58);
+  }
+
+  [data-transition="flip"]::view-transition-new(body) {
+    --sr: 180deg;
+    background: canvas;
+  }
+
+  [data-transition="flip"]::view-transition-old(body) {
+    --sr: 0deg;
+    backface-visibility: hidden;
+  }
+
+  [data-transition="flip"] body {
+    view-transition-name: body;
+  }
+
+  @keyframes pan {
+    0% {
+      transform: scale(1) rotateY(var(--sr));
+    }
+    25% {
+      transform: scale(0.5) rotateY(var(--sr));
+      box-shadow: 1.8px 50.7px 51.4px -3.2px hsl(0 0% 0% / 0.32);
+    }
+    75% {
+      transform: scale(0.5) rotateY(calc(var(--sr) + 180deg));
+      box-shadow: 1.8px 50.7px 51.4px -3.2px hsl(0 0% 0% / 0.32);
+    }
+    100% {
+      transform: scale(1) rotateY(calc(var(--sr) + 180deg));
+    }
+  }
+}

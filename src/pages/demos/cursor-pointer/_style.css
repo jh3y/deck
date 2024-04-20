@@ -1,0 +1,18 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+img {
+  width: clamp(80px, 15vmin, 200px);
+  rotate: -15deg;
+  position: absolute;
+  top: 0;
+  left: 0;
+}

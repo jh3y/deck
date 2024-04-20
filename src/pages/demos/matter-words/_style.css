@@ -1,0 +1,56 @@
+.word {
+  position: absolute;
+  background: #111;
+  color: #eee;
+  width: fit-content;
+  cursor: move;
+  top: -100px;
+  border: 1px solid black;
+  background: canvas;
+  color: canvasText;
+  user-select: none;
+  display: flex;
+  padding: 1rem;
+  font-size: 1.35rem;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  white-space: nowrap;
+  /* opacity: var(--active, 0);
+  transition: opacity 0.2s; */
+}
+
+.balloon-bear {
+  width: clamp(200px, 50vmin, 400px);
+  position: absolute;
+  right: 15%;
+  top: 100%;
+  animation: float 6s 2s linear both;
+}
+
+@keyframes float {
+  100% {
+    translate: 0 calc(-100vh - 100%);
+  }
+}
+
+[data-active="true"] {
+  --active: 1;
+}
+
+#ground {
+  position: fixed;
+  height: 10px;
+  bottom: 0;
+  width: 100vw;
+  left: 0;
+}
+
+html,
+body {
+  position: relative;
+  margin: 0;
+  min-height: 100vh;
+}

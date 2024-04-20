@@ -1,0 +1,220 @@
+@import "normalize.css";
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --aspect-ratio: 4 / 1;
+  --header-scroll: calc(100vw / 4);
+  --title-height: 100px;
+  --content-size: 768px;
+  --shared-range: calc((var(--header-scroll) - var(--title-height)))
+    calc((var(--header-scroll) + (var(--title-height) * 2)));
+}
+
+body {
+  background: canvas;
+  display: flex;
+  flex-direction: column;
+  min-height: 200vh;
+  justify-items: center;
+  overflow-x: hidden;
+  align-content: start;
+  overflow-y: auto;
+  font-family:
+    SF Pro Display,
+    SF Pro Icons,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+header {
+  background: color-mix(in lch, canvas, canvasText 10%);
+  background-size: cover;
+  min-height: var(--title-height);
+  max-width: 100%;
+  width: var(--content-size);
+  aspect-ratio: var(--aspect-ratio);
+  position: relative;
+  view-timeline-name: --header;
+  width: 100vw;
+  position: sticky;
+  top: calc(
+    (max(var(--title-height), var(--header-scroll)) * -1) + var(--title-height)
+  );
+}
+
+header:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: hsl(0 0% 0% / 0.25);
+  backdrop-filter: blur(10px);
+  animation: fade-in both ease-in-out;
+  animation-timeline: scroll();
+  animation-range: calc((var(--header-scroll) - (var(--title-height) * 1.5)))
+    calc((var(--header-scroll) + (var(--title-height) * 0.25)));
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+}
+
+.backdrop {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  clip-path: inset(0 0 0 0);
+  position: absolute;
+  inset: 0;
+}
+
+.avatar {
+  width: 10rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 0.5rem solid canvas;
+  position: absolute;
+  top: 0%;
+  left: 1rem;
+  translate: 0 -100%;
+  transform-origin: 0% 50%;
+  animation: scale-down both ease-in-out;
+  animation-timeline: scroll();
+  animation-range: calc((var(--header-scroll) - (var(--title-height) * 1.5)))
+    calc((var(--header-scroll) + (var(--title-height) * 1)));
+  z-index: 2;
+}
+
+@keyframes scale-down {
+  to {
+    scale: 0.35;
+    top: 50%;
+    translate: 0 -50%;
+  }
+}
+
+.intro {
+  max-width: 100%;
+  width: var(--content-size);
+  position: sticky;
+  top: 0;
+  margin-top: calc(10rem * 0.5);
+  margin-inline: auto;
+}
+
+main {
+  width: var(--content-size);
+  max-width: calc(100% - 2rem);
+  margin: 0 auto;
+}
+
+.title {
+  color: canvasText;
+  width: var(--content-size);
+  max-width: 100%;
+  height: var(--title-height);
+  align-content: center;
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem;
+  animation: slide both ease-in-out;
+  animation-timeline: scroll();
+  animation-range: calc((var(--header-scroll) - (var(--title-height) * 1.5)))
+    calc((var(--header-scroll) + (var(--title-height) * 0.25)));
+}
+
+h1 {
+  color: currentColor;
+}
+
+@keyframes slide {
+  to {
+    color: white;
+    translate: calc(10rem * 0.5) 0;
+  }
+}
+
+.title-wrapper {
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  animation: shadow both;
+  animation-timeline: scroll();
+  animation-range: calc((var(--header-scroll) + var(--title-height)))
+    calc((var(--header-scroll) + (var(--title-height) * 2)));
+}
+
+@keyframes shadow {
+  to {
+    box-shadow: 0 1rem 2rem -1rem hsl(0 0% 0% / 0.75);
+  }
+}
+
+.title h1 {
+  margin: 0;
+}
+
+.title a {
+  color: hsl(10 80% 50%);
+  font-weight: bold;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul {
+  padding-top: 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+.skeleton {
+  --surface: color-mix(in lch, canvas, canvasText 5%);
+  --block: color-mix(in lch, canvas, canvasText 10%);
+  --padding: 1rem;
+  padding: var(--padding);
+  gap: var(--padding);
+  width: 100%;
+  display: grid;
+  grid-template: 1fr 1fr / 25% 1fr;
+  background: var(--surface);
+  max-inline-size: 100%;
+  border-radius: 6px;
+  border: 1px solid color-mix(in lch, canvas, canvasText 25%);
+}
+
+.skeleton__block {
+  background: var(--block);
+  border-radius: 6px;
+}
+
+@keyframes load {
+  to {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton__block:first-of-type {
+  grid-row: 1 / -1;
+  aspect-ratio: 1;
+}
+
+.skeleton__block:last-of-type {
+  width: 65%;
+}
