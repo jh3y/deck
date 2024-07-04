@@ -139,7 +139,7 @@ body {
   translate: 0 calc((10 - (var(--show-bear, 0) * 55)) * 1%);
   rotate: calc(var(--rot, 0) * 1deg);
   left: calc(var(--pos, 0) * 1%);
-  transition: translate 0.2s;
+  transition: translate calc(var(--transition) * 0.5);
 }
 
 /*selectmenu:has(:focus):has([popover]:not(:popover-open)),*/
