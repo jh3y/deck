@@ -11,8 +11,9 @@ body {
   place-items: center;
   min-height: 100vh;
   overflow: hidden;
-  font-family: "SF Pro Text", "SF Pro Icons", "AOS Icons", "Helvetica Neue",
-    Helvetica, Arial, sans-serif, system-ui;
+  font-family:
+    "SF Pro Text", "SF Pro Icons", "AOS Icons", "Helvetica Neue", Helvetica,
+    Arial, sans-serif, system-ui;
 }
 
 .menu {
@@ -206,12 +207,17 @@ body {
   overflow: hidden;
 }
 
+.option-box {
+  --open: 0;
+}
 .menu [popover]:popover-open .option-box {
-  @starting-style {
+  --open: 1;
+}
+
+@starting-style {
+  .menu [popover]:popover-open .option-box {
     --open: 0;
   }
-
-  --open: 1;
 }
 
 .menu [popover]:popover-open .bear--handle {

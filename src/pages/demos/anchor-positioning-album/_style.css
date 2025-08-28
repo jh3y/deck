@@ -16,7 +16,8 @@
     --alpha: 0.15;
     --backdrop: white;
     --line: color-mix(in lch, canvasText 25%, transparent);
-    --shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0px 1px 1px rgba(0, 0, 0, 0.02),
+    --shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.08), 0px 1px 1px rgba(0, 0, 0, 0.02),
       0px 4px 8px -4px rgba(0, 0, 0, 0.04),
       0px 16px 24px -8px rgba(0, 0, 0, 0.06);
   }
@@ -26,8 +27,9 @@
     --alpha: 0.3;
     --backdrop: black;
     --line: color-mix(in lch, canvasText 15%, transparent);
-    --shadow: 0 0 0 1px hsla(0, 0%, 100%, 0.145),
-      0px 1px 1px rgba(0, 0, 0, 0.02), 0px 4px 8px -4px rgba(0, 0, 0, 0.04),
+    --shadow:
+      0 0 0 1px hsla(0, 0%, 100%, 0.145), 0px 1px 1px rgba(0, 0, 0, 0.02),
+      0px 4px 8px -4px rgba(0, 0, 0, 0.04),
       0px 16px 24px -8px rgba(0, 0, 0, 0.06);
   }
 
@@ -339,9 +341,8 @@
 
   [popover] {
     inset: unset;
-    /*	  inset-area: bottom right;*/
     top: anchor(top);
     left: anchor(right);
-    position-try-options: flip-block, flip-inline;
+    position-try-fallbacks: flip-block, flip-inline;
   }
 }

@@ -303,7 +303,7 @@ dialog {
   top: anchor(bottom);
   left: unset;
   right: anchor(right);
-  position-try-options: flip-block, flip-inline;
+  position-try-fallbacks: flip-block, flip-inline;
 }
 ```
 <sub>No JavaScript necessary, aside from the dragging</sub>
