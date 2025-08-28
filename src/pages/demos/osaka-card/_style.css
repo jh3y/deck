@@ -1,10 +1,10 @@
+@import "normalize.css";
 @font-face {
   font-family: "Bebas Neue";
   font-display: swap;
   font-style: normal;
   src: url("/font/Bebas_Neue/BebasNeue-Regular.ttf") format("truetype");
 }
-@import "normalize.css";
 *,
 *:after,
 *:before {

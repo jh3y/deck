@@ -280,7 +280,7 @@
   }
   .playing img {
     width: 100%;
-    objcet-fit: cover;
+    object-fit: cover;
     aspect-ratio: 1;
     border-radius: 6px 6px 0 0;
   }

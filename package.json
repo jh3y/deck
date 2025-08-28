@@ -23,7 +23,7 @@
     "axios": "^1.7.2",
     "color": "^4.2.3",
     "colorjs.io": "^0.5.0",
-    "gsap": "file:gsap-bonus.tgz",
+    "gsap": "^3.13.0",
     "matter-js": "^0.20.0",
     "normalize.css": "^8.0.1",
     "plop": "^4.0.1",
