@@ -4,7 +4,7 @@ import "@styles/main.css";
 import "@styles/night-owl.css";
 import "@styles/code-block.css";
 import { getCollection } from "astro:content";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import Slide from "@components/Slide";
 import { getDeckSlides } from "@utils/slides";
 
@@ -68,7 +68,7 @@ const { entry } = Astro.props;
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@jh3yy" />
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body>
     <a

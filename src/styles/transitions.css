@@ -42,7 +42,7 @@
   /* Transition styles */
   [data-transition="slide"]::view-transition-old(content),
   [data-transition="slide"]::view-transition-new(content) {
-    animation: slide var(--view-transition-speed);
+    animation: slide var(--view-transition-speed) both;
   }
 
   [data-transition="slide"]::view-transition-new(content) {
@@ -75,7 +75,7 @@
   /* Scaling should be one that differs on direction */
   [data-transition="scale"]::view-transition-old(content),
   [data-transition="scale"]::view-transition-new(content) {
-    animation: scale var(--view-transition-speed);
+    animation: scale var(--view-transition-speed) both;
   }
 
   [data-transition="scale"]::view-transition-new(content) {
@@ -114,7 +114,7 @@
 
   [data-transition="shrink"]::view-transition-old(content),
   [data-transition="shrink"]::view-transition-new(content) {
-    animation: shrink var(--view-transition-speed);
+    animation: shrink var(--view-transition-speed) both;
   }
 
   [data-transition="shrink"]::view-transition-new(content) {
@@ -139,7 +139,7 @@
 
   [data-transition="swap"]::view-transition-old(content),
   [data-transition="swap"]::view-transition-new(content) {
-    animation: swap var(--view-transition-speed);
+    animation: swap var(--view-transition-speed) both;
   }
 
   [data-transition="swap"]::view-transition-new(content) {
@@ -186,7 +186,7 @@
   [data-transition="bounce"]::view-transition-new(content),
   [data-transition="drop"]::view-transition-old(content),
   [data-transition="drop"]::view-transition-new(content) {
-    animation: drop var(--view-transition-speed);
+    animation: drop var(--view-transition-speed) both;
   }
 
   [data-transition="bounce"]::view-transition-old(content),
@@ -276,7 +276,7 @@
 
   [data-transition="flip"]::view-transition-new(body),
   [data-transition="flip"]::view-transition-old(body) {
-    animation: pan 1s ease-in-out;
+    animation: pan 1s ease-in-out both;
     backface-visibility: hidden;
     box-shadow: 2.2px 61.3px 73.1px -2px hsl(0 0% 0% / 0.58);
   }
