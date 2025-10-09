@@ -64,7 +64,7 @@
 ---
 <!-- @theme="dark" -->
 <div class="flex items-center">
-  <blockquote data-quote="true" class="quote bottom-[14rem] left-0 text-left absolute z-20 fluid after:content-[''] after:inset-0 after:fixed after:bg-black after:opacity-50 after:-z-20" style="--font-level: 3.4">
+  <blockquote data-quote="true" class="quote bottom-[14rem] left-0 text-left absolute z-20 fluid after:content-[''] max-w-[700px] after:inset-0 after:fixed after:bg-black after:opacity-50 after:-z-20" style="--font-level: 2.4">
     caring about craft really matters... practice the simple things — <span class="italic">Lady Gaga</span>
   </blockquote>
   <img class="inset-0 h-full w-full object-bottom fixed object-cover"  src="/images/gaga.png" alt="Lady Gaga">
@@ -82,6 +82,8 @@
 ---
 <Demo src="/demos/flip-to-tip/index.html" alt="Passcode Reveal" />
 ---
+<Demo src="/demos/tertiary-toggle/index.html" alt="Tertiary toggle" />
+---
 <Demo src="/demos/add-to-cart/index.html" alt="Passcode Reveal" />
 ---
 <h2 className="quote">
@@ -97,7 +99,7 @@
 <Demo src="/demos/easing-controls/index.html" alt="Gradients suck."/>
 ---
 <h2 className="quote">
-  Be curious. Stack your tool belt.
+  Be curious.<br/>Stack your tool belt.
 </h2>
 ---
 <!-- @theme="dark" -->

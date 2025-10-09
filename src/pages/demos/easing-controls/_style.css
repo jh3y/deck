@@ -186,15 +186,21 @@
     flex-wrap: wrap;
     
     article {
-      width: 25vmin;
+      width: 35vmin;
       outline: 2px dashed #0000;
       outline-offset: 2px;
-      height: 25vmin;
+      height: 35vmin;
+      border-radius: 1.5rem;
       position: relative;
       background: #fff;
       transition: outline-color 0.26s ease-out;
+      .holder {
+        border-radius: 1.5rem;
+        overflow: hidden;
+      }
       img {
         width: 100%;
+        border-radius: 1rem;
         height: 100%;
         object-fit: cover;
         transition: opacity 0.26s ease-out;
@@ -205,6 +211,7 @@
         position: absolute;
         inset: 0 0 0 0;
         z-index: 2;
+        border-radius: 1.5rem;
       }
 
       &:nth-of-type(1)::after {

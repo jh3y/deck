@@ -33,6 +33,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.0",
+    "shiki": "^3.13.0",
     "splitting": "^1.1.0",
     "tailwindcss": "^3.4.3",
     "tweakpane": "^4.0.3",

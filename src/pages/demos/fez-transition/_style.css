@@ -1,0 +1,334 @@
+/* @import 'normalize.css' layer(normalize); */
+@import url('https://unpkg.com/normalize.css') layer(normalize);
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
+
+@layer normalize, foundation, demo, inversion;
+
+@layer inversion {
+  /* ::before === clouds, ::after === stars */
+  @media (prefers-color-scheme: light) {
+    [data-invert='true']::after,
+    [data-invert='false']::before {
+      opacity: 1;
+    }
+    [data-invert='true']::before,
+    [data-invert='false']::after {
+      opacity: 0.1;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    [data-invert='true']::before,
+    [data-invert='false']::after {
+      opacity: 1;
+      background-position: 0% 50%;
+    }
+    [data-invert='true']::after,
+    [data-invert='false']::before {
+      opacity: 0;
+    }
+  }
+
+  [data-invert='true'][data-theme='light']::before {
+    opacity: 0.1;
+    background-position: 50% 50%;
+  }
+  [data-invert='true'][data-theme='dark']::before {
+    opacity: 1;
+    background-position: 0% 50%;
+  }
+  [data-invert='true'][data-theme='light']::after,
+  [data-invert='false'][data-theme='dark']::after {
+    opacity: 1;
+  }
+  [data-invert='false'][data-theme='light']::after,
+  [data-invert='true'][data-theme='dark']::after {
+    opacity: 0;
+  }
+  [data-invert='false'][data-theme='light']::before {
+    opacity: 1;
+    background-position: 50% 50%;
+  }
+  [data-invert='false'][data-theme='dark']::before {
+    opacity: 0.1;
+    background-position: 0% 50%;
+  }
+
+  [data-invert='true'] {
+    background: light-dark(#01022e, #34d0ff);
+  }
+  [data-invert='false'] {
+    background: light-dark(#34d0ff, #01022e);
+  }
+}
+
+@layer demo {
+  h1 {
+    --font-level: 5;
+    line-height: 0.8;
+    margin: 0;
+  }
+
+  main {
+    width: 700px;
+    max-width: calc(100vw - 2rem);
+
+    p {
+      margin-top: 2rem;
+      font-size: 0.875rem;
+      opacity: 0.8;
+      width: 60ch;
+      line-height: 1.5;
+      max-width: 100%;
+    }
+    code {
+      color: light-dark(hsl(45 70% 45%), hsl(45 100% 75%));
+    }
+  }
+  :root {
+    --perspective: 400vmax;
+    --distance: -0.75;
+    --duration: 1.2s;
+    --ease: ease-in-out;
+    view-transition-name: none;
+  }
+  html {
+    background: light-dark(#01022e, #34d0ff);
+    transition: background calc(var(--duration) * 0.25)
+      calc(var(--duration) * 0.5) ease-out;
+    background-position: center;
+    background-size: cover;
+  }
+
+  html::before,
+  html::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-size: cover;
+    background-position: 50% 50%;
+    transition: opacity calc(var(--duration) * 0.25) calc(var(--duration) * 0.5)
+        ease-out,
+      background-position calc(var(--duration) * 1) ease-out;
+  }
+
+  html::before {
+    background-image: url(https://assets.codepen.io/605876/clouds.svg);
+  }
+  html::after {
+    background-image: url(https://assets.codepen.io/605876/stars.svg);
+  }
+
+  html::after {
+    z-index: -1;
+  }
+
+  body {
+    display: flex;
+    place-items: center;
+    justify-content: center;
+    background: light-dark(#fff, #000);
+    overscroll-behavior: none;
+    view-transition-name: body;
+  }
+
+  ::view-transition-new(body),
+  ::view-transition-old(body) {
+    transform: perspective(var(--perspective)) translate3d(0, 0, 0);
+    animation: travel var(--duration);
+    backface-visibility: hidden;
+  }
+
+  ::view-transition-new(body) {
+    --rotation-start: 90deg;
+    --rotation-end: 0deg;
+    --depth-start: 1;
+    --depth-end: 0;
+  }
+  ::view-transition-old(body) {
+    --depth-end: 1;
+    --depth-start: 0;
+    --rotation-start: 0deg;
+    --rotation-end: -90deg;
+  }
+
+  @keyframes travel {
+    0% {
+      animation-timing-function: ease-in;
+      transform: perspective(var(--perspective))
+        translate3d(
+          0,
+          0,
+          calc((var(--perspective) * var(--distance)) * var(--depth-start))
+        )
+        rotateY(var(--rotation-start, 0deg))
+        translate3d(0, 0, calc(50vw * var(--depth-start)));
+    }
+    25% {
+      animation-timing-function: var(--ease);
+      transform: perspective(var(--perspective))
+        translate3d(0, 0, calc(var(--perspective) * var(--distance)))
+        rotateY(var(--rotation-start, 0deg)) translate3d(0, 0, 50vw);
+    }
+    75% {
+      animation-timing-function: var(--ease);
+      transform: perspective(var(--perspective))
+        translate3d(0, 0, calc(var(--perspective) * var(--distance)))
+        rotateY(var(--rotation-end, -90deg)) translate3d(0, 0, 50vw);
+    }
+    100% {
+      animation-timing-function: var(--ease);
+      transform: perspective(var(--perspective))
+        translate3d(
+          0,
+          0,
+          calc((var(--perspective) * var(--distance)) * var(--depth-end))
+        )
+        rotateY(var(--rotation-end, 0deg))
+        translate3d(0, 0, calc(50vw * var(--depth-end)));
+    }
+  }
+
+  .arrow {
+    opacity: 0.8;
+    position: fixed;
+    top: 240px;
+    right: 0px;
+    translate: -50% 0;
+    width: 60px;
+    font-size: 0.875rem;
+    font-family: 'Gloria Hallelujah', cursive;
+
+    span {
+      display: inline-block;
+      rotate: 12deg;
+      white-space: nowrap;
+    }
+
+    svg {
+      position: absolute;
+      scale: -1 1;
+      rotate: 20deg;
+      bottom: 130%;
+      left: 0%;
+      width: 100%;
+    }
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  body::before {
+    --size: 45px;
+    --line: color-mix(in hsl, canvasText, transparent 70%);
+    content: '';
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    background: linear-gradient(
+          90deg,
+          var(--line) 1px,
+          transparent 1px var(--size)
+        )
+        50% 50% / var(--size) var(--size),
+      linear-gradient(var(--line) 1px, transparent 1px var(--size)) 50% 50% /
+        var(--size) var(--size);
+    mask: linear-gradient(-20deg, transparent 50%, white);
+    top: 0;
+    transform-style: flat;
+    pointer-events: none;
+    /* z-index: -1; */
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+div.tp-dfwv {
+  width: 290px;
+}

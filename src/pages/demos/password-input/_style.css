@@ -20,7 +20,7 @@
   --grid-accent: hsl(280 0% 10% / 0.35);
 }
 
-@media(prefers-color-scheme: dark) {
+/* @media(prefers-color-scheme: dark) {
   :root {
     --button-shade: 30%;
     --glint: black;
@@ -35,7 +35,7 @@
   :root:focus-within {
     --grid-accent: hsl(280 0% 80% / 0.35);
   }
-}
+} */
 
 *,
 *:after,

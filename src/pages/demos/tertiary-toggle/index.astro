@@ -1,0 +1,35 @@
+---
+import "./_style.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tertiary-toggle</title>
+  </head>
+  <body>
+    <div class="control">
+      <div class="control__track">
+        <div class="indicator"></div>
+        <label for="free">Free</label>
+        <input class="sr-only" type="radio" name="tier" id="free" checked />
+        <div class="premium">
+          <div class="indicator"></div>
+          <label for="solo"
+            ><span>Solo</span><span class="sr-only">Premium Solo</span></label
+          >
+          <input class="sr-only" type="radio" name="tier" id="solo" />
+          <label for="team"
+            ><span>Team</span><span class="sr-only">Premium Team</span></label
+          >
+          <input class="sr-only" type="radio" name="tier" id="team" />
+        </div>
+      </div>
+    </div>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>

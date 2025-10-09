@@ -4,41 +4,10 @@
 ---
 <Demo windowed="true" src="/demos/fluid-typography/index.html" title="Fluid Typography" />
 ---
-# Include dont touch font sizing code...
----
-```css [] fluid-type.css
-:root {
-  --font-width-min: 320;
-  --font-width-max: 1500;
-  --font-size-min: 17;
-  --font-size-max: 20;
-  --font-ratio-min: 1.2;
-  --font-ratio-max: 1.33;
-}
-/* equal to something like clamp(1.125rem, 1.0815rem + 0.2174vi, 1.25rem); */
-:where(h1,h2,h3,h4,h5,h6) {
-  --fluid-min: calc(
-    var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
-  );
-  --fluid-max: calc(
-    var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
-  );
-  --fluid-preferred: calc(
-    (var(--fluid-max) - var(--fluid-min)) /
-      (var(--font-width-max) - var(--font-width-min))
-  );
-  --fluid-type: clamp(
-    (var(--fluid-min) / 16) * 1rem,
-    ((var(--fluid-min) / 16) * 1rem) -
-      (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
-      (var(--fluid-preferred) * var(--variable-unit, 100vi)),
-    (var(--fluid-max) / 16) * 1rem
-  );
-  font-size: var(--fluid-type);
-}
-```
-<sub>Math courtesy of ["CSS-only fluid modular type scales" | Utopia.fyi](https://utopia.fyi/blog/css-modular-scales).</sub>
-<BrowserSupport className="fixed top-4 right-4" properties="css.types.pow" captions="pow()" />
+<!-- @theme="dark" -->
+
+<BrowserSupport className="fixed top-4 right-4" properties="css.types.pow" captions="pow()"></BrowserSupport>
+<Demo src="/demos/breaking-typography/index.html" title="breaking typography" ></Demo>
 ---
 <Demo windowed="true" src="/demos/fluid-typography-in-action/index.html" title="Fluid Typography in Action" />
 ---
@@ -66,28 +35,6 @@
   transform: translate(-50%, -50%)
     rotate(calc(var(--inner-angle) * var(--char-index)))
     translateY(var(--radius));
-}
-```
----
-<Demo src="/demos/passcode-reveal" title="Passcode Reveal"></Demo>
----
-<!-- @className="[&_[data-code-block]]:w-[84ch]" -->
-```css [] passcode-delay.css
-[data-style="blanket"] .dummy__char:not(.dummy__char--static) span {
-  --delay: 0;
-}
-[data-style="linear"] .dummy__char:not(.dummy__char--static) span {
-  --delay: calc(var(--index) * 0.075s);
-}
-[data-style="sin"] .dummy__char:not(.dummy__char--static) span {
-  --spread: 45deg;
-  --speed: 1.25s;
-  --delay: calc((sin((var(--index) / 12) * var(--spread)) * var(--speed)) * 1s);
-}
-
-.dummy__char:not(.dummy__char--static) span {
-  transition-duration: calc(var(--transition) * 1s);
-  transition-delay: var(--delay);
 }
 ```
 ---
@@ -130,10 +77,6 @@
 <Demo src="/demos/osaka-card/index.html" title="Osaka Blur Card" />
 ---
 <video className="rounded-lg max-w-prose w-full mx-auto" src="/videos/osaka-card.mp4" autoplay muted loop></video>
----
-<h2 class="quote">
-  :has() controls?
-</h2>
 ---
 <h2 class="quote">
   Color.
@@ -232,9 +175,42 @@ h1 {
 ```
 <BrowserSupport className="fixed top-4 right-4"  properties="css.types.color.light-dark" captions="light-dark()" />
 ---
-# Timings
+<Demo windowed="true" src="/demos/fez-transition/index.html" title="View Transitions" />
 ---
-# Currency swing
+<h2 class="quote">
+  Timing is everything.
+</h2>
+---
+<Demo src="/demos/passcode-reveal" title="Passcode Reveal"></Demo>
+---
+<!-- @className="[&_[data-code-block]]:w-[84ch]" -->
+```css [] passcode-delay.css
+[data-style="blanket"] .dummy__char:not(.dummy__char--static) span {
+  --delay: 0;
+}
+[data-style="linear"] .dummy__char:not(.dummy__char--static) span {
+  --delay: calc(var(--index) * 0.075s);
+}
+[data-style="sin"] .dummy__char:not(.dummy__char--static) span {
+  --spread: 45deg;
+  --speed: 1.25s;
+  --delay: calc((sin((var(--index) / 12) * var(--spread)) * var(--speed)) * 1s);
+}
+
+.dummy__char:not(.dummy__char--static) span {
+  transition-duration: calc(var(--transition) * 1s);
+  transition-delay: var(--delay);
+}
+```
+---
+<Demo src="/demos/linear-grid/index.html" title="Easings grid"></Demo>
+---
+<!-- @theme="dark" -->
+<Demo src="/demos/mrr-counter/index.html" title="MRR Counter"></Demo>
+---
+<!-- @theme="dark" -->
+<BrowserSupport className="fixed top-4 right-4"  properties="css.types.easing-function.linear-function" captions="linear()"></BrowserSupport>
+<Demo src="/demos/breaking-linear/index.html" title="linear()"></Demo>
 ---
 # Animated signature with match and not match
 ---

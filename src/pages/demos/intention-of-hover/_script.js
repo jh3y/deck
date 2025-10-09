@@ -1,10 +1,10 @@
 import { Pane } from 'tweakpane'
 
 const CONFIG = {
-  revert: true,
+  revert: false,
   vertical: true,
-  intent: true,
-  theme: 'system',
+  intent: false,
+  theme: 'light',
 }
 
 const CTRL = new Pane({
