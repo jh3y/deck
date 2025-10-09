@@ -1,5 +1,9 @@
 /* @import "normalize.css"; */
 
+body {
+  overflow: hidden;
+}
+
 *,
 *:after,
 *:before {

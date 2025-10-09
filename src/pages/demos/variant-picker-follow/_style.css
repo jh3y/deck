@@ -1,0 +1,355 @@
+@import url('https://unpkg.com/normalize.css') layer(normalize);
+
+@layer normalize, foundation, prototype, anchor, hop, knockout;
+
+@layer knockout {
+  .svg-mask {
+    outline-offset: -2px;
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    z-index: 2;
+    translate: 0 100%;
+  }
+
+  [data-knockout='mask'][data-style='anchor'] fieldset:first-of-type > div {
+    mask: var(--svg-mask, initial);
+  }
+
+  [data-knockout='none'] .mask-layer,
+  [data-knockout='mask'] .mask-layer {
+    display: none;
+  }
+  [data-knockout='filter'][data-style='anchor'] {
+    .mask-layer {
+      filter: url(#knockout-black);
+    }
+    @media (prefers-color-scheme: dark) {
+      .mask-layer {
+        filter: url(#knockout-white);
+      }
+    }
+  }
+}
+
+@layer hop {
+  [data-match='true'][data-style='hop'] {
+    label::before {
+      inset: unset;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: max(var(--pill-width-current, 100%), var(--pill-width-previous, 100%));
+    }
+    label:has(+ :not(:checked) ~ :checked)::before,
+    label:has(+ [data-current-checked='true']):has(~ [data-previous-checked='true'])::before {
+      right: 0;
+      left: unset;
+    }
+    label:has(+ [data-previous-checked='true'])
+      ~ label:has(+ [data-current-checked='true'])::before,
+    label:has(+ [data-current-checked='true']) ~ label::before {
+      left: 0;
+      right: unset;
+    }
+  }
+  [data-style='hop'] {
+    label {
+      position: relative;
+      background: #0000;
+      overflow: hidden;
+    }
+    label::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 100px;
+      z-index: -1;
+      width: 100%;
+    }
+
+    label:hover {
+      background: light-dark(
+        color-mix(in srgb, canvasText, #0000 95%),
+        color-mix(in srgb, canvasText, #fff0 75%)
+      );
+    }
+
+    /* the labels that precede a checked option */
+    label:has(+ :not(:checked) ~ :checked)::before {
+      transform: translateX(100%);
+    }
+
+    /* the last checked that comes after the current checked */
+    label:has(+ [data-current-checked='true']) ~ label::before {
+      transform: translateX(-100%);
+    }
+
+    
+    label:has(+ [data-previous-checked='true'])::before,
+    label:has(+ [data-current-checked='true'])::before {
+      background: light-dark(#000, #fff);
+      transition: transform calc(var(--duration, 0.2) * 1s) ease-out;
+    }
+  }
+  [data-style='hop'][data-wrap='true'] {
+    fieldset:first-of-type:has(:nth-of-type(3)) {
+      label:has(+ [data-current-checked='true']):first-of-type ~ label:last-of-type::before {
+        transform: translateX(100%);
+      }
+      label:not(:has(+ [data-current-checked='true'])):first-of-type:has(
+          ~ input:last-of-type:checked
+        )::before {
+        transform: translateX(-100%);
+      }
+    }
+  }
+}
+
+@layer anchor {
+  @supports (not (anchor-name: --active)) {
+    .fields {
+      position: relative;
+    }
+    .pill {
+      top: calc(var(--top, 0) * 1px);
+      left: calc(var(--left, 0) * 1px);
+      height: calc(var(--height, 0) * 1px);
+      width: calc(var(--width, 0) * 1px);
+    }
+    .fields[data-initiated='true'] .pill {
+      transition-property: left, top, width;
+      transition-duration: calc(var(--duration, 0.2) * 1s);
+      transition-timing-function: ease-out;
+    }
+  }
+  
+  @supports (anchor-name: --active) {
+    .pill {
+      top: anchor(top);
+      left: anchor(left);
+      width: anchor-size(width);
+      height: anchor-size(height);
+      position-anchor: --active;
+      transition-property: left, top, width;
+      transition-duration: calc(var(--duration, 0.2) * 1s);
+      transition-timing-function: ease-out;
+    }
+    label:has(+ :checked) {
+      anchor-name: --active;
+    }
+  }
+  [data-style='anchor'] {
+    .pill {
+      display: inline-block;
+      background: light-dark(#000, #fff);
+      position: absolute;
+      border-radius: 100px;
+    }
+    fieldset {
+      &:first-of-type {
+        position: relative;
+      }
+
+      &:last-of-type {
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 2;
+        /* makes room for the legend */
+        clip-path: inset(1lh 0 0 0);
+      }
+    }
+    label:has(+ :checked) {
+      background: #0000;
+    }
+    .mask-layer {
+      display: inline-flex;
+      background: light-dark(#fff, #000);
+
+      legend {
+        opacity: 0;
+      }
+
+      label {
+        color: light-dark(#000, #fff);
+        background: light-dark(#000, #fff);
+        border: 1px solid light-dark(#000, #fff);
+      }
+    }
+  }
+}
+
+@layer prototype {
+  .resize-container {
+    resize: both;
+    overflow: auto;
+    position: relative;
+    width: 360px;
+    height: 195px;
+    font-family: 'DM Mono', monospace;
+    padding: 2rem;
+  }
+
+
+  .fields {
+    position: relative;
+  }
+  fieldset {
+    border: 0;
+  }
+
+  fieldset, fieldset > div {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  legend {
+    font-size: 0.875rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+    font-variant: small-caps;
+    translate: 1ch 0;
+  }
+  fieldset label {
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    background: #0000;
+    border: 1px solid color-mix(in srgb, canvasText, canvas);
+    cursor: pointer;
+    white-space: nowrap;
+    transition-property: color, background;
+    transition-duration: calc(var(--duration, 0.2) * 1s), 0.2s;
+    transition-timing-function: ease-out;
+    user-select: none;
+
+    &:hover {
+      background: light-dark(
+        color-mix(in srgb, canvasText, #0000 95%),
+        color-mix(in srgb, canvasText, #fff0 75%)
+      );
+    }
+  }
+  label:has(+ :checked) {
+    background: light-dark(#000, #fff);
+    color: light-dark(#fff, #000);
+  }
+  .pill {
+    z-index: -1;
+  }
+  .mask-layer,
+  .pill {
+    display: none;
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  [data-raw='true'] div.tp-dfwv {
+    display: none;
+  }
+
+  [data-raw='true'] {
+    scrollbar-color: #0000 #0000;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    display: grid;
+    overflow: hidden;
+    place-items: center;
+    min-height: 100vh;
+    font-family:
+      'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue', Helvetica,
+      Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+div.tp-dfwv {
+  width: 256px;
+  view-transition-name: prototype-config;
+}

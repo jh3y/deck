@@ -1,0 +1,380 @@
+@import 'normalize.css' layer(normalize);
+
+@layer normalize, foundation, prototype, trackpad;
+
+@layer trackpad {
+  trackpad-control {
+    display: grid;
+    align-content: start;
+    container-type: size;
+  }
+  .trackpad-controls {
+    position: static;
+    padding-top: 0.5rem;
+  }
+  .trackpad-controls, .trackpad {
+    grid-row: 1;
+    grid-column: 1;
+  }
+  [data-trackpad='true'] .trackpad-controls {
+    transform: translateY(70cqb);
+    transition-delay: 0.2s;
+  }
+  [data-trackpad='false'] .trackpad-controls {
+    scale: 1;
+  }
+  .trackpad {
+    transition-property: opacity, translate;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+  }
+  [data-trackpad='false'] .trackpad {
+    opacity: 0;
+    translate: 0 12px;
+    pointer-events: none;
+  }
+}
+
+@layer prototype {
+
+  
+  .hotspot {
+    opacity: 0;
+    scale: 0.94;
+    translate: -50% 0.5rem;
+    transition-property: display, opacity, scale, translate;
+    transition-behavior: allow-discrete;
+    transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+    transition-duration: 0.3s;
+    transform-origin: 50% 100%;
+  }
+
+  .hotspot:popover-open {
+    opacity: 1;
+    translate: -50% 0;
+    scale: 1;
+  }
+
+  @starting-style {
+    .hotspot:popover-open {
+      opacity: 0.7;
+      translate: -50% 0.5rem;
+      scale: 0.94;
+    }
+  }
+  
+  [popovertarget]:has(+ .hotspot:popover-open)::after,
+  [popovertarget]:is(:hover, :focus-visible)::after {
+    scale: 0.5;
+  }
+
+  [popovertarget] {
+    anchor-name: --trigger;
+    position: absolute;
+    left: calc(var(--marker-x, 0) * 1%);
+    top: calc(var(--marker-y, 0) * 1%);
+    transform: translate(-50%, -50%);
+    width: 44px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #0000;
+    border: 0;
+    cursor: pointer;
+
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 24px;
+      aspect-ratio: 1;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: hsl(0 0% 0% / 0.25);
+    }
+    &::after {
+      content: '';
+      width: 16px;
+      aspect-ratio: 1;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+      transition: scale 0.2s ease-out;
+    }
+  } 
+
+  .hotspot {
+    position-anchor: --trigger;
+    font-size: 0.75rem;
+    font-family: monospace;
+    inset: unset;
+    bottom: calc(anchor(top) + 1.5rem);
+    left: calc(anchor(left) + (anchor-size(width) * 0.5));
+    translate: -50% 0.5rem;
+    margin: 0;
+    border-radius: 12px;
+    /* opportunity to do better shadowing here with an outline + shadow? */
+    background:
+      linear-gradient(canvas 0 100%),
+      linear-gradient(hsl(0 0% 0% / 0.05) 0 100%);
+    background-clip: padding-box, border-box;
+    border: 1px solid #0000;
+    box-shadow: 0 4px 10px hsl(0 0% 0% / 0.1);
+    padding: 1rem;
+  }
+
+  fieldset {
+    font-family: monospace;
+    position: relative;
+    border: 0;
+    padding: 0;
+    margin: 0;
+
+    legend {
+      opacity: 0.7;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  [popover] {
+    white-space: nowrap;
+  }
+
+  .trackpad-holder {
+    display: inline-block;
+    position: relative;
+    width: 200px;
+    aspect-ratio: 1 / var(--aspect-ratio, 1);
+  }
+
+  [data-trackpad='true'][data-reveal='true'] .trackpad-controls {
+    translate: 0 calc(30cqb + 1rem);
+    scale: 1;
+  }
+
+  .trackpad-controls {
+    position: absolute;
+    display: grid;
+    gap: 0.5rem 1rem;
+    grid-template-columns: auto 1fr;
+    align-content: center;
+    place-items: center;
+    bottom: 10%;
+    left: 10%;
+    right: 10%;
+    accent-color: canvasText;
+    transition-property: translate, scale, transform;
+    transition-duration: 0.2s, 0.2s, 0.2s;
+    transition-timing-function: ease-out;
+    scale: 0.6;
+    transform-origin: 50% 0;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  .feature-image {
+    width: clamp(260px, 40vmin, 400px);
+    aspect-ratio: 1 / var(--aspect-ratio, 1);
+    position: relative;
+    border-radius: 1rem;
+    /* overflow: hidden; */
+    container-type: size;
+    outline: 4px solid color-mix(in lch, canvasText, #0000 75%);
+    outline-offset: 4px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+  }
+
+  .hotspot {
+    position: absolute;
+  }
+
+  .trackpad {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 1px solid color-mix(in lch, canvasText, #0000 75%);
+    border-radius: 4px;
+    cursor: crosshair;
+    background: canvas;
+    transition: background-color 0.2s;
+    user-select: none;
+    touch-action: none;
+    z-index: 2;
+    overflow: hidden;
+    container-type: size;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: canvas;
+      background: color-mix(in lch, canvasText, #0000 98%);
+    }
+  }
+  
+  .trackpad:hover::before {
+    background: color-mix(in lch, canvasText, #0000 95%);
+  }
+  
+  .trackpad:active::before {
+    background: color-mix(in lch, canvasText, #0000 93%);
+  }
+  
+  .trackpad-marker {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: color-mix(in lch, canvasText, #0000 30%);
+    border: 2px solid canvasText;
+    translate: calc(var(--marker-x, 0) * 1cqi) calc(var(--marker-y, 0) * 1cqh);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    transition: opacity 0.2s;
+    opacity: 0.8;
+  }
+
+  .trackpad-marker::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    transition: scale 0.12s ease-out;
+    scale: 0;
+  }
+
+  .trackpad-marker[data-active]::after,
+  .trackpad-marker[data-hover]::after {
+    scale: 1;
+  }
+  
+  .trackpad:hover .trackpad-marker {
+    opacity: 1;
+  }
+  
+  /* Pointer lock active state */
+  .trackpad.pointer-lock-active {
+    outline: 2px dashed color-mix(in lch, canvasText, #0000 50%);
+    outline-offset: 2px;
+  }
+  
+  .trackpad.pointer-lock-active .trackpad-marker {
+    box-shadow: 0 0 0 4px color-mix(in lch, canvasText, #0000 90%);
+  }
+}
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+div.tp-dfwv {
+  width: 280px;
+  position: fixed;
+}

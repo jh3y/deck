@@ -1,0 +1,377 @@
+@import 'normalize.css' layer(normalize);
+
+@layer normalize, foundation, prototype, reveal;
+
+@layer reveal {
+  .bezier-svg, output, fieldset {
+    transition: translate 0.2s 0.2s ease-out;
+  }
+  
+  [data-reveal='true'] {
+    .trackpad-controls {
+      transition-delay: 0.2s;
+    }
+    .bezier-svg, output, fieldset {
+      transition: translate 0.2s 0s ease-out;
+    }
+    .bezier-svg {
+      translate: 120% 0;
+    }
+    output {
+      translate: calc(60% + 0rem) 0;
+    }
+    fieldset {
+      translate: -60% 0;
+    }
+  }
+}
+
+@layer prototype {
+  
+  fieldset {
+    font-family: monospace;
+    position: relative;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    width: fit-content;
+
+    legend {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  main {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .trackpad-holder {
+    display: inline-block;
+    position: relative;
+    width: 270px;
+    aspect-ratio: 1;
+  }
+
+  [data-reveal='true'] .trackpad-controls {
+    translate: 0 calc(100% + 1rem);
+    scale: 1;
+  }
+
+  .trackpad-controls {
+    position: absolute;
+    display: grid;
+    gap: 0.5rem 1rem;
+    grid-template-columns: auto 1fr;
+    align-content: center;
+    place-items: center;
+    bottom: 0%;
+    left: 10%;
+    right: 10%;
+    accent-color: canvasText;
+    transition-property: translate, scale;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+    scale: 0.8;
+    transform-origin: 50% 0;
+    user-select: none;
+
+    input {
+      width: 100%;
+    }
+
+    label {
+      font-size: 0.75rem;
+    }
+  }
+  
+  .trackpad {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 1px solid color-mix(in lch, canvasText, #0000 75%);
+    border-radius: 4px;
+    cursor: crosshair;
+    background-color: canvas;
+    transition: background-color 0.2s;
+    user-select: none;
+    touch-action: none;
+    z-index: 10;
+    container-type: size;
+    background-image: repeating-radial-gradient(circle at center, red 1px, transparent 1px, transparent 2px);
+    background-size: 4px 4px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: color-mix(in lch, canvasText, #0000 98%);
+    }
+  }
+  
+  .trackpad:hover::before {
+    background: color-mix(in lch, canvasText, #0000 95%);
+  }
+  
+  .trackpad:active::before {
+    background: color-mix(in lch, canvasText, #0000 93%);
+  }
+
+  /* SVG styling */
+  .bezier-svg {
+    width: 100%;
+    aspect-ratio: 1;
+    /* background: color-mix(in lch, canvasText, #0000 95%); */
+    border-radius: 8px;
+    border: 1px solid color-mix(in lch, canvasText, #0000 90%);
+    overflow: hidden;
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .grid-line {
+    stroke: color-mix(in lch, canvasText, #0000 90%);
+    stroke-width: 0.5;
+    stroke-dasharray: 2 2;
+    opacity: 0;
+  }
+
+  .control-line {
+    stroke: color-mix(in lch, canvasText, #0000 70%);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+    transition: all 0.2s;
+  }
+
+  .bezier-curve {
+    fill: none;
+    stroke: canvasText;
+    stroke-width: 1.2;
+    stroke-linecap: round;
+  }
+
+
+  .anchor-point {
+    fill: color-mix(in lch, canvasText, #0000 50%);
+    fill: red;
+    stroke: none;
+    opacity: 0;
+  }
+  
+  /* Trackpad markers */
+  .trackpad-marker {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: color-mix(in lch, canvasText, #0000 20%);
+    border: 2px solid canvasText;
+    translate: calc(var(--marker-x, 50) * 1cqi) calc(var(--marker-y, 50) * 1cqh);
+    transform: translate(-50%, -50%);
+    opacity: 0.8;
+    z-index: 3;
+  }
+  .trackpad-marker::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    transition: scale 0.12s ease-out;
+    scale: 0;
+  }
+
+  .trackpad-marker[data-active]::after,
+  .trackpad-marker[data-hover]::after {
+    scale: 1;
+  }
+
+  .trackpad:hover .trackpad-marker {
+    opacity: 1;
+  }
+
+  .trackpad.pointer-lock-active .trackpad-marker[data-active] {
+    box-shadow: 0 0 0 6px color-mix(in lch, currentColor, #0000 80%);
+  }
+
+  /* Pointer lock active state */
+  .trackpad.pointer-lock-active {
+    outline: 2px dashed color-mix(in lch, canvasText, #0000 50%);
+    outline-offset: 2px;
+  }
+
+  /* Output display */
+  .output-display {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 270px;
+  }
+
+  .output-value {
+    font-family: monospace;
+    
+    code {
+      font-size: 0.7rem;
+      display: block;
+      padding: 0.75rem;
+      background: color-mix(in lch, canvasText, #0000 95%);
+      border-radius: 4px;
+      border: 1px solid color-mix(in lch, canvasText, #0000 90%);
+      user-select: all;
+      text-align: center;
+    }
+  }
+
+  /* Preview animation */
+  .preview-container {  
+    position: relative;
+    height: 60px;
+    background: color-mix(in lch, canvasText, #0000 95%);
+    border-radius: 4px;
+    border: 1px solid color-mix(in lch, canvasText, #0000 90%);
+    overflow: hidden;
+    container-type: inline-size;
+  }
+
+  .preview-ball {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: canvasText;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 20px;
+    animation: bounce calc(var(--animation-duration, 1.5) * 1s) infinite;
+    animation-timing-function: var(--animation-timing-function, linear);
+  }
+
+  @keyframes bounce {
+    to {
+      translate: calc(100cqi - 40px - 100%) 0;
+    }
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    background: light-dark(#fff, #000);
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  body::before {
+    --size: 45px;
+    --line: color-mix(in hsl, canvasText, transparent 80%);
+    content: '';
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    background: linear-gradient(
+          90deg,
+          var(--line) 1px,
+          transparent 1px var(--size)
+        )
+        calc(var(--size) * 0.36) 50% / var(--size) var(--size),
+      linear-gradient(var(--line) 1px, transparent 1px var(--size)) 0%
+        calc(var(--size) * 0.32) / var(--size) var(--size);
+    mask: linear-gradient(-20deg, transparent 50%, white);
+    top: 0;
+    transform-style: flat;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+div.tp-dfwv {
+  width: 280px;
+  position: fixed;
+}

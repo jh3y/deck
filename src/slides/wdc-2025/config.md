@@ -377,7 +377,7 @@ dialog {
 }
 [popover]:popover-open .arc li {
   offset-distance: calc(-24% + (var(--index) * 80px));
-  offset-path: xywh(0 0 100% 100% round 50%);
+  offset-path: border-box;
   offset-anchor: 50% 0;
   transition: offset-distance 0.875s var(--spring-ease);
   @starting-style {

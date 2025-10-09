@@ -1,0 +1,353 @@
+@import 'normalize.css' layer(normalize);
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@layer normalize, foundation, demo;
+
+@layer demo {
+  :root {
+    --ru: 15;
+  }
+  *,
+  *::before,
+  *::after {
+    transform-style: preserve-3d;
+  }
+
+  [data-flipped='true'] .arrow {
+    opacity: 0;
+  }
+
+  .tp-lblv.tp-v-disabled .tp-lblv_l {
+    /* color: var(--lbl-fg) !important; */
+    opacity: 1 !important;
+  }
+
+  :root:has([aria-label]:active) .tp-txtv.tp-v-disabled {
+    clip-path: inset(0 0 0 0);
+  }
+
+  .arrow {
+    display: inline-block;
+    opacity: 0.8;
+    position: fixed;
+    font-size: 0.875rem;
+    font-family: 'Gloria Hallelujah', cursive;
+    transition: opacity 0.26s 0.26s ease-out;
+
+    &.arrow--instruction {
+      top: 50%;
+      left: 50%;
+      translate: -190% 150%;
+      rotate: -10deg;
+      svg {
+        color: hsl(0 0% 65%);
+        scale: 1 1;
+        top: 130%;
+        rotate: 20deg;
+        left: -10%;
+        width: 80%;
+        translate: 105% 40%;
+        position: absolute;
+      }
+    }
+  }
+  .tp-txtv.tp-v-disabled {
+    height: 14.3px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--lbl-fg) 0 3%,
+      #0000 3% 5%
+    );
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.26s;
+    input {
+      display: none;
+    }
+  }
+  main {
+    scale: 1.2;
+    transform: translate3d(0, 0, 100vmax);
+  }
+  [aria-label] {
+    touch-action: none;
+    user-select: none;
+    -webkit-tap-highlight-color: #0000;
+    --bg: #1871f4;
+    background: var(--bg);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #fff;
+    font-family: inherit;
+    border: 1px solid color-mix(in oklch, var(--bg), #000 12%);
+    cursor: pointer;
+    transform-origin: 75% 50%;
+    transition: transform 0.26s, box-shadow 0.26s;
+    padding: 0;
+    --shadow-color: 0 0% 0%;
+    box-shadow: 0px 0.6px 0.7px hsl(var(--shadow-color) / 0.14),
+      0px 2.3px 2.6px -0.8px hsl(var(--shadow-color) / 0.14),
+      0px 5.9px 6.6px -1.7px hsl(var(--shadow-color) / 0.14),
+      0px 14.5px 16.3px -2.5px hsl(var(--shadow-color) / 0.14);
+
+    .content {
+      align-items: center;
+      clip-path: inset(-100vmax 0 1px 0);
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      height: 100%;
+    }
+
+    &[data-tipping='false']:active {
+      transform: rotate(calc(var(--ru) * -1deg));
+      box-shadow: -0.5px 0.7px 1px hsl(var(--shadow-color) / 0.14),
+        -1.8px 2.3px 3.3px -0.8px hsl(var(--shadow-color) / 0.14),
+        -4.6px 6px 8.5px -1.7px hsl(var(--shadow-color) / 0.14),
+        -11.4px 14.6px 20.8px -2.5px hsl(var(--shadow-color) / 0.14);
+    }
+
+    &:is(:focus-visible, :hover) {
+      --bg: color-mix(in oklch, #1871f4, #000 5%);
+      .purse {
+        rotate: y 360deg;
+        transition: rotate 0.26s 0.12s ease-out;
+      }
+    }
+
+    .purse {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+    }
+
+    .scene {
+      --thickness: 4;
+      display: inline-block;
+      width: 1.2lh;
+      aspect-ratio: 1;
+      position: relative;
+      transform-style: preserve-3d;
+      perspective: 100vh;
+
+      .hole {
+        position: absolute;
+        z-index: 10;
+        inset: 0;
+        scale: 0;
+        transform-style: preserve-3d;
+        transform: translate3d(0, 0, calc(var(--thickness) * -2px));
+        transform-origin: 50% 70%;
+
+        &::before {
+          content: '';
+          position: absolute;
+          width: 125%;
+          height: 40%;
+          border-radius: 50%;
+          top: 70%;
+          left: 50%;
+          translate: -50% -50%;
+          background: black;
+          box-shadow: 0 2px hsl(0 0% 20%) inset;
+        }
+
+        &::after {
+          transform-style: preserve-3d;
+          content: '';
+          background: var(--bg);
+          height: 200%;
+          top: 0;
+          left: 50%;
+          translate: -50% 25%;
+          width: 121%;
+          position: absolute;
+          transform: translate3d(0, 0, calc(var(--thickness) * 5px));
+          mask: radial-gradient(
+            125% 32% at 50% 3%,
+            rgba(0, 0, 0, 0) 50%,
+            #fff 50%
+          );
+        }
+      }
+    }
+  }
+  .coin {
+    --depth: 2;
+    --detail: hsl(43 97% 46%);
+    --face: #ffdc02;
+    --side: #f4ae00;
+    width: 100%;
+    aspect-ratio: 1;
+    /* outline: 2px dashed red; */
+    border-radius: 50%;
+    position: absolute;
+    translate: -50% -50%;
+    top: 50%;
+    left: 50%;
+    transform-style: preserve-3d;
+
+    .coin__core {
+      height: 100%;
+      width: calc(var(--depth) * 2px);
+      background: var(--side);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+      transform: rotateY(90deg) rotateX(calc((90 - var(--rx, 0)) * -1deg));
+      transform-style: preserve-3d;
+
+      &.coin__core--rotated {
+        --base: 90;
+        transform: rotateY(90deg) rotateX(calc((90 - var(--rx, 0)) * 1deg));
+      }
+
+      &::after,
+      &::before {
+        content: '';
+        height: 100%;
+        width: calc(var(--depth) * 2px);
+        background: var(--side);
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+      }
+
+      &::after {
+        transform: rotateX(calc((var(--base, 0) - var(--rx, 0)) * 1deg));
+      }
+      &::before {
+        transform: rotateX(calc((var(--base, 0) - var(--rx, 0)) * -1deg));
+      }
+    }
+
+    .coin__face {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      transform-style: preserve-3d;
+      background: var(--face);
+      display: grid;
+      place-items: center;
+      color: var(--detail);
+
+      svg {
+        width: 65%;
+        scale: -1 1;
+        translate: -5% 0;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: var(--side);
+        backface-visibility: hidden;
+      }
+
+      &.coin__face--front {
+        transform: translate3d(0, 0, calc((var(--depth) * 1px) + 0.5px))
+          rotateY(180deg);
+      }
+      &.coin__face--rear {
+        transform: translate3d(0, 0, calc((var(--depth) * -1px) - 0.5px));
+      }
+    }
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    display: grid;
+    overflow: hidden;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}

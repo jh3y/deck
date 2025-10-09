@@ -1,0 +1,320 @@
+@import url('https://unpkg.com/normalize.css') layer(normalize);
+
+@layer normalize, foundation, prototype, testing, motion;
+
+@layer motion {
+  :root {
+    --text-speed: 0.26;
+    --base-delay: calc(var(--text-speed) * 0.25);
+    --tick-speed: 0.12;
+    --ring-speed: 0.2;
+    --check-speed: 0.1;
+    --burst-speed: 0.32;
+    --step-delay: 4;
+  }
+  .playground {
+    --base-delay: 0;
+  }
+  .playground[data-play='true'],
+  [data-adding="true"] {
+    .check {
+      transition-property: opacity, scale, filter;
+      transition-duration: calc(calc(var(--check-speed) * 1s) * var(--speed));
+      transition-delay: calc((var(--base-delay) * 1s) * var(--speed));
+      transition-timing-function: ease-in-out;
+      opacity: 1;
+      scale: 1;
+      filter: blur(0);
+    }
+    .tick {
+      scale: 1.5;
+      transition-property: scale;
+      transition-duration: calc((calc(var(--tick-speed) * 1s)) * var(--speed));
+      transition-delay: calc(((var(--base-delay) + (var(--check-speed) * (var(--step-delay) * 1.1))) * 1s) * var(--speed));
+      transition-timing-function: ease-out;
+    }
+    .ring {
+      transition-property: opacity, scale, filter;
+      transition-duration: calc((calc(var(--ring-speed) * 1s)) * var(--speed));
+      transition-delay: calc(((var(--base-delay) + (var(--check-speed) * var(--step-delay))) * 1s) * var(--speed));
+      transition-timing-function: ease-in-out; 
+      opacity: 0;
+      scale: 1;
+      filter: blur(1px);
+    }
+    :is(.wiggle, .line) {
+      transition-property: stroke-dashoffset;
+      transition-duration: calc((calc(var(--burst-speed) * 1s)) * var(--speed));
+      transition-delay: calc(((var(--base-delay) + (var(--check-speed) * var(--step-delay))) * 1s) * var(--speed));
+      transition-timing-function: ease-out;
+      stroke-dashoffset: 1.5;
+    }
+  }
+  .add-to-cart-text {
+    clip-path: circle(100% at 50% 50%);
+    transition-property: clip-path, opacity, filter, translate;
+    transition-duration: calc((var(--text-speed) * 0.6s) * var(--speed)), calc((var(--text-speed) * 1s) * var(--speed));
+    transition-timing-function: ease-out;
+  }
+  [data-adding='true'] .add-to-cart-text {
+    clip-path: circle(0% at 50% 50%);
+    filter: blur(2px);
+    opacity: 0;
+    translate: 0 4px;
+  }
+  [data-timing='random'] :is(.playground[data-play='true'],[data-adding="true"]) .burst :is(.wiggle, .line) {
+    transition-delay: calc(((var(--base-delay) + (var(--check-speed) * var(--step-delay)) + (var(--d))) * 1s) * var(--speed));
+  }
+  [data-timing='sequential'] :is(.playground[data-play='true'],[data-adding="true"]) .burst :is(.wiggle, .line) {
+    transition-delay: calc(((var(--base-delay) + (var(--check-speed) * var(--step-delay)) + (var(--index) * 0.05)) * 1s) * var(--speed));
+  }
+  [data-timing='alternate'] :is(.playground[data-play='true'],[data-adding="true"]) .burst g:nth-of-type(odd) { --alt-d: 0.1; }
+  [data-timing='alternate'] :is(.playground[data-play='true'],[data-adding="true"]) .burst g:nth-of-type(even) { --alt-d: 0; }
+  [data-timing='alternate'] :is(.playground[data-play='true'],[data-adding="true"]) .burst :is(.wiggle, .line) {
+    transition-delay: calc(((var(--base-delay) + (var(--check-speed) * var(--step-delay)) + (var(--alt-d))) * 1s) * var(--speed));
+  }
+}
+
+@layer testing {
+  
+  [data-play='true'] .playground {
+    display: block;
+  }
+  .playground {
+    width: 100%;
+    color: canvas;
+    display: none;
+
+    fieldset {
+      padding: 2rem;
+      display: grid;
+      place-items: center;
+      position: relative;
+      border: 0;
+    }
+    fieldset legend {
+      position: absolute;
+      top: 4px;
+      left: 6px;
+      color: rgba(187, 188, 196, 0.7)
+      
+    }
+    fieldset svg {
+      width: 100px;
+    }
+    
+    
+  }
+  .checkmark-burst {
+    overflow: visible !important;
+
+    .burst {
+      rotate: 20deg;
+    }
+    .check {
+      opacity: 0.2;
+      scale: 0.3;
+      filter: blur(2px);
+    }
+    :is(.ring, .wiggle, .line, .check, .burst, .tick) {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    :is(.wiggle, .line) {
+      stroke-dasharray: 1.5 1.5;
+      stroke-dashoffset: -1.5;
+      translate: 0 -180%;
+    }
+    g {
+      transform-origin: center;
+      rotate: calc(var(--index) * (360 / 8) * 1deg);
+    }
+  }
+
+  [data-color='vibrant'] .checkmark-burst g {
+    color: var(--color, currentColor);
+  }
+  
+  [data-style='wiggle'] .checkmark-burst .line,
+  [data-style='line'] .checkmark-burst .wiggle,
+  [data-style='alternate'] .checkmark-burst .burst g:nth-of-type(odd) .line,
+  [data-style='alternate'] .checkmark-burst .burst g:nth-of-type(even) .wiggle {
+    display: none;
+  }
+
+  [data-style='alternate'] .checkmark-burst .burst g:nth-of-type(even) .line,
+  [data-style='alternate'] .checkmark-burst .burst g:nth-of-type(odd) .wiggle {
+    display: block;
+  }
+  [data-include='true'][data-color='custom'] .checkmark-burst g,
+  [data-color='custom'] .checkmark-burst .burst g {
+    color: var(--custom-color, currentColor);
+  }
+}
+
+@layer prototype {
+  .add-to-cart {
+    padding: 1rem 2rem;
+    background: linear-gradient(light-dark(#000, #fff) 0 100%), linear-gradient(hsl(0 0% 0% / 0.2) 0 100%);
+    background-clip: padding-box, border-box;
+    color: light-dark(#fff, #000);
+    border: 0;
+    cursor: pointer;
+    font-size: .875rem;
+    border-radius: .875rem;
+    border: 2px solid #0000;
+    width: 200px;
+    --icon-stroke-width: 1.5px;
+    font-weight: 400;
+    position: relative;
+    transition: scale 0.1s ease-out;
+    user-select: none;
+
+
+    &:active {
+      scale: 0.98;
+    }
+
+    &::after {
+      content: '';
+      border-radius: 12px;
+      position: absolute;
+      inset: 0px;
+      opacity: 0;
+      background: hsl(0 0% 100% / 0.1);
+      transition: opacity 0.26s ease-out;
+    }
+
+    &:hover::after {
+      opacity: 1;
+    }
+
+    svg {
+      width: 20px;
+      aspect-ratio: 1;
+    }
+  }
+  .flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+  }
+  button .checkmark-burst {
+    width: 32px;
+  }
+  .added {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%; 
+  }
+  
+  body {
+    background: canvas;
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+div.tp-dfwv {
+  width: 280px;
+  position: fixed;
+}
+
+
+div.tp-dfwv {
+  width: 256px;
+  z-index: 999999;
+  position: fixed;
+}
+

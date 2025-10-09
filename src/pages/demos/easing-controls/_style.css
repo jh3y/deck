@@ -1,0 +1,315 @@
+@import 'normalize.css' layer(normalize);
+
+@layer normalize, foundation, demo, trackpad;
+
+@layer trackpad {
+  .trackpad-controls {
+    position: absolute;
+    display: grid;
+    gap: 0.5rem 1rem;
+    grid-template-columns: auto 1fr;
+    align-content: center;
+    place-items: center;
+    bottom: 0%;
+    left: 10%;
+    right: 10%;
+    accent-color: canvasText;
+    transition-property: translate, scale;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+    scale: 0.8;
+    transform-origin: 50% 0;
+    user-select: none;
+
+    input {
+      width: 100%;
+    }
+
+    label {
+      font-size: 0.75rem;
+    }
+  }
+  .trackpad-holder {
+    display: inline-block;
+    position: relative;
+    width: 160px;
+    aspect-ratio: 1;
+  }
+  .bezier-controls {
+    position: relative;
+    height: 160px;
+    width: 160px;
+  }
+  .bezier-control {
+    padding: 0;
+    border: 0;
+    color-scheme: dark;
+  }
+  .bezier-control legend {
+    color: var(--lbl-fg);
+    padding-left: 6px;
+    margin-bottom: 0.5rem;
+  }
+  .implant {
+    margin-top: 0.5rem;
+  }
+  .trackpad {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 1px solid color-mix(in lch, canvasText, #0000 75%);
+    border-radius: 4px;
+    cursor: crosshair;
+    background-color: canvas;
+    transition: background-color 0.2s;
+    user-select: none;
+    touch-action: none;
+    z-index: 10;
+    container-type: size;
+    background-image: repeating-radial-gradient(circle at center, red 1px, transparent 1px, transparent 2px);
+    background-size: 4px 4px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: color-mix(in lch, canvasText, #0000 98%);
+    }
+  }
+  
+  .trackpad:hover::before {
+    background: color-mix(in lch, canvasText, #0000 95%);
+  }
+  
+  .trackpad:active::before {
+    background: color-mix(in lch, canvasText, #0000 93%);
+  }
+
+  /* SVG styling */
+  .bezier-svg {
+    width: 160px;
+    aspect-ratio: 1;
+    /* background: color-mix(in lch, canvasText, #0000 95%); */
+    border-radius: 4px;
+    border: 1px solid color-mix(in lch, canvasText, #0000 90%);
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .grid-line {
+    stroke: var(--in-fg);
+    stroke-width: 0.5;
+    stroke-dasharray: 2 2;
+    opacity: 0;
+  }
+
+  .control-line {
+    stroke: color-mix(in lch, var(--in-fg), #0000 50%);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+    transition: all 0.2s;
+  }
+
+  .bezier-curve {
+    fill: none;
+    stroke: var(--in-fg);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+  }
+
+
+  .anchor-point {
+    fill: color-mix(in lch, canvasText, #0000 50%);
+    stroke: none;
+    opacity: 0;
+  }
+  
+  /* Trackpad markers */
+  .trackpad-marker {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--in-fg);
+    border: 2px solid var(--in-bg);
+    translate: calc(var(--marker-x, 50) * 1cqi) calc(var(--marker-y, 50) * 1cqh);
+    transform: translate(-50%, -50%);
+    opacity: 0.8;
+    z-index: 3;
+  }
+  .trackpad-marker::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border: 2px solid var(--in-fg);
+    border-radius: 50%;
+    transition: scale 0.12s ease-out;
+    scale: 0;
+  }
+
+  .trackpad-marker[data-active]::after,
+  .trackpad-marker[data-hover]::after {
+    scale: 1;
+  }
+
+  .trackpad:hover .trackpad-marker {
+    opacity: 1;
+  }
+
+  .trackpad.pointer-lock-active .trackpad-marker[data-active] {
+    box-shadow: 0 0 0 6px color-mix(in lch, currentColor, #0000 80%);
+  }
+
+  /* Pointer lock active state */
+  .trackpad.pointer-lock-active {
+    outline: 2px dashed color-mix(in lch, canvasText, #0000 50%);
+    outline-offset: 2px;
+  }
+}
+
+@layer demo {
+  [data-images='false'] article img {
+    opacity: 0;
+  }
+  [data-images='false'] article {
+    outline-color:canvasText;
+  }
+  main {
+    /* --color-one: red;
+    --color-two: #0000; */
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    
+    article {
+      width: 25vmin;
+      outline: 2px dashed #0000;
+      outline-offset: 2px;
+      height: 25vmin;
+      position: relative;
+      background: #fff;
+      transition: outline-color 0.26s ease-out;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.26s ease-out;
+        /* opacity: 0; */
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0 0 0 0;
+        z-index: 2;
+      }
+
+      &:nth-of-type(1)::after {
+        background: var(--bg);
+      }
+      &:nth-of-type(2)::after {
+        background: linear-gradient(0deg, var(--color-one) 0 var(--gradient-start, 0), var(--color-two) var(--gradient-end, 100%) 100%);
+      }
+    }
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+div.tp-dfwv {
+  width: 280px;
+  position: fixed;
+  z-index: 99999;
+}

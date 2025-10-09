@@ -1,6 +1,5 @@
 <div class="w-full grid place-items-start">
 <h1 class="[--font-level:3] uppercase text-left text-balance relative bg-red-500 p-4">
-  <span class="block absolute bottom-[calc(100%+0.5rem)] left-0 text-[0.25em] font-[600]">Jhey Tompkins</span>
   <span class="flex flex-col leading-[0.9] text-white font-[900]">
     <span>Design Idea</span>
     <span>to Engineer</span>
@@ -8,6 +7,9 @@
 </h1>
 </div>
 <Demo src="/demos/balloon-bear/" title="Balloon Bear"></Demo>
+---
+<!-- @theme="dark" -->
+<Demo src="/demos/trading-card/" title="Trading Card"></Demo>
 ---
 <button style="border: revert; background: revert; padding: revert;">Sweat.</button>
 ---
@@ -50,18 +52,52 @@
 ---
 <Demo src="/demos/trombone-bear/index.html" title="Trombone Bear" />
 ---
-# What is a Design Engineer?
+<div class="text-left font-serif fluid font-[400]">
+  <h1 class="font-serif font-[400] font-2xl mb-2" style="--fluid-max: 80">Design Engineer</h1>
+  <h2 class="font-serif font-[300]" style="--fluid-max: 30">[duh-zine en-juh-neeuh]: noun</h2>
+  <hr class="my-6 h-2"/>
+  <p class="fluid font-[300] font-serif italic leading-[1.5]" style="--font-level: 1.2"><span class="line-through">Taste.</span> Make cool stuff with care and quality.</p>
+  <p class="fluid font-[300] font-serif italic leading-[1.5]" style="--font-level: 1.2">Put it on the internet.</p>
+</div>
 ---
-# My process WAI-ARIA + the Duke
+<Demo src="/demos/duke-ellington/index.html" title="Duke Ellington" />
 ---
-# Gaga said it best
----
-# The little details
----
-# It's about side quests — easing gradients
+<!-- @theme="dark" -->
+<div class="flex items-center">
+  <blockquote data-quote="true" class="quote bottom-[14rem] left-0 text-left absolute z-20 fluid after:content-[''] after:inset-0 after:fixed after:bg-black after:opacity-50 after:-z-20" style="--font-level: 3.4">
+    caring about craft really matters... practice the simple things — <span class="italic">Lady Gaga</span>
+  </blockquote>
+  <img class="inset-0 h-full w-full object-bottom fixed object-cover"  src="/images/gaga.png" alt="Lady Gaga">
+</div>
 ---
 <h2 className="quote">
-  Be curious.
+  Practice the "little details".
+</h2>
+---
+<Demo src="/demos/intention-of-hover/index.html" alt="Intention of hover" />
+---
+<Demo src="/demos/variant-picker-follow/index.html" alt="Intention of hover" />
+---
+<Demo src="/demos/password-input/index.html" alt="Passcode Reveal" />
+---
+<Demo src="/demos/flip-to-tip/index.html" alt="Passcode Reveal" />
+---
+<Demo src="/demos/add-to-cart/index.html" alt="Passcode Reveal" />
+---
+<h2 className="quote">
+  Take on "side quests".
+</h2>
+---
+<Demo src="/demos/gradients-suck/index.html" alt="Gradients suck."/>
+---
+<Demo src="/demos/trackpad-concept/index.html" alt="Gradients suck."/>
+---
+<Demo src="/demos/bezier-control/index.html" alt="Gradients suck."/>
+---
+<Demo src="/demos/easing-controls/index.html" alt="Gradients suck."/>
+---
+<h2 className="quote">
+  Be curious. Stack your tool belt.
 </h2>
 ---
 <!-- @theme="dark" -->

@@ -1,0 +1,95 @@
+---
+import "./_style.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>easing-controls</title>
+  </head>
+  <body>
+    <main>
+      <article>
+        <img src="/images/watchy.png" alt="" />
+      </article>
+      <article>
+        <img src="/images/watchy.png" alt="" />
+      </article>
+    </main>
+    <div class="implant implant--pos tp-lblv tp-v-fst tp-v-vfst tp-v-lst tp-v-vlst">
+      <div class="tp-lblv_l">stops</div>
+      <div class="tp-lblv_v">
+        <fieldset class="bezier-control" style="display: none;">
+          <div class="bezier-controls">
+          <trackpad-control class="trackpad-holder">
+            <div class="trackpad-controls">
+              <label for="x1">x1</label>
+              <input id="x1" type="range" min="0" max="100" step="1" value="0" />
+              <label for="y1">y1</label>
+              <input id="y1" type="range" min="0" max="100" step="1" value="100"/>
+              <label for="x2">x2</label>
+              <input id="x2" type="range" min="0" max="100" step="1" value="100"/>
+              <label for="y2">y2</label>
+              <input id="y2" type="range" min="0" max="100" step="1" value="0"/>
+            </div>
+            <div class="trackpad">
+              <div class="trackpad-marker"></div>
+              <div class="trackpad-marker"></div>
+            </div>
+          </trackpad-control>
+          <svg class="bezier-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <!-- Control lines -->
+            <line class="control-line" />
+            <line class="control-line" />
+            <!-- Bezier curve -->
+            <path class="bezier-curve" />
+            <!-- Anchor points -->
+            <circle class="anchor-point" cx="0" cy="100" r="4" />
+              <circle class="anchor-point" cx="100" cy="0" r="4" />
+            </svg>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="implant implant--alpha tp-lblv tp-v-fst tp-v-vfst tp-v-lst tp-v-vlst">
+      <div class="tp-lblv_l">alpha</div>
+      <div class="tp-lblv_v">
+        <fieldset class="bezier-control" style="display: none;">
+          <div class="bezier-controls">
+          <trackpad-control class="trackpad-holder">
+            <div class="trackpad-controls">
+              <label for="x1">x1</label>
+              <input id="x1" type="range" min="0" max="100" step="1" value="0" />
+              <label for="y1">y1</label>
+              <input id="y1" type="range" min="0" max="100" step="1" value="100"/>
+              <label for="x2">x2</label>
+              <input id="x2" type="range" min="0" max="100" step="1" value="100"/>
+              <label for="y2">y2</label>
+              <input id="y2" type="range" min="0" max="100" step="1" value="0"/>
+            </div>
+            <div class="trackpad">
+              <div class="trackpad-marker"></div>
+              <div class="trackpad-marker"></div>
+            </div>
+          </trackpad-control>
+          <svg class="bezier-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <!-- Control lines -->
+            <line class="control-line" />
+            <line class="control-line" />
+            <!-- Bezier curve -->
+            <path class="bezier-curve" />
+            <!-- Anchor points -->
+            <circle class="anchor-point" cx="0" cy="100" r="4" />
+              <circle class="anchor-point" cx="100" cy="0" r="4" />
+            </svg>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>

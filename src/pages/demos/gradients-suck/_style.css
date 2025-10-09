@@ -1,0 +1,58 @@
+main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+
+
+  h1 {
+    font-size: 4rem;
+    font-weight: 600;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+
+  article {
+    position: relative;
+    width: 420px;
+    aspect-ratio: 1;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    
+    p {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem;
+      color: #fff;
+      z-index: 2;
+      font-weight: 600;
+      font-size: 1.5rem;
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    };
+    
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 50% 0 0 0;
+      background: linear-gradient(#0000, hsl(0 0% 0% / 0.9));
+    }
+    img {
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+
+
+}
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}

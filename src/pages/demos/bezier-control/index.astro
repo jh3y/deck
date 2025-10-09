@@ -1,0 +1,58 @@
+---
+import "./_style.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bezier-control</title>
+  </head>
+  <body>
+    <main>
+      <form>
+        <fieldset>
+          <legend>cubic-bezier.</legend>
+          <trackpad-control class="trackpad-holder">
+            <div class="trackpad-controls">
+              <label for="x1">x1</label>
+              <input id="x1" type="range" min="0" max="100" step="1" />
+              <label for="y1">y1</label>
+              <input id="y1" type="range" min="0" max="100" step="1" />
+              <label for="x2">x2</label>
+              <input id="x2" type="range" min="0" max="100" step="1" />
+              <label for="y2">y2</label>
+              <input id="y2" type="range" min="0" max="100" step="1" />
+            </div>
+            <div class="trackpad">
+              <div class="trackpad-marker"></div>
+              <div class="trackpad-marker"></div>
+            </div>
+          </trackpad-control>
+          <svg class="bezier-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <!-- Control lines -->
+            <line class="control-line" />
+            <line class="control-line" />
+            <!-- Bezier curve -->
+            <path class="bezier-curve" />
+            <!-- Anchor points -->
+            <circle class="anchor-point" cx="0" cy="100" r="4" />
+            <circle class="anchor-point" cx="100" cy="0" r="4" />
+          </svg>
+        </fieldset>
+      </form>
+      <output class="output-display">
+        <div class="output-value">
+          <code id="bezier-output">cubic-bezier(0.5, 0.5, 0.5, 0.5)</code>
+        </div>
+        <div class="preview-container">
+          <div class="preview-ball"></div>
+        </div>
+      </output>
+    </main>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>

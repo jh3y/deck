@@ -1,0 +1,46 @@
+---
+import "./_style.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>variant-picker-follow</title>
+  </head>
+  <body>
+    <svg class="sr-only">
+      <filter id="knockout-black" color-interpolation-filters="sRGB">
+        <feColorMatrix
+          type="matrix"
+          values="1 0 0 0 0
+                  0 1 0 0 0
+                  0 0 1 0 0
+                  -1 -1 -1 0 1"
+        />
+        <feComposite in="SourceGraphic" operator="out" />
+      </filter>
+      <filter id="knockout-white" color-interpolation-filters="sRGB">
+        <feColorMatrix
+          type="matrix"
+          values="1 0 0 0 0
+                  0 1 0 0 0
+                  0 0 1 0 0
+                  1 1 1 0 0"
+        />
+        <feComposite in="SourceGraphic" operator="out" />
+      </filter>
+      <!-- only to punch out red -->
+      <!-- <feComponentTransfer>
+        <feFuncA type="discrete" tableValues="0 0 0 0 1 1 1 1 1 1"/>
+      </feComponentTransfer> -->
+    </svg>
+    <div class="resize-container">
+    </div>
+    <svg class="svg-mask" xmlns="http://www.w3.org/2000/svg"></svg>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>

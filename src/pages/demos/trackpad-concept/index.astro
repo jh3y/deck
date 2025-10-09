@@ -1,0 +1,42 @@
+---
+import "./_style.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>trackpad-concept</title>
+  </head>
+  <body>
+    <main>
+      <form>
+        <fieldset>
+          <legend>position.</legend>
+          <trackpad-control class="trackpad-holder">
+            <div class="trackpad-controls">
+              <label for="x">x(%)</label>
+              <input id="x" type="range" min="0" max="100" step="1" />
+              <label for="y">y(%)</label>
+              <input id="y" type="range" min="0" max="100" step="1" />
+            </div>
+            <div class="trackpad">
+              <div class="trackpad-marker"></div>
+            </div>
+          </trackpad-control>
+        </fieldset>
+      </form>
+      <div class="feature-image">
+        <button aria-label="Open hotspot" popovertarget="hotspotPopover" popovertargetaction="toggle"></button>
+        <div popover="auto" id="hotspotPopover" class="hotspot">
+          Nice details!
+        </div>
+        <img src="https://picsum.photos/900/900?random=12" alt="" />
+      </div>
+    </main>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>
