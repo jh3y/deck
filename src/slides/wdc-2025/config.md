@@ -564,7 +564,7 @@ img {
 <Demo src="/demos/view-timeline-basic/" title="View Timeline Basic"></Demo>
 <BrowserSupport className="fixed top-4 right-4"  properties="css.properties.view-timeline" captions="view-timeline" />
 ---
-<Demo windowed="true" src="/demos/playbook-scroll/" title="You can scroll" ></Demo>
+<Demo windowed="true" src="/demos/playbook-scroll/" title="Let's scroll!" ></Demo>
 ---
 <Demo windowed="true" src="/demos/you-can-scroll/" title="You can scroll" ></Demo>
 ---
@@ -591,10 +591,106 @@ img {
 <BrowserSupport className="fixed top-4 right-4"  properties="css.properties.scroll-timeline" captions="scroll-timeline" />
 ---
 <!-- @theme="dark" -->
-<Demo windowed="true" src="/demos/scroll-index/" title="Scroll index" ></Demo>
+<Demo windowed="true" src="/demos/scroll-goo/" title="Scroll Goo" ></Demo>
 ---
 <!-- @theme="dark" -->
-<Demo windowed="true" src="/demos/scroll-goo/" title="Scroll Goo" ></Demo>
+<Demo windowed="true" src="/demos/scroll-index/" title="Scroll index" ></Demo>
+---
+<h2 class="quote">
+  Side quest: Scroll markers + state?
+</h2>
+---
+<!-- @theme="dark" -->
+<Demo windowed="true" src="/demos/scroll-state-cta/" title="Scroll State CTA" ></Demo>
+---
+<!-- @theme="dark" -->
+```css []
+@layer stuck {
+  @supports (container-type: scroll-state) {
+    nav { container-type: scroll-state; }
+    @container scroll-state(stuck: top) {
+      /* expand grid template via custom property (or whatever) */
+      .nav__content { --expanded: 1; }
+    }
+  }
+}
+```
+---
+<!-- @theme="dark" -->
+<Demo src="/demos/apple-slider/index.html" title="Apple Sliders"></Demo>
+---
+<!-- @theme="dark" -->
+```css[]
+ul::scroll-button(*) { position: absolute; }
+ul::scroll-button(left) { left: 0; }
+ul::scroll-button(right) { right: 0; }
+
+ul {
+  scroll-marker-group: after;
+  position: relative;
+}
+li::scroll-marker {
+  content: "";
+  height: 1em;
+  width: 1em;
+  transition: flex 0.26s ease;
+}
+::scroll-marker:target-current {
+  flex: 2;
+}
+ul::scroll-marker-group {
+  gap: .2em;
+  display: flex;
+  position: relative;
+  align-items: center;
+  left: 50%;
+  translate: -50% 2rem;
+  justify-content: center;
+}
+```
+<BrowserSupport className="fixed top-4 right-4"  properties="css.selectors.scroll-button,css.selectors.scroll-marker" captions="scroll-button,scroll-marker"></BrowserSupport>
+---
+<!-- @theme="dark" -->
+```css[]
+li {
+  view-timeline: --slide inline;
+}
+li::scroll-marker {
+  animation: scale both linear;
+  animation-range: cover 25% 75%;
+  animation-timeline: --slide;
+}
+@keyframes scale {
+  50% {
+    flex: 2;
+  }
+}
+```
+<BrowserSupport className="fixed top-4 right-4"  properties="css.selectors.scroll-button,css.selectors.scroll-marker" captions="scroll-button,scroll-marker"></BrowserSupport>
+---
+<!-- @theme="dark" -->
+<Demo windowed="true" src="/demos/scroll-state-anchored-markers" title="Scroll state anchored markers"></Demo>
+---
+```css[]
+.nav__indicator {
+  position: absolute;
+  top: anchor(center);
+  left: anchor(center);
+  width: calc(anchor-size(width) - 8px);
+  height: calc(anchor-size(height) - 8px);
+  position-anchor: --active;
+  translate: -50% -50%;
+  background: white;
+  mix-blend-mode: difference;
+}
+nav ul {
+  scroll-target-group: auto;
+}
+nav ul a:target-current {
+  anchor-name: --active;
+}
+```
+<BrowserSupport className="fixed top-4 right-4"  properties="css.properties.scroll-target-group" captions="scroll-target-group"></BrowserSupport>
 ---
 <h2 class="quote">
   Sliders.

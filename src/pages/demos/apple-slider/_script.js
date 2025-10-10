@@ -14,6 +14,7 @@ const config = {
   offset: 6,
   scale: 1,
   motion: false,
+  scroller: false,
 };
 
 const ctrl = new Pane({
@@ -43,6 +44,7 @@ ctrl.addBinding(config, 'radius', {
   step: 1,
 })
 ctrl.addBinding(config, 'motion')
+ctrl.addBinding(config, 'scroller')
 
 const offset =ctrl.addBinding(config, 'offset', {
   min: 0,
@@ -67,6 +69,7 @@ ctrl.addBinding(config, 'theme', {
 
 const update = () => {
   document.documentElement.dataset.theme = config.theme
+  document.documentElement.dataset.scroller = config.scroller
   document.documentElement.dataset.below = config.below
   document.documentElement.dataset.full = config.full
   document.documentElement.dataset.motion = config.motion

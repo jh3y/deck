@@ -9,6 +9,13 @@
 <Demo src="/demos/balloon-bear/" title="Balloon Bear"></Demo>
 ---
 <!-- @theme="dark" -->
+```css [] bebé.css
+.jhey + .steph:has(:first-child) {
+  border-radius: 🤰👶;
+}
+```
+---
+<!-- @theme="dark" -->
 <Demo src="/demos/trading-card/" title="Trading Card"></Demo>
 ---
 <button style="border: revert; background: revert; padding: revert;">Sweat.</button>
@@ -85,6 +92,8 @@
 <Demo src="/demos/tertiary-toggle/index.html" alt="Tertiary toggle" />
 ---
 <Demo src="/demos/add-to-cart/index.html" alt="Passcode Reveal" />
+---
+<Demo src="/demos/hifi-button/index.html" alt="Hifi Button" />
 ---
 <h2 className="quote">
   Take on "side quests".
