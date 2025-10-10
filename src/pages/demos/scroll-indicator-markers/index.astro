@@ -1,0 +1,43 @@
+---
+import "./_style.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scroll-indicator-markers</title>
+  </head>
+  <body>
+    <div class="track">
+      <ul>
+        <li id="one">
+          <article></article>
+        </li>
+        <li id="two">
+          <article></article>
+        </li>
+        <li id="three">
+          <article></article>
+        </li>
+        <li id="four">
+          <article></article>
+        </li>
+        <li id="five">
+          <article></article>
+        </li>
+      </ul>
+      <div class="track__indicators" aria-hidden="true">
+        <a href="#one" class="indicator"></a>
+        <a href="#two" class="indicator"></a>
+        <a href="#three" class="indicator"></a>
+        <a href="#four" class="indicator"></a>
+        <a href="#five" class="indicator"></a>
+      </div>
+    </div>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>
