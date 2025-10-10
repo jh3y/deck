@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
+@import url('https://unpkg.com/normalize.css') layer(normalize);
+
+@layer normalize, foundation, demo, transition;
+
+@layer transition {
+  [data-theme='dark']::view-transition-new(root),
+  [data-theme='dark']::view-transition-old(root) {
+    animation-duration: 0s;
+  }
+
+  :root:has(#flicker:checked)[data-theme='light']::view-transition-new(root),
+  :root:has(#flicker:checked)[data-theme='light']::view-transition-old(root) {
+    animation-timing-function: var(--flicker);
+  }
+}
+
+@layer demo {
+  :root {
+    accent-color: red;
+    --cord: color-mix(in lch, canvas, canvasText 75%);
+    --stroke: color-mix(in lch, canvas, canvasText 75%);
+    --shine: hsl(210 20% 80% / 0.75);
+    --cap: color-mix(in lch, canvas, canvasText);
+    --filament: light-dark(orange, color-mix(in lch, canvas, canvasText 25%));
+    --bulb: transparent;
+    --width: 48px;
+    --flicker: linear(
+      0 0%,
+      0.1864 6.17%,
+      0.0001 14.41%,
+      0.5244 20.97%,
+      0.3927 37.91%,
+      0.8115 60.62%,
+      0.9416 61.92%,
+      0.9928 67.98%,
+      0.5032 70.42%,
+      0.9077 96.96%,
+      0.6736 98.74%,
+      1 100%
+    );
+  }
+  
+  h1 {
+    --font-level: 7;
+    margin: 0;
+  }
+
+  form {
+    position: fixed;
+    width: var(--width);
+    aspect-ratio: 1;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  form button {
+    width: 100%;
+    aspect-ratio: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+
+  .grab-handle {
+    width: 48px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    position: absolute;
+    top: calc((48px * (0.35 / 2)) + ((48px * 0.65) * (125 / 48)));
+    left: 50%;
+    translate: -50% -50%;
+    z-index: 999999;
+  }
+
+  :root:has(#handle:checked) .grab-handle {
+    outline: 4px dashed canvasText;
+    background: hsl(10 100% 50% / 0.2);
+  }
+
+  .arrow {
+    width: 150%;
+    position: absolute;
+    right: 150%;
+    top: 250%;
+  }
+
+  .arrow label {
+    white-space: nowrap;
+    position: absolute;
+    top: 50%;
+    right: 110%;
+  }
+
+  .arrow svg {
+    width: 100%;
+  }
+
+  .toggle-scene {
+    overflow: visible !important;
+    position: absolute;
+    width: 65%;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+  }
+  .toggle-scene__cord {
+    stroke: var(--cord);
+    stroke-width: 10;
+    cursor: move;
+  }
+  .toggle-scene__cord:nth-of-type(1) {
+    display: none;
+  }
+  .toggle-scene__cord:nth-of-type(2),
+  .toggle-scene__cord:nth-of-type(3),
+  .toggle-scene__cord:nth-of-type(4),
+  .toggle-scene__cord:nth-of-type(5) {
+    display: none;
+  }
+  .toggle-scene__cord-end {
+    stroke: var(--cord);
+    fill: var(--cord);
+  }
+  .toggle-scene__dummy-cord {
+    stroke-width: 10;
+    stroke: var(--cord);
+  }
+  .bulb__filament {
+    stroke: var(--filament);
+    stroke-width: 8;
+  }
+  [data-theme='light'] .bulb__filament {
+    stroke-width: 12;
+  }
+  .bulb__shine {
+    stroke: var(--shine);
+  }
+  .bulb__bulb {
+    stroke: var(--stroke);
+    fill: var(--bulb);
+    stroke-width: 10;
+  }
+  .bulb__cap {
+    fill: var(--cap);
+  }
+  .bulb__cap-shine {
+    fill: var(--shine);
+  }
+  .bulb__cap-outline {
+    stroke-width: 10;
+    stroke: var(--stroke);
+  }
+
+  .center {
+    position: relative;
+  }
+
+  .controls {
+    position: absolute;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1rem;
+    right: 0;
+    top: 100%;
+  }
+
+  label {
+    font-family: 'Gloria Hallelujah', cursive;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+}
+
+@layer foundation {
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+    background: canvas;
+    color: canvasText;
+  }
+
+  html {
+    color-scheme: dark only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  body::before {
+    --size: 45px;
+    --line: color-mix(in lch, canvasText, transparent 70%);
+    content: '';
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    background: linear-gradient(
+          90deg,
+          var(--line) 1px,
+          transparent 1px var(--size)
+        )
+        50% 50% / var(--size) var(--size),
+      linear-gradient(var(--line) 1px, transparent 1px var(--size)) 50% 50% /
+        var(--size) var(--size);
+    mask: linear-gradient(-20deg, transparent 50%, white);
+    top: 0;
+    transform-style: flat;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}

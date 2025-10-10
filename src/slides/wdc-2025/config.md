@@ -212,9 +212,9 @@ h1 {
 <BrowserSupport className="fixed top-4 right-4"  properties="css.types.easing-function.linear-function" captions="linear()"></BrowserSupport>
 <Demo src="/demos/breaking-linear/index.html" title="linear()"></Demo>
 ---
-# Animated signature with match and not match
+<Demo src="/demos/signature-flow/index.html" title="Signature flow"></Demo>
 ---
-# Include Tuggable Lightbulb with easing
+<Demo src="/demos/tuggable-lightbulb/index.html" title="Signature flow" windowed="true"></Demo>
 ---
 # SVG Filters + Liquid Glass
 ---

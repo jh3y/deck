@@ -273,7 +273,7 @@
       Helvetica, Arial, sans-serif, system-ui;
   }
 
-  body::before {
+  /* body::before {
     --size: 45px;
     --line: color-mix(in hsl, canvasText, transparent 70%);
     content: '';
@@ -292,8 +292,8 @@
     top: 0;
     transform-style: flat;
     pointer-events: none;
-    /* z-index: -1; */
-  }
+  } */
+  /* z-index: -1; */
 
   .bear-link {
     color: canvasText;

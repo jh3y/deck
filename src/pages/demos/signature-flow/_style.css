@@ -1,0 +1,523 @@
+@import 'normalize.css' layer(normalize);
+/* @import 'normalize.css' layer(normalize); */
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@layer normalize, foundation, demo, popover, signing;
+
+@layer signing {
+  :root {
+    --transition: 0.26s;
+    --delay: 0.5s;
+  }
+  .animated {
+    color: canvasText;
+    z-index: 2;
+    position: relative;
+  }
+  [data-css='true'] .animated svg path {
+    /* YOU ONLY NEED THIS IF YOU RELY ON STROKE_DASH and PATHLENGTH */
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset var(--transition) ease-out;
+  }
+  [data-css='true'] [popover][data-valid='true'][data-signing='true'] .animated svg path {
+    /* YOU ONLY NEED THIS IF YOU RELY ON STROKE_DASH and PATHLENGTH */
+    stroke-dashoffset: 0;
+    transition-duration: calc(var(--sign-on, 0.2) * 1s);
+  }
+  :is(.animated, .signature) {
+    width: var(--surface-width);
+    pointer-events: none;
+    svg {
+      width: 100%;
+      path {
+        stroke-width: 3px;
+      }
+    }
+  }
+
+  .animated {
+    opacity: 0;
+  }
+
+  [popover][data-signed='true'] .animated,
+  [popover][data-reversing='true'] .animated,
+  [popover][data-signing='true'] .animated {
+    opacity: 1;
+  }
+
+  [popover][data-signed='true'] {
+    :is(canvas, [popover] button, .canvas) {
+      pointer-events: none;
+    }
+    .status {
+      translate: 0 100%;
+      clip-path: inset(-100% 0 0 0);
+    }
+    .secondary button span {
+      translate: 0 100%;
+    }
+  }
+  .secondary button span {
+    transition: translate var(--transition) var(--delay) ease-out;
+  }
+
+  [popover] canvas {
+    transition: opacity var(--transition) var(--transition) ease-out;
+  }
+  [popover][data-valid='true'][data-reversing='true'] canvas,
+  [popover][data-valid='true'][data-signing='true'] canvas {
+    opacity: 0.1;
+    transition-delay: 0s;
+  }
+
+  [popover][data-valid='true'][data-signing='true'] .status {
+    transition-duration: calc((var(--sign-on, 0.2) * var(--timescale, 1)) * 1s),
+      var(--transition);
+    clip-path: inset(-100% 0 0 0);
+  }
+
+  :root:has([data-signed='true']) .toggle {
+    background: hsl(140 80% 90%);
+    color: hsl(140 90% 30%);
+    outline-color: hsl(140 80% 50%);
+  }
+
+  .hold {
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    user-select: none;
+    height: 32px;
+    position: relative;
+    overflow: hidden;
+    outline-color: canvasText;
+    user-select: none;
+    -webkit-tap-highlight-color: #0000;
+    touch-action: none;
+
+    .status {
+      display: inline-block;
+      position: absolute;
+      inset: 0;
+      color: hsl(140 90% 30%);
+      clip-path: inset(-100% 100% 0 0);
+      transition: clip-path var(--transition) ease-out,
+        translate var(--transition) var(--delay) ease-out;
+    }
+
+    .track {
+      background: hsl(140 80% 90%);
+      width: 100%;
+      height: 200%;
+      display: inline-block;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      position: absolute;
+      bottom: 0;
+
+      span {
+        display: grid;
+        place-items: center;
+      }
+    }
+
+    > span:last-of-type {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+    }
+  }
+}
+
+@layer popover {
+  :root {
+    --toggle-size: 44px;
+    --surface-width: 380px;
+    --surface-height: 200px;
+    --shadow-color: 0 0% 0%;
+    --shadow: 0px 0.5px 0.6px hsl(var(--shadow-color) / 0.07),
+      0px 1.7px 2.2px -0.4px hsl(var(--shadow-color) / 0.09),
+      0px 3.2px 4.1px -0.7px hsl(var(--shadow-color) / 0.11),
+      -0.1px 6.1px 7.8px -1.1px hsl(var(--shadow-color) / 0.13),
+      -0.2px 11.2px 14.3px -1.5px hsl(var(--shadow-color) / 0.15);
+  }
+
+  [data-clickable] {
+    cursor: default;
+  }
+
+  .placeholder {
+    width: var(--toggle-size);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  [popover] {
+    width: var(--surface-width);
+    max-width: calc(100vw - 2rem);
+    height: var(--surface-height);
+    height: fit-content;
+    border-radius: 6px;
+    margin: 0;
+    inset: unset;
+    opacity: 0;
+    padding: 0;
+    overflow: hidden;
+    /* border-color: light-dark(hsl(0 0% 75%), hsl(0 0% 60%));
+    border-width: 1px; */
+    border: 0;
+    background: canvasText;
+    color: canvas;
+    box-shadow: var(--shadow);
+
+    .popover__content {
+      padding: 0.5rem 0;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      height: 100%;
+      width: 100%;
+      filter: blur(4px);
+      opacity: 0;
+      width: var(--surface-width);
+      max-width: calc(100vw - 2rem);
+      border-radius: inherit;
+      font-size: 0.875rem;
+
+      button {
+        cursor: pointer;
+      }
+
+      header {
+        display: flex;
+        gap: 0 0.5rem;
+        padding-inline: 0.875rem;
+        color: light-dark(hsl(0 0% 50%), hsl(0 0% 80%));
+
+        svg {
+          width: 16px;
+          height: 16px;
+          opacity: 0;
+        }
+      }
+
+      footer {
+        padding-inline: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+
+        .secondary {
+          display: flex;
+          gap: 0.25rem;
+
+          button {
+            display: grid;
+            padding: 0;
+            place-items: center;
+            width: 32px;
+            aspect-ratio: 1;
+            border: 0;
+            background: #0000;
+            color: color-mix(in oklch, canvasText, #0000);
+            position: relative;
+            transition: color 0.2s ease-out;
+
+            span {
+              height: 100%;
+              width: 100%;
+              display: grid;
+              place-items: center;
+            }
+
+            &::after {
+              content: '';
+              opacity: 0;
+              position: absolute;
+              inset: 0;
+              border-radius: 6px;
+              background: color-mix(in oklch, canvasText, #0000 94%);
+              transition: opacity 0.2s ease-out;
+            }
+
+            &:is(:hover, :focus-visible) {
+              color: canvasText;
+
+              &::after {
+                opacity: 1;
+              }
+            }
+          }
+
+          svg {
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+
+      .canvas {
+        position: relative;
+        height: 130px;
+      }
+
+      canvas {
+        flex: 1;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        inset: 0;
+      }
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      border: 1px solid light-dark(hsl(0 0% 80%), hsl(0 0% 50%));
+    }
+
+    &:popover-open {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+@layer demo {
+  /* instruction arrow */
+  .arrow {
+    display: inline-block;
+    opacity: 0.8;
+    position: fixed;
+    font-size: 0.875rem;
+    font-family: 'Gloria Hallelujah', cursive;
+    transition: opacity 0.26s ease-out;
+
+    &.arrow--instruction {
+      top: 50%;
+      left: 50%;
+      translate: -160% -70%;
+      rotate: -10deg;
+      svg {
+        color: hsl(0 0% 65%);
+        scale: 1 1;
+        top: 130%;
+        rotate: 35deg;
+        left: 10%;
+        width: 60%;
+        translate: 120% 60%;
+        position: absolute;
+      }
+    }
+
+    span {
+      display: inline-block;
+      white-space: nowrap;
+    }
+  }
+
+  [data-dragging='true'] {
+    cursor: grabbing;
+  }
+  [data-debug='true'] .target {
+    opacity: 1;
+  }
+
+  /* the toggle size */
+  .toggle {
+    width: var(--toggle-size);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: grid;
+    outline-color: canvasText;
+    place-items: center;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: canvas;
+    background: canvasText;
+    border-style: solid;
+    border-color: color-mix(in oklch, canvasText, #0000 85%);
+    border-width: 1px;
+    box-shadow: var(--shadow);
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  /* magnetic hotspots */
+  .targets {
+    position: fixed;
+    inset: 1.5rem;
+    pointer-events: none;
+  }
+  .target {
+    pointer-events: all;
+    width: var(--toggle-size);
+    aspect-ratio: 1;
+    background: hsl(var(--hue, 10) 80% 50% / 0.2);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.26s ease-out;
+    position: fixed;
+
+    &[data-active='true'] {
+      --hue: 150;
+    }
+
+    &::after {
+      content: '';
+      width: max(var(--toggle-size), var(--snap-proximity) * 2px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: hsl(var(--hue, 10) 80% 50% / 0.1);
+      outline: 2px dashed hsl(var(--hue, 10) 80% 50% / 0.5);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+      pointer-events: none;
+    }
+
+    &.target--north {
+      top: 1.5rem;
+      left: 50%;
+      translate: -50% 0%;
+    }
+    &.target--west {
+      left: 1.5rem;
+      top: 50%;
+      translate: 0% -50%;
+    }
+    &.target--south-west {
+      bottom: 1.5rem;
+      left: 1.5rem;
+    }
+    &.target--south {
+      bottom: 1.5rem;
+      left: 50%;
+      translate: -50% 0;
+    }
+    &.target--east {
+      top: 50%;
+      right: 1.5rem;
+      translate: 0 -50%;
+    }
+    &.target--south-east {
+      bottom: 1.5rem;
+      right: 1.5rem;
+    }
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    background: light-dark(#fff, #000);
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'Inter', 'SF Pro Text', 'SF Pro Icons', 'AOS Icons',
+      'Helvetica Neue', Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+div.tp-dfwv {
+  width: 260px;
+  word-break: auto-phrase;
+}
