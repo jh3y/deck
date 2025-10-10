@@ -1,0 +1,46 @@
+---
+import "./_style.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mosaic</title>
+  </head>
+  <body>
+    <main>
+      <article class="border">
+        <img
+          src="https://assets.codepen.io/605876/headshot--square.jpeg"
+          alt=""
+        />
+      </article>
+    </main>
+    <svg class="sr-only" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+       
+        <filter id="tiled">
+          <!-- Create a flood fill (dimensions define the base tile) -->
+          <feFlood x="0" y="0" width="1" height="1" flood-color="white" />
+          
+          <!-- Set tile size (adjust width/height for mosaic granularity) -->
+          <feComposite width="10" height="10" operator="over" />
+          
+          <!-- Repeat tile across entire area -->
+          <feTile result="a" />
+          
+          <!-- Cut source graphic into tiles -->
+          <feComposite in="SourceGraphic" in2="a" operator="in" />
+          
+          <!-- Optional: adjust tile spacing (erode = gaps, dilate = expand) -->
+          <feMorphology operator="dilate" radius="5" />
+        </filter>
+      </defs>
+    </svg>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>

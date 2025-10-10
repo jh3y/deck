@@ -1,0 +1,690 @@
+@import 'normalize.css' layer(normalize);
+
+@layer normalize, foundation, slider, animations, demo, toggle, debug, transitions;
+
+@property --slider-complete {
+  initial-value: 0;
+  inherits: true;
+  syntax: '<integer>';
+}
+@property --slider-liquid {
+  initial-value: 0;
+  inherits: true;
+  syntax: '<integer>';
+}
+
+@layer debug {
+  
+  [data-debug='true'] .slider .knockout--debug {
+    translate: 0% -200%;
+    opacity: 1;
+  }
+
+  [data-debug='true'] .slider [type=range] {
+    opacity: 1;
+    translate: -50% -200%;
+  }
+  .slider [type=range],
+  .slider .knockout--debug {
+    opacity: 0;
+    outline: 4px dashed hotpink;
+    outline-offset: 5px;
+    transition-property: opacity, translate;
+    transition-duration: 0.26s;
+    transition-timing-function: ease-out;
+  }
+  .slider [type=range] {
+    outline: none;
+  }
+}
+
+@layer demo {
+  main {
+    display: grid;
+    gap: 2rem;
+  }
+}
+
+@layer transitions {
+  :root {
+    --transition: 0.2s;
+    --ease: ease-out;
+  }
+  [data-bounce='true']:has(button:active) {
+    --transition: 0.6s;
+    --ease: linear(
+      0 0%,
+      0.6091 3.69%,
+      1.0259 7.24%,
+      1.1733 9.05%,
+      1.283 10.92%,
+      1.3562 12.87%,
+      1.3948 14.95%,
+      1.4014 16.03%,
+      1.3999 17.16%,
+      1.3731 19.64%,
+      1.3202 22.27%,
+      1.1394 29.39%,
+      1.0582 33.17%,
+      0.9943 37.45%,
+      0.9734 39.64%,
+      0.9593 41.92%,
+      0.9505 45.08%,
+      0.9517 48.7%,
+      0.9924 63.02%,
+      1.0046 71.2%,
+      1.0061 78.24%,
+      1 100%
+    );
+  }
+  .slider .indicator--masked .mask {
+    translate: calc(
+      (var(--slider-complete) / 100) * (100cqi - 100%)
+      ) -50%;
+  }
+  .indicator--masked .mask {
+    translate: calc(
+        (var(--complete) / 100) * (100cqi - 60cqi - (0 * var(--border)))
+      ) -50%;
+    /* transition-property: scale; */
+    /* this would work with scale if not for Safari getting funny about the mask */
+    transition-property: height, width, margin, scale;
+    transition-duration: var(--transition);
+    transition-timing-function: var(--ease);
+    will-change: height, width, margin;
+  }
+  .wrapper {
+    clip-path: inset(0 0 0 0 round 100px);
+    filter: blur(6px);
+    transition: filter var(--transition) var(--ease);
+  }
+  
+  [aria-pressed='true']:not([data-active='true']) .liquid__track {
+    left: calc(var(--border) * 6);
+  }
+  .liquid__track {
+    left: 0;
+    transition-property: height, width, filter, left;
+    transition-duration: var(--transition);
+    transition-timing-function: var(--ease);
+    translate: calc(
+        (var(--complete) / 100) * (100cqi - 100% - (6 * var(--border)))
+      ) -50%;
+  }
+  .indicator__liquid {
+    translate: calc(
+        (var(--complete) / 100) * (100cqi - 100% - (2 * var(--border)))
+      ) -50%;
+    transition-property: scale;
+    transition-duration: var(--transition);
+    transition-timing-function: var(--ease);
+    /* transform: scale(var(--scale-x, 1), var(--scale-y, 1)); */
+  }
+  .indicator__liquid :is(.cover, .shadow) {
+    transition: opacity var(--transition) var(--ease);
+  }
+  /* these are the actual changes when we scale up */
+  /* these should also with a [data-active=true] when [data-debug=true] */
+  [data-active='true'] .indicator--masked .mask,
+  .liquid-toggle:active .indicator--masked .mask {
+    height: calc((100% - (2 * var(--border))) * 1.65);
+    width: calc((60% - (2 * var(--border))) * 1.65);
+    margin-left: calc((60% - (2 * var(--border))) * -0.325);
+    /* we can't use scale because of Safari flashing the mask color on change... */
+    /* scale: 1.65; */
+  }
+  [data-active='true'] .slider .indicator--masked .mask,
+  .slider:active .indicator--masked .mask {
+    height: calc(100% * 1.35);
+    width: calc(62px * 1.35);
+    margin-left:calc(
+      (62px * (-0.35 * 0.5)) + (var(--slider-complete) / 100) * (62px * 0.35 * 1));
+    /* scale: 1.35; */
+    /* margin-left: calc((62px - (2 * var(--border))) * -0.1525); */
+    /* we can't use scale because of Safari flashing the mask color on change... */
+    /* scale: 1.65; */
+  }
+  [data-active='true'] .indicator__liquid,
+  .liquid-toggle:active .indicator__liquid {
+    scale: 1.65;
+  }
+  [data-active='true'] .slider .indicator__liquid,
+  .slider:active .indicator__liquid {
+    scale: 1.35;
+  }
+
+  .slider .liquid__track {
+    translate: calc(-100% + (var(--slider-liquid) / 100) * (100cqi)) -50%;
+  }
+
+  .slider .liquids .liquid__shadow {
+    box-shadow: inset 0px 0px 3px 4px var(--checked), inset calc(((var(--slider-liquid) / 100) * 2px)  + (2px - (var(--slider-liquid) / 100) * 4px)) 0px calc(2px + (var(--slider-liquid) / 100) * 1px) calc(1px + ((var(--slider-liquid) / 100) * 1px)) var(--checked)
+  }
+
+  .slider .liquids--fill .liquid__shadow {
+    opacity: calc(var(--slider-liquid) / 50);
+  }
+
+  .liquids--fill {
+    z-index: 2;
+  }
+
+  .liquids--track .liquid__track {
+    translate: 8cqi -50%;
+  }
+
+  .slider .liquids {
+    filter: url(#goo) blur(0px);
+  }
+
+  .liquids--track {
+    --checked: var(--unchecked);
+  }
+  
+  .slider:active .wrapper,
+  [data-active='true'] .wrapper,
+  .liquid-toggle:active .wrapper {
+    filter: blur(0px);
+  }
+
+  .slider:active .indicator__liquid .shadow,
+  [data-active='true'] .indicator__liquid .shadow,
+  .liquid-toggle:active .indicator__liquid .shadow {
+    opacity: 1;
+  }
+
+  .slider:active .indicator__liquid .cover,
+  [data-active='true'] .indicator__liquid .cover,
+  .liquid-toggle:active .indicator__liquid .cover {
+    opacity: 0;
+  }
+
+  [data-active='true'] .indicator__liquid .liquid__track,
+  .liquid-toggle:active .indicator__liquid .liquid__track {
+    left: calc(var(--border) * 3);
+    height: calc((var(--height) * 1px) - (6 * var(--border)));
+  }
+  
+  [data-active='true'] .slider .indicator__liquid .liquid__track,
+  .slider:active .indicator__liquid .liquid__track {
+    left: 0;
+    height: calc((var(--height) * 0.25px));
+    min-height: calc((var(--height) * 0.25px));
+  }
+}
+
+@layer toggle {
+  /* this is the button */
+  .liquid-toggle {
+    --unchecked: hsl(218, 8%, 81%);
+    /* --checked: hsl(144, 100%, 43%); */
+    --checked: hsl(
+      var(--hue, 144),
+      calc((8 + (var(--complete) / 100 * (92))) * 1%),
+      calc((81 - (var(--complete) / 100 * (81 - 43))) * 1%)
+    );
+
+    --control: hsl(300, 100%, 100%);
+    --border: 5px;
+    --width: 140;
+    --height: 60;
+    height: calc(var(--height) * 1px);
+    width: calc(var(--width) * 1px);
+    border-radius: 100px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    overflow: visible;
+    container-type: inline-size;
+    background: #0000;
+    transition: outline var(--transition) var(--ease);
+    outline-offset: 2px;
+
+    * {
+      pointer-events: none !important;
+    }
+  }
+
+  .liquid-toggle:focus-visible {
+    outline: 4px solid color-mix(in oklch, var(--checked), #0000);
+  }
+
+  .liquid-toggle:active {
+    outline: none;
+  }
+  .liquid-toggle[data-active='true']:focus-visible {
+    outline: 4px solid #0000;
+  }
+
+  .indicator {
+    border-radius: 100px;
+    pointer-events: none;
+    height: 100%;
+    width: 100%;
+    background: var(--checked);
+    /* outline: 2px dashed canvasText; */
+    position: absolute;
+    top: 50%;
+    scale: 1;
+    left: 50%;
+    translate: -50% -50%;
+  }
+
+  .knockout {
+    height: calc(var(--height) * 1px);
+    width: calc(var(--width) * 1px);
+    border-radius: 100px;
+    filter: url(#remove-black);
+    position: absolute;
+    inset: 0;
+    will-change: filter, scale;
+    transform: translate3d(0, 0, 0);
+  }
+  .slider .indicator--masked .mask{
+    width: 62px;
+  }
+  .slider .indicator--masked {
+    background: #0000;
+  }
+  .indicator--masked {
+    background: var(--checked);
+    z-index: 12;
+    height: 100%;
+    width: 100%;
+    translate: -50% -50%;
+    container-type: inline-size;
+
+    .mask {
+      position: absolute;
+      height: calc(100% - (2 * var(--border)));
+      width: calc(60% - (2 * var(--border)));
+      top: 50%;
+      background: #000;
+      left: var(--border);
+      border-radius: 100px;
+    }
+  }
+
+  .wrapper {
+    position: absolute;
+    inset: 0;
+    border-radius: 100px;
+  }
+
+  .liquids {
+    position: absolute;
+    inset: 0;
+    transform: translate3d(0, 0, 0);
+    border-radius: 100px;
+    overflow: hidden;
+    filter: url(#goo);
+
+    .liquid__shadow {
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0px 0px 3px 4px var(--checked),
+        inset calc(((var(--complete) / 100) * 8px) + -4px) 0px 3px 4px
+          var(--checked);
+      border-radius: 100px;
+    }
+
+    .liquid__track {
+      content: '';
+      height: calc((var(--height) * 1px) - (0 * var(--border)));
+      width: calc((var(--width) * 1px) - (0 * var(--border)));
+      background: var(--checked);
+      border-radius: 100px;
+      position: absolute;
+      top: 50%;
+    }
+  }
+
+  .indicator__liquid {
+    position: absolute;
+    height: calc(100% - (2 * var(--border)));
+    width: calc(60% - (2 * var(--border)));
+    container-type: inline-size;
+    top: 50%;
+    /* only apply a background if you don't want to see underneath */
+    background: #0000;
+    left: var(--border);
+    border-radius: 100px;
+
+    .shadow {
+      opacity: 0;
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 100px;
+      box-shadow: 1px -1px 2px hsl(0 0% 100% / 0.5) inset,
+        0px -1px 2px hsl(0 0% 100% / 0.5) inset,
+        -1px -1px 2px hsl(0 0% 100% / 0.5) inset,
+        1px 1px 2px hsl(0 0% 30% / 0.5) inset,
+        -8px 4px 10px -6px hsl(0 0% 30% / 0.25) inset,
+        -1px 1px 6px hsl(0 0% 30% / 0.25) inset,
+        -1px -1px 8px hsl(0 0% 60% / 0.15), 1px 1px 2px hsl(0 0% 30% / 0.15),
+        2px 2px 6px hsl(0 0% 30% / 0.15),
+        -2px -1px 2px hsl(0 0% 100% / 0.25) inset,
+        3px 6px 16px -6px hsl(0 0% 30% / 0.5);
+      z-index: 20;
+    }
+
+    .cover {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: white;
+      border-radius: 100px;
+    }
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  /* html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  } */
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    /* background: light-dark(#fff, #000); */
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+/* Slider mechanics go here but all we are doing is passing 0-100 into properties */
+@layer animation {
+  /* TODO: Add details here for transition on click but not hold */
+  :root {
+    @media (hover: hover)  {
+      .slider {
+        --transition: 0.26s;
+        --ease: ease-out;
+      }
+      &[data-active=true] .slider,
+      &[data-bounce='true']:has(.slider:active) .slider {
+        --transition: 0.6s;
+        --ease: linear(
+          0 0%,
+          0.6091 3.69%,
+          1.0259 7.24%,
+          1.1733 9.05%,
+          1.283 10.92%,
+          1.3562 12.87%,
+          1.3948 14.95%,
+          1.4014 16.03%,
+          1.3999 17.16%,
+          1.3731 19.64%,
+          1.3202 22.27%,
+          1.1394 29.39%,
+          1.0582 33.17%,
+          0.9943 37.45%,
+          0.9734 39.64%,
+          0.9593 41.92%,
+          0.9505 45.08%,
+          0.9517 48.7%,
+          0.9924 63.02%,
+          1.0046 71.2%,
+          1.0061 78.24%,
+          1 100%
+        );
+      }
+    }
+  }
+
+  .slider {
+    --border: 0;
+    --height: 50;
+    --complete: 0;
+    --border: 0px;
+    --checked: #007AFF;
+    --unchecked: hsl(218, 8%, 81%);
+    position: relative;
+    container-type: inline-size;
+  }
+
+
+  .slider .indicator__liquid {
+    width: 62px;
+    height: 100%;
+    box-shadow:inset 1px -1px 2px #ffffff80, inset 0 -1px 2px #ffffff80, inset -1px -1px 2px #ffffff80, inset 1px 1px 2px #4d4d4d80, inset -8px 4px 10px -6px #4d4d4d40, inset -1px 1px 6px #4d4d4d40, -1px -1px 8px #99999926, 1px 1px 2px #4d4d4d26, 2px 2px 6px #4d4d4d26, inset -2px -1px 2px #ffffff40, 3px 6px 16px -6px #4d4d4d80;
+  }
+  
+
+  .slider__indicator,
+  .track {
+    transition: translate var(--transition) var(--ease);
+  }
+
+  .slider .indicator__liquid,
+  .slider__indicator {
+    translate: calc(((var(--slider-complete) / 100) * (100cqi - 100%))) -50%;
+  }
+  .slider__fill::after {
+    translate: calc(var(--slider-complete) * 1cqi) 0%;
+  }
+
+  @supports (animation-timeline: scroll()) and (animation-range: 0 100%) {
+    .slider {
+      timeline-scope: --thumb, --thumb;
+      animation: progress both linear, slider both linear;
+      animation-direction: reverse, reverse;
+      animation-timeline: --thumb, --thumb;
+      animation-range: contain, contain;
+    }
+    @keyframes progress {
+      to {
+        --slider-complete: 100;
+      }
+    }
+    @keyframes slider {
+      0% {
+        --slider-liquid: 0;
+      }
+      10%, 90% {
+        --slider-liquid: 60;
+      }
+      100% {
+        --slider-liquid: 100;
+      }
+    }
+    .slider input {
+      overflow: hidden;
+    }
+    .slider ::-webkit-slider-thumb {
+      view-timeline: --thumb inline;
+    }
+  }
+}
+
+@layer slider {
+  .slider {
+    --width: 400;
+    --height: 2.625rem;
+    --checked: hsl(280 80% 50%);
+    display: flex;
+    border-radius: 12px;
+    color: white;
+    width: calc(var(--width) * 1px);
+    max-width: calc(100vw - 2rem);
+    align-items: center;
+  }
+
+  
+  .slider__track {
+    flex: 1;
+    height: calc(var(--height) * 1px);
+    position: relative;
+    container-type: inline-size;
+  }
+
+  .slider__fill {
+    height: 30%;
+    border-radius: 12px;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 50%;
+    translate: 0 -50%;
+    clip-path: inset(0 0 0 0 round 12px);
+    pointer-events: none;
+    background: color-mix(in oklch, canvas, canvasText 15%);
+  }
+
+  .slider__fill::after {
+    content: '';
+    width: 120%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: var(--checked);
+    clip-path: inset(0 0 0 0 round 12px);
+    transform: translateX(-100%);
+  }
+
+  .slider__indicator {
+    pointer-events: none;
+    height: 100%;
+    aspect-ratio: 1;
+    background: white;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    translate: calc(((100cqi - 100%) / 10) * 10) -50%;
+    outline: 2px solid hsl(0 0% 50%);
+  }
+
+  .slider__indicator::after {
+    content: '';
+    height: 50%;
+    width: 4px;
+    background: hsl(0 0% 50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    border-radius: 4px;
+  }
+
+  .slider__label {
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .slider input {
+    width: calc(100% - 2rem);
+    position: absolute;
+    left: 50%;
+    translate: -50% 0;
+    opacity: 0;
+  }
+
+  .slider [type='range'] {
+    height: calc(var(--height) * 1px);
+    outline: none;
+  }
+
+  .slider:has(:focus-visible) {
+    outline: 2px solid var(--checked);
+    outline-offset: 4px;
+  }
+
+  .slider [type='range']:hover {
+    cursor: -webkit-grab;
+  }
+
+  .slider [type='range']:active {
+    cursor: -webkit-grabbing;
+  }
+
+  .slider [type='range'] {
+    opacity: 0;
+    z-index: 99999;
+  }
+}
+
+div.tp-dfwv {
+  width: 280px;
+}

@@ -1,0 +1,895 @@
+@import 'normalize.css' layer(normalize);
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
+/* @import 'normalize.css' layer(normalize); */
+
+@font-face {
+  font-family: Cyber;
+  src: url('https://assets.codepen.io/605876/Blender-Pro-Bold.otf');
+  font-display: swap;
+}
+
+@layer normalize, foundation, demo, backdrop, transition, delays, glitch, instruction;
+
+@layer instruction {
+  .instruction {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-family: 'Gloria Hallelujah', cursive;
+    translate: -140px 20%;
+    color: color-mix(in lch, canvas, canvasText 80%);
+
+    svg {
+      width: 50px;
+    }
+
+    span {
+      display: inline-block;
+      translate: -150% 105%;
+      rotate: 10deg;
+      font-size: 0.875rem;
+    }
+  }
+}
+
+@layer glitch {
+  .letters {
+    display: flex;
+
+    span:nth-of-type(2),
+    span:nth-of-type(5) {
+      scale: 1 -1;
+    }
+    span:nth-of-type(3),
+    span:nth-of-type(6),
+    span:nth-of-type(7) {
+      scale: -1 -1;
+    }
+  }
+  [aria-label='Upgrade'] {
+    --shimmy-distance: 5;
+    --clip-one: polygon(
+      0 2%,
+      100% 2%,
+      100% 95%,
+      95% 95%,
+      95% 90%,
+      85% 90%,
+      85% 95%,
+      8% 95%,
+      0 70%
+    );
+    --clip-two: polygon(
+      0 78%,
+      100% 78%,
+      100% 100%,
+      95% 100%,
+      95% 90%,
+      85% 90%,
+      85% 100%,
+      8% 100%,
+      0 78%
+    );
+    --clip-three: polygon(
+      0 44%,
+      100% 44%,
+      100% 54%,
+      95% 54%,
+      95% 54%,
+      85% 54%,
+      85% 54%,
+      8% 54%,
+      0 54%
+    );
+    --clip-four: polygon(
+      0 0,
+      100% 0,
+      100% 0,
+      95% 0,
+      95% 0,
+      85% 0,
+      85% 0,
+      8% 0,
+      0 0
+    );
+    --clip-five: polygon(
+      0 0,
+      100% 0,
+      100% 0,
+      95% 0,
+      95% 0,
+      85% 0,
+      85% 0,
+      8% 0,
+      0 0
+    );
+    --clip-six: polygon(
+      0 40%,
+      100% 40%,
+      100% 85%,
+      95% 85%,
+      95% 85%,
+      85% 85%,
+      85% 85%,
+      8% 85%,
+      0 70%
+    );
+    --clip-seven: polygon(
+      0 63%,
+      100% 63%,
+      100% 80%,
+      95% 80%,
+      95% 80%,
+      85% 80%,
+      85% 80%,
+      8% 80%,
+      0 70%
+    );
+
+    &:is(:focus-visible, :hover) .glitch {
+      animation: glitch 2s infinite;
+      display: flex;
+
+      .backdrop {
+        background: canvas;
+      }
+    }
+
+    .glitch {
+      display: none;
+      position: absolute;
+      inset: 0;
+      translate: 0% 0;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.5rem;
+      pointer-events: none;
+      color: var(--accent);
+      text-shadow: 0 1px var(--shadow);
+
+      kbd {
+        opacity: 0;
+      }
+    }
+  }
+  .modal__glitch {
+    --shimmy-distance: 2;
+    --clip-one: polygon(
+      0 2%,
+      100% 2%,
+      100% 95%,
+      95% 95%,
+      95% 90%,
+      85% 90%,
+      85% 95%,
+      8% 95%,
+      0 70%
+    );
+    --clip-two: polygon(
+      0 78%,
+      100% 78%,
+      100% 100%,
+      95% 100%,
+      95% 90%,
+      85% 90%,
+      85% 100%,
+      8% 100%,
+      0 78%
+    );
+    --clip-three: polygon(
+      0 44%,
+      100% 44%,
+      100% 54%,
+      95% 54%,
+      95% 54%,
+      85% 54%,
+      85% 54%,
+      8% 54%,
+      0 54%
+    );
+    --clip-four: polygon(
+      0 0,
+      100% 0,
+      100% 0,
+      95% 0,
+      95% 0,
+      85% 0,
+      85% 0,
+      8% 0,
+      0 0
+    );
+    --clip-five: polygon(
+      0 0,
+      100% 0,
+      100% 0,
+      95% 0,
+      95% 0,
+      85% 0,
+      85% 0,
+      8% 0,
+      0 0
+    );
+    --clip-six: polygon(
+      0 40%,
+      100% 40%,
+      100% 85%,
+      95% 85%,
+      95% 85%,
+      85% 85%,
+      85% 85%,
+      8% 85%,
+      0 70%
+    );
+    --clip-seven: polygon(
+      0 63%,
+      100% 63%,
+      100% 80%,
+      95% 80%,
+      95% 80%,
+      85% 80%,
+      85% 80%,
+      8% 80%,
+      0 70%
+    );
+    position: absolute;
+    inset: 0;
+    padding: 1rem;
+    animation-duration: 2s;
+    color: var(--shadow);
+    z-index: -1;
+  }
+  @keyframes glitch {
+    0% {
+      clip-path: var(--clip-one);
+    }
+    2%,
+    8% {
+      clip-path: var(--clip-two);
+      transform: translate(calc(var(--shimmy-distance) * -1%), 0);
+    }
+    6% {
+      clip-path: var(--clip-two);
+      transform: translate(calc(var(--shimmy-distance) * 1%), 0);
+    }
+    9% {
+      clip-path: var(--clip-two);
+      transform: translate(0, 0);
+    }
+    10% {
+      clip-path: var(--clip-three);
+      transform: translate(calc(var(--shimmy-distance) * 1%), 0);
+    }
+    13% {
+      clip-path: var(--clip-three);
+      transform: translate(0, 0);
+    }
+    14%,
+    21% {
+      clip-path: var(--clip-four);
+      transform: translate(calc(var(--shimmy-distance) * 1%), 0);
+    }
+    25% {
+      clip-path: var(--clip-five);
+      transform: translate(calc(var(--shimmy-distance) * 1%), 0);
+    }
+    30% {
+      clip-path: var(--clip-five);
+      transform: translate(calc(var(--shimmy-distance) * -1%), 0);
+    }
+    35%,
+    45% {
+      clip-path: var(--clip-six);
+      transform: translate(calc(var(--shimmy-distance) * -1%));
+    }
+    40% {
+      clip-path: var(--clip-six);
+      transform: translate(calc(var(--shimmy-distance) * 1%));
+    }
+    50% {
+      clip-path: var(--clip-six);
+      transform: translate(0, 0);
+    }
+    55% {
+      clip-path: var(--clip-seven);
+      transform: translate(calc(var(--shimmy-distance) * 1%), 0);
+    }
+    60% {
+      clip-path: var(--clip-seven);
+      transform: translate(0, 0);
+    }
+    31%,
+    61%,
+    100% {
+      clip-path: var(--clip-four);
+    }
+  }
+}
+
+@layer delays {
+  [data-upgrading='true'] .backdrop {
+    animation: bg-flicker 0.25s var(--flicker);
+  }
+  .modal[data-action='Cancel'] [data-action='Cancel'] .backdrop,
+  .modal[data-action='Proceed'] [data-action='Proceed'] .backdrop {
+    animation: bg-flicker 0.25s var(--flicker) backwards;
+  }
+
+  [data-upgrading='true'] kbd,
+  .modal[data-action='Cancel'] [data-action='Cancel'] kbd,
+  .modal[data-action='Proceed'] [data-action='Proceed'] kbd {
+    opacity: 0;
+  }
+
+  .modal:not(:popover-open) {
+    --base-delay: 0s;
+    &::before,
+    &::after {
+      transition-delay: calc(var(--base-delay) + 0.325s);
+    }
+    .body__backdrop,
+    .modal__body,
+    .body__content {
+      transition-delay: calc(var(--base-delay) + 0.075s);
+    }
+    h2 span,
+    h2::after,
+    .body__text,
+    .modal__actions {
+      transition-delay: var(--base-delay);
+    }
+  }
+  .modal[data-action] {
+    --base-delay: 0.35s;
+    &::before,
+    &::after {
+      transition-delay: calc(var(--base-delay) + 0.325s);
+    }
+    .body__backdrop,
+    .modal__body,
+    .body__content {
+      transition-delay: calc(var(--base-delay) + 0.075s);
+    }
+    h2 span,
+    h2::after,
+    .body__text,
+    .modal__actions {
+      transition-delay: var(--base-delay);
+    }
+  }
+  .modal:popover-open {
+    &::before,
+    &::after {
+      animation-delay: 0.2s;
+      transition-delay: 0s;
+    }
+    .body__backdrop,
+    .modal__body,
+    .body__content {
+      transition-delay: 0.22s;
+    }
+    h2 span,
+    h2::after,
+    .body__text {
+      transition-delay: 0.325s;
+    }
+    h2::after {
+      transition-timing-function: ease-out;
+    }
+    .modal__actions {
+      transition-delay: 0.5s;
+    }
+  }
+}
+
+@layer transition {
+  :root {
+    --flicker: linear(
+      0 0%,
+      0.1864 6.17%,
+      0.0001 14.41%,
+      0.5244 20.97%,
+      0.3927 37.91%,
+      0.8115 60.62%,
+      0.9416 61.92%,
+      0.9928 67.98%,
+      0.5032 70.42%,
+      0.9077 96.96%,
+      0.6736 98.74%,
+      1 100%
+    );
+  }
+  /* this is "trickier" than normal because there are many things happening */
+  /*
+    1. Side bar fade + translate in
+    2. The backdrop slides in
+    3. The heading and content fade in but the paragraphs translate too
+    4. The heading underline draws in
+    5. The actions fade in last with a slight translate
+    6. [optional] fire a glitch animation on the content once on load
+  */
+  .modal {
+    transition-property: display, overlay;
+    transition-duration: 1s;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-out;
+  }
+
+  modal[data-action] {
+    transition-duration: 1s;
+  }
+
+  modal:popover-open {
+    transition-duration: 1s;
+  }
+
+  .modal::after,
+  .modal::before {
+    transition-property: opacity, translate;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+    translate: -25% 0;
+    opacity: 0;
+  }
+
+  .modal h2::after {
+    transform-origin: 0 50%;
+    transition-duration: 0.26s;
+    transition-property: scale;
+    transition-timing-function: ease-in;
+    scale: 0 1;
+  }
+
+  .modal h2 span {
+    opacity: 0;
+    transition-property: opacity;
+    transition-timing-function: ease-out;
+    transition-duration: 0.26s;
+  }
+
+  .modal .body__backdrop {
+    transition-property: translate;
+    transition-duration: 0.26s;
+    translate: calc(-100% - (2 * var(--border))) 0;
+  }
+
+  .modal .modal__body,
+  .modal .body__content {
+    transition-property: clip-path;
+    transition-duration: 0.26s;
+    clip-path: inset(0 calc(100% + (2 * var(--border))) 0 0);
+  }
+
+  .modal .body__text {
+    opacity: 0;
+    translate: 0 -1lh;
+    transition-property: opacity, translate;
+    transition-duration: 0.26s;
+    transition-timing-function: ease-out;
+  }
+
+  .modal .modal__actions {
+    transition-property: translate, opacity;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out;
+    opacity: 0;
+    translate: -24px 0;
+  }
+
+  .modal:popover-open {
+    &::before,
+    &::after {
+
+      opacity: 1;
+      translate: var(--border) 0;
+    }
+    &::before {
+            animation: flicker 0.625s var(--flicker) none;
+    }
+    .body__backdrop {
+      translate: 0 0;
+    }
+    .body__content {
+      clip-path: inset(0 calc(var(--border) * -1) 0 0);
+    }
+    .modal__body {
+      clip-path: inset(0 calc(var(--border) * -1) 0 0);
+    }
+    h2 span {
+      opacity: 1;
+    }
+    h2::after {
+      scale: 1 1;
+    }
+    .body__text {
+      translate: 0 0;
+      opacity: 1;
+    }
+    .modal__actions {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @starting-style {
+    .modal:popover-open {
+      opacity: 0;
+
+      &::before,
+      &::after {
+        opacity: 0;
+        translate: -25% 0;
+      }
+
+      .modal__actions {
+        translate: -24px 0;
+        opacity: 0;
+      }
+
+      .body__backdrop {
+        translate: calc(-100% - (2 * var(--border))) 0;
+      }
+
+      .body__text {
+        opacity: 0;
+        translate: 0 -1lh;
+      }
+
+      .body__content {
+        clip-path: inset(0 calc(100% + (2 * var(--border))) 0 0);
+      }
+
+      .modal__body {
+        clip-path: inset(0 calc(100% + (2 * var(--border))) 0 0);
+      }
+
+      h2 span {
+        opacity: 0;
+      }
+
+      h2::after {
+        scale: 0 1;
+      }
+    }
+  }
+  @keyframes flicker {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes bg-flicker {
+    0% {
+      background: light-dark(hsl(0 0% 100% / 0.65), hsl(0 0% 0% / 0.65));
+    }
+    100% {
+      background: var(--accent);
+    }
+  }
+}
+
+@layer backdrop {
+  .body__backdrop {
+    position: absolute;
+    inset: 0;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 100%;
+      top: 2rem;
+      width: calc(2 * var(--border));
+      height: 40%;
+      background: var(--accent);
+      opacity: 0.7;
+      clip-path: polygon(0 0, 0 100%, 100% calc(100% - 6px), 100% 6px);
+    }
+  }
+
+  button {
+    outline: none;
+
+    &:is(:hover, :focus-visible) {
+      kbd {
+        color: var(--accent);
+      }
+      .backdrop {
+        background: var(--accent);
+      }
+      color: canvas;
+    }
+  }
+
+  .backdrop {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: light-dark(hsl(0 0% 100% / 0.4), hsl(0 0% 0% / 0.4));
+    clip-path: var(--clip);
+    pointer-events: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      translate: 0 0;
+      border: var(--border) solid #0000;
+      clip-path: var(--clip);
+      mask: linear-gradient(#0000 0% 100%), linear-gradient(#fff 0% 100%);
+      mask-clip: padding-box, border-box;
+      mask-repeat: no-repeat;
+      mask-composite: intersect;
+      z-index: 2;
+    }
+
+    .corner {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      height: var(--corner);
+      width: var(--corner);
+
+      &::after {
+        content: '';
+        height: calc(var(--border) * 2);
+        width: 200%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        transform: rotate(135deg);
+        background: var(--accent);
+      }
+    }
+  }
+}
+
+@layer demo {
+  :root {
+    --shadow: hsl(10 100% 60%);
+    --accent: hsl(183 38% 57%);
+  }
+  h1 {
+    font-size: 4rem;
+  }
+  .modal {
+    --corner: 12px;
+    --border: 2px;
+    --clip: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - var(--corner)),
+      calc(100% - var(--corner)) 100%,
+      0% 100%
+    );
+    color: var(--accent);
+    width: clamp(340px, 55vw, 480px);
+    border: 0;
+    padding: 0;
+    overflow: visible;
+    background: #0000;
+    font-family: 'Cyber', sans-serif;
+
+    .version {
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      font-size: 8px;
+      opacity: 0.5;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: canvasText;
+    }
+
+    h2 {
+      padding-bottom: 0.5rem;
+      margin: 0;
+      text-transform: uppercase;
+      position: relative;
+      font-size: 1.25rem;
+
+      &::after {
+        content: '';
+        height: var(--border);
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--accent);
+        position: absolute;
+      }
+    }
+
+    p {
+      /* color: color-mix(in oklch, var(--accent), canvasText 50%);
+      text-shadow: 1px 1px var(--accent); */
+    }
+
+    &::after,
+    &::before {
+      content: '';
+      position: absolute;
+      top: 1px;
+      bottom: 1px;
+      right: 100%;
+      width: 1rem;
+      border: var(--border) solid var(--accent);
+      translate: var(--border) 0;
+      backdrop-filter: saturate(180%) blur(6px);
+    }
+
+    &::before {
+      background: var(--accent);
+      mask: linear-gradient(#fff, hsl(0 0% 100% / 0.6) 15% 95%, #fff);
+    }
+
+    .modal__body {
+      backdrop-filter: saturate(180%) blur(6px);
+      clip-path: inset(0 -100% 0 0);
+    }
+
+    .body__content {
+      padding: 1rem;
+      position: relative;
+    }
+
+    .modal__actions {
+      position: absolute;
+      top: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      padding-block: 1rem;
+    }
+  }
+  .cyber-btn {
+    --corner: 12px;
+    --border: 1px;
+    --clip: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - var(--corner)),
+      calc(100% - var(--corner)) 100%,
+      0% 100%
+    );
+    font-family: 'Cyber', sans-serif;
+    width: 140px;
+    text-align: left;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.5rem;
+    border: 0;
+    background: #0000;
+    position: relative;
+    color: var(--accent);
+    cursor: pointer;
+
+    * {
+      pointer-events: none;
+    }
+
+    .backdrop {
+      backdrop-filter: saturate(180%) blur(6px);
+    }
+
+    kbd {
+      color: canvas;
+      font-weight: bold;
+      width: 20px;
+      display: inline-block;
+      aspect-ratio: 1;
+      font-size: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-grid;
+      place-items: center;
+
+      svg {
+        width: 65%;
+      }
+    }
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  /* html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  } */
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    color-scheme: dark only;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+div.tp-dfwv {
+  width: 256px;
+}

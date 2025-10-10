@@ -1,0 +1,116 @@
+---
+import "./_style.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>lighting</title>
+  </head>
+  <body>
+    <div class="icon" data-light="light1">
+      <img src="https://assets.codepen.io/605876/spotify.png" alt="spotify" />
+    </div>
+    <div class="icon" data-light="light2">
+      <img src="https://assets.codepen.io/605876/raycast.png" alt="raycast" />
+    </div>
+    <div class="icon" data-light="light3">
+      <img src="https://assets.codepen.io/605876/discord.png" alt="discord" />
+    </div>
+    <div class="icon" data-light="light4">
+      <img
+        src="https://assets.codepen.io/605876/screenstudio.png"
+        alt="screen studio"
+      />
+    </div>
+    <article class="surface">
+      <nav>
+        <div></div>
+        <div></div>
+        <div></div>
+      </nav>
+      <svg class="filter" xmlns="http://www.w3.org/2000/svg">
+        <filter
+          id="lighting"
+          filterUnits="objectBoundingBox"
+          x="0%"
+          y="0%"
+          width="100%"
+          height="100%"
+        >
+          <!-- Light source 1 -->
+          <feSpecularLighting
+            in="SourceAlpha"
+            result="light1"
+            id="light1"
+            specularConstant="12"
+            specularExponent="120"
+            lighting-color="hsl(142 77% 48%)"
+            surfaceScale="1"
+          >
+            <fePointLight x="-50" y="50" z="180" />
+          </feSpecularLighting>
+          <feSpecularLighting
+            in="SourceAlpha"
+            result="light2"
+            id="light2"
+            specularConstant="1"
+            specularExponent="20"
+            surfaceScale="1"
+            lighting-color="hsl(0 100% 69%)"
+          >
+            <fePointLight x="250" y="50" z="180" />
+          </feSpecularLighting>
+
+          <feSpecularLighting
+            in="SourceAlpha"
+            result="light3"
+            id="light3"
+            specularConstant="1"
+            specularExponent="20"
+            surfaceScale="1"
+            lighting-color="hsl(235 86% 73%)"
+          >
+            <fePointLight x="250" y="50" z="180" />
+          </feSpecularLighting>
+          <feSpecularLighting
+            in="SourceAlpha"
+            result="light4"
+            id="light4"
+            specularConstant="1"
+            specularExponent="20"
+            surfaceScale="1"
+            lighting-color="hsl(267 61% 48%)"
+          >
+            <fePointLight x="250" y="50" z="180" />
+          </feSpecularLighting>
+          <!-- Blend lights pair by pair -->
+          <feBlend in="light1" in2="light2" mode="screen" result="blend12" />
+          <feBlend in="light3" in2="light4" mode="screen" result="blend34" />
+          <feBlend
+            in="blend12"
+            in2="blend34"
+            mode="screen"
+            result="allLights"
+          />
+
+          <!-- Apply lighting over shape -->
+          <feComposite
+            in="allLights"
+            in2="SourceGraphic"
+            operator="in"
+            result="litShape"
+          />
+          <feMerge>
+            <feMergeNode in="litShape" />
+          </feMerge>
+        </filter>
+      </svg>
+    </article>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>

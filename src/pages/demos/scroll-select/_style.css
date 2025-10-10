@@ -1,0 +1,369 @@
+@import 'normalize.css' layer(normalize);
+
+@layer normalize, foundation, demo, list, transit;
+
+@layer transit {
+  :root {
+    --transition: 1s;
+  }
+  /* this is a hold animation for open/close of the picker */
+  .custom-select::picker(select) {
+    transition-property: display, overlay;
+    transition-behavior: allow-discrete;
+    transition-duration: var(--transition);
+  }
+
+  .custom-select:open option:not(:checked) {
+    color: canvasText;
+    transition: color 0.2s calc(var(--proximity) * 0.1s) ease-out;
+  }
+
+  [data-centered='false'] {
+    --start-delay: 0.4;
+  }
+
+  .custom-select:not(:open) option:not(:checked) {
+    /* need to calc the 0.8s + cater for start delay */
+    --delay: calc(sin(((3 - var(--proximity)) / 3) * 45deg) * 0.8s);
+    color: #0000;
+    transition: color 0.2s
+      calc((var(--start-delay, 0) + ((3 - var(--proximity)) * 0.1)) * 1s)
+      ease-out;
+    transition: color 0.2s var(--delay) ease-out;
+  }
+
+  @starting-style {
+    .custom-select:not(:open) option:not(:checked) {
+      color: canvasText;
+    }
+    .custom-select:open option:not(:checked) {
+      color: #0000;
+    }
+  }
+  /* this is your toggle for the button content dupe with the overlay */
+  .custom-select selectedcontent {
+    transition-property: opacity;
+    transition-duration: var(--transition);
+    transition-timing-function: steps(1, end);
+  }
+  .custom-select:open selectedcontent {
+    transition-timing-function: steps(1, start);
+    opacity: 0;
+  }
+}
+
+@layer list {
+  .custom-select option {
+    opacity: var(--fade);
+    filter: blur(4px);
+    animation: fade-n-blur both ease-in-out;
+    animation-timeline: view();
+    background: #0000;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @keyframes fade-n-blur {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    40%,
+    60% {
+      opacity: var(--fade);
+    }
+    50% {
+      filter: blur(0px);
+      opacity: 1;
+    }
+  }
+}
+
+@layer demo {
+  .custom-select {
+    &,
+    &::picker(select) {
+      appearance: base-select;
+    }
+  }
+  
+  @supports (appearance: base-select) {
+    .custom-select {
+      background: red;
+    }
+  }
+
+  .custom-select {
+    --height: 1.2lh;
+    --fade: 0.5;
+    --hover: light-dark(
+      color-mix(in oklch, canvasText, #0000 90%),
+      color-mix(in oklch, canvasText, #0000 85%)
+    );
+    /* font-family: 'Helvetica Neue'; */
+    /* letter-spacing: -0.5px; */
+    /* font-weight: 500; */
+    width: 220px;
+    padding: 0;
+    border: 0;
+    height: var(--height);
+    border-radius: 0;
+    font-size: 2rem;
+    position: relative;
+    background: #0000;
+    outline-color: color-mix(in oklch, canvasText, #0000);
+    cursor: pointer;
+
+    &:open button {
+      background: var(--hover);
+
+      .chevron-top {
+        d: path('M4 12L12 4');
+      }
+      .chevron-top--left {
+        d: path('M21.8984 13.8984L11.9989 3.99894');
+        rotate: -45deg;
+        translate: -8px 8px;
+      }
+      .chevron-bottom {
+        d: path('M4 12L12 20');
+      }
+      .chevron-bottom--right {
+        rotate: 45deg;
+        translate: -8px -8px;
+        d: path('M21.8984 10L11.9989 19.8995');
+      }
+
+      selectedcontent {
+        color: #0000;
+      }
+    }
+
+    &:is(:hover, :focus-visible, :open) svg {
+      opacity: 1;
+    }
+
+    &:is(:hover, :focus-visible) button {
+      background: var(--hover);
+    }
+
+    button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      border: 0;
+      border-radius: 6px;
+      /* background: var(--hover); */
+      padding: 0.5rem 0.75rem;
+      transition: background 0.26s ease-out;
+      gap: 1rem;
+      position: relative;
+
+      path {
+        transition-property: translate, rotate, d;
+        transition-duration: 0.2s;
+        transition-timing-function: ease-out;
+        transform-box: fill-box;
+        transform-origin: center center;
+      }
+
+      .chevron-top--left {
+        transform-origin: 0 0;
+      }
+      .chevron-bottom--right {
+        transform-origin: 0 100%;
+      }
+
+      selectedcontent {
+        flex: 1;
+      }
+
+      svg {
+        width: 24px;
+        height: 24px;
+        opacity: 0.5;
+        transition: opacity 0.2s ease-out;
+      }
+    }
+
+    &::picker(select) {
+      rotate: 0deg;
+      border: 0;
+      background: #0000;
+      height: calc(7 * var(--height));
+      /* outline: 2px dashed red; */
+      top: anchor(center);
+      translate: 0 -50%;
+      mask: linear-gradient(#0000, #fff 2rem calc(100% - 2rem), #0000) 0 0 /
+        100% 100% no-repeat;
+    }
+    .scroller {
+      height: calc(7 * var(--height));
+      width: 100%;
+      scrollbar-color: #0000 #0000;
+      padding-block: calc(3 * var(--height));
+      scroll-snap-type: y mandatory;
+      overflow: auto;
+      position: absolute;
+      top: 50%;
+      translate: 0 -50%;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        height: var(--height);
+        width: 100%;
+        left: 0;
+        opacity: 0;
+        z-index: 20;
+      }
+
+      &::before {
+        top: 0;
+      }
+
+      &::after {
+        bottom: 0;
+      }
+    }
+
+    &::picker-icon {
+      display: none;
+    }
+
+    &:not(:focus-within) option:checked {
+      opacity: 1;
+    }
+
+    option {
+      padding: 0.5rem 0.75rem;
+      /* padding-left: calc(24px + 1.75rem); */
+      height: var(--height);
+      opacity: var(--fade);
+      /* probably don't do this */
+      outline: none;
+      cursor: pointer;
+      scroll-snap-align: center;
+    }
+
+    option::checkmark {
+      display: none;
+    }
+  }
+  main {
+    font-size: 2rem;
+
+    & > span {
+      display: inline-block;
+      translate: 0.5ch 0;
+      transition-property: opacity, translate;
+      transition-duration: 0.2s;
+      transition-timing-function: ease-out;
+    }
+
+    &:has(select:is(:hover, :focus-visible, :open)) span {
+      translate: 0 0;
+    }
+    &:has(select:open) span {
+      opacity: 0.25;
+    }
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  /* html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  } */
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+
+  html {
+    background: #0000;
+    color-scheme: unset;
+  }
+  body {
+    color-scheme: dark only;
+    color: canvasText;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}

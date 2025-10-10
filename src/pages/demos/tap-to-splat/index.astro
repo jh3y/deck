@@ -1,0 +1,37 @@
+---
+import "./_style.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tap-to-splat</title>
+  </head>
+  <body>
+    <main>
+      <h1>Tap to splat!</h1>
+    </main>
+    <svg>
+      <defs>
+        <filter id="goo">
+          <feGaussianBlur result="blur" in="SourceGraphic" stdDeviation="10 10"></feGaussianBlur>
+          <feColorMatrix
+            result="matrix"
+            values="
+              1 0 0 0
+              0 0 1 0 
+              0 0 0 0
+              1 0 0 0
+              0 0 25 -10
+            " type="matrix"></feColorMatrix>
+        </filter>
+      </defs>
+    </svg>
+    <div class="splats"></div>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>

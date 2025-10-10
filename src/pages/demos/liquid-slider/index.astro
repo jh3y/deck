@@ -1,0 +1,126 @@
+---
+import "./_style.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>liquid-slider</title>
+  </head>
+  <body>
+    <main>
+      <div class="slider">
+        <div class="knockout" style="touch-action: none;">
+          <div class="slider__fill"></div>
+          <div class="indicator indicator--masked">
+            <div class="mask"></div>
+          </div>
+        </div>
+        <div class="knockout knockout--debug">
+          <div class="slider__fill"></div>
+          <div class="indicator indicator--masked">
+            <div class="mask"></div>
+          </div>
+        </div>
+        <div class="slider__track">
+          <label for="slider" class="sr-only">Slider</label>
+          <input
+            tabindex="0"
+            type="range"
+            id="slider"
+            min="0"
+            max="100"
+            step="1"
+          />
+          <!-- <div class="slider__indicator"></div> -->
+          <div class="indicator__liquid">
+            <div class="shadow"></div>
+            <div class="wrapper">
+              <div class="liquids liquids--fill">
+                <div class="liquid__shadow"></div>
+                <div class="liquid__track"></div>
+              </div>
+              <div class="liquids liquids--track">
+                <div class="liquid__shadow"></div>
+                <div class="liquid__track"></div>
+              </div>
+            </div>
+            <div class="cover"></div>
+          </div>
+        </div>
+      </div>
+      <svg class="sr-only" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="goo">
+            <feGaussianBlur
+              id="SvgjsFeGaussianBlur1000"
+              result="SvgjsFeGaussianBlur1000"
+              in="SourceGraphic"
+              stdDeviation="13"
+            ></feGaussianBlur>
+            <feColorMatrix
+              id="SvgjsFeColorMatrix1001"
+              result="SvgjsFeColorMatrix1001"
+              in="SvgjsFeGaussianBlur1000"
+              values="
+                  1 0 0 0 0
+                  0 1 0 0 0
+                  0 0 1 0 0
+                  0 0 0 13 -10
+              "
+              type="matrix"
+            ></feColorMatrix>
+            <feComposite
+              id="SvgjsFeComposite1002"
+              result="SvgjsFeComposite1002"
+              in="SvgjsFeColorMatrix1001"
+              operator="atop"
+            ></feComposite>
+          </filter>
+          <filter id="knockout" color-interpolation-filters="sRGB">
+            <feColorMatrix
+              result="knocked"
+              type="matrix"
+              values="1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      -1 -1 -1 1 0"
+            />
+            <feComponentTransfer>
+              <feFuncR type="linear" slope="3" intercept="-1" />
+              <feFuncG type="linear" slope="3" intercept="-1" />
+              <feFuncB type="linear" slope="3" intercept="-1" />
+            </feComponentTransfer>
+            <feComponentTransfer>
+              <feFuncR type="table" tableValues="0 0 0 0 0 1 1 1 1 1" />
+              <feFuncG type="table" tableValues="0 0 0 0 0 1 1 1 1 1" />
+              <feFuncB type="table" tableValues="0 0 0 0 0 1 1 1 1 1" />
+            </feComponentTransfer>
+          </filter>
+          <filter id="remove-black" color-interpolation-filters="sRGB">
+            <feColorMatrix
+              type="matrix"
+              values="1 0 0 0 0
+                        0 1 0 0 0
+                        0 0 1 0 0
+                        -255 -255 -255 0 1"
+              result="black-pixels"
+            />
+            <feMorphology
+              in="black-pixels"
+              operator="dilate"
+              radius="0.5"
+              result="smoothed"
+            />
+            <feComposite in="SourceGraphic" in2="smoothed" operator="out" />
+          </filter>
+        </defs>
+      </svg>
+    </main>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>

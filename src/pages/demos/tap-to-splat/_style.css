@@ -1,0 +1,47 @@
+@import "normalize.css";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color-scheme: light only;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  color: hsl(0 0% 10%);
+}
+
+svg > g {
+  filter: url(#goo);
+}
+
+h1 {
+  margin: 0;
+  font-family: 'Impact', sans-serif;
+  color: var(--gray-9);
+  text-transform: uppercase;
+  font-size: 10vmin;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  margin: 0;
+  user-select: none;
+  line-height: 1;
+}
+
+svg {
+  width: 25vmin;
+  aspect-ratio: 1;
+  fill: hsl(299 100% 69%);
+  overflow: visible !important;
+  position: absolute;
+  top: calc(var(--y) * 1px);
+  left: calc(var(--x) * 1px);
+  translate: -50% -50%;
+}
+
+div.tp-dfwv {
+  position: fixed;
+  z-index: 9999999;
+}

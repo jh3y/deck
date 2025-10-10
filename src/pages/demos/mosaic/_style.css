@@ -1,0 +1,142 @@
+@import 'normalize.css' layer(normalize);
+
+@layer normalize, foundation, demo, filter;
+
+@layer filter {
+  article:last-of-type {
+    position: relative;
+    background: black;
+  }
+
+  article img {
+    filter: url('#tiled');
+  }
+}
+
+@layer demo {
+  .border {
+    border: 2px solid color-mix(in hsl, canvasText, canvas);
+    overflow: hidden;
+    border-radius: 12px;
+    aspect-ratio: 2 / 3;
+    width: clamp(300px, 30vmin, 500px);
+    position: relative;
+  }
+
+  article {
+    overflow: hidden;
+    border-radius: 12px;
+    aspect-ratio: 2 / 3;
+    width: clamp(300px, 30vmin, 500px);
+
+    img {
+      position: absolute;
+      inset: 0;
+      translate: 2px 2px;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  main {
+    display: flex;
+    gap: 1rem;
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+div.tp-dfwv {
+  width: 280px;
+}
+.tp-lblv_l {
+  white-space: nowrap;
+}

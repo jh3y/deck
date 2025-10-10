@@ -1,0 +1,411 @@
+@import 'normalize.css' layer(normalize);
+
+@layer normalize, foundation, demo, images, controls, debug;
+
+@layer debug {
+  /* this is for the debug... */
+  [data-debug='true'] {
+    section:not(:has([open])) .column:last-of-type div:first-of-type,
+    section:has(details:nth-of-type(1)[open]) .column:last-of-type div:nth-of-type(2),
+    section:has(details:nth-of-type(2)[open]) .column:last-of-type div:nth-of-type(3),
+    section:has(details:nth-of-type(3)[open]) .column:last-of-type div:nth-of-type(4),
+    section:has(details:nth-of-type(4)[open]) .column:last-of-type div:nth-of-type(5),
+    section:has(details:nth-of-type(5)[open]) .column:last-of-type div:nth-of-type(6) {
+      outline: 2px dashed blue;
+    }
+    section:has([open]) .column:last-of-type div:first-of-type,
+    section:not(:has(details:nth-of-type(1)[open])) .column:last-of-type div:nth-of-type(2),
+    section:not(:has(details:nth-of-type(2)[open])) .column:last-of-type div:nth-of-type(3),
+    section:not(:has(details:nth-of-type(3)[open])) .column:last-of-type div:nth-of-type(4),
+    section:not(:has(details:nth-of-type(4)[open])) .column:last-of-type div:nth-of-type(5),
+    section:not(:has(details:nth-of-type(5)[open])) .column:last-of-type div:nth-of-type(6) {
+      outline: 2px dashed green;
+    }
+    section .column:last-of-type div {
+      outline: 2px dashed red;
+    }
+  }
+}
+
+@layer controls {
+
+
+  [data-action] {
+
+    display: grid;
+    place-items: center;
+    width: 36px;
+    aspect-ratio: 1;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--background);
+    transition-property: opacity, background, translate, transform;
+    transition-duration: 0.26s;
+    transition-timing-function: var(--ease);
+  
+    &:hover {
+      background: var(--hover-background);
+    }
+  
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+    }
+  
+    svg {
+      width: 22px;
+      color: #fff;
+      stroke-width: 3;
+    }
+  }
+  [data-action=next],
+  [data-action=previous] {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+  }
+  [data-action=previous] {
+    translate: 0 -150%;
+  }
+  [data-action=next] {
+    translate: 0 50%;
+
+    svg {
+      rotate: 180deg;
+    }
+  }
+  [data-action=exit] {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+
+    svg {
+      rotate: 45deg;
+    }
+  }
+
+  section:not(:has([open])) [data-action] {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}
+
+@layer images {
+  body {
+    overflow-x: hidden;
+  }
+  
+  section .img-wrapper {
+    display: inline-block;
+    transform: translateX(0);
+    transition-duration: calc(var(--speed) * 0.65);
+    transition-timing-function: ease-out;
+    transition-property: transform, opacity, scale;
+    /* z-index: 2; */
+  }
+  /* this is the closed states so offset to the right */
+  section:not(:has([open])) .column:last-of-type .img-block:first-of-type,
+  section:has(details:nth-of-type(1)[open]) .column:last-of-type .img-block:nth-of-type(2),
+  section:has(details:nth-of-type(2)[open]) .column:last-of-type .img-block:nth-of-type(3),
+  section:has(details:nth-of-type(3)[open]) .column:last-of-type .img-block:nth-of-type(4),
+  section:has(details:nth-of-type(4)[open]) .column:last-of-type .img-block:nth-of-type(5),
+  section:has(details:nth-of-type(5)[open]) .column:last-of-type .img-block:nth-of-type(6) {
+    translate: 40% 0;
+    
+    .img-wrapper {
+      transform: translateX(-40%);
+      transition-delay: calc(var(--speed) * 0.2);
+    }
+  }
+  section:has([open]) .column:last-of-type .img-block:first-of-type,
+  section:not(:has(details:nth-of-type(1)[open])) .column:last-of-type .img-block:nth-of-type(2),
+  section:not(:has(details:nth-of-type(2)[open])) .column:last-of-type .img-block:nth-of-type(3),
+  section:not(:has(details:nth-of-type(3)[open])) .column:last-of-type .img-block:nth-of-type(4),
+  section:not(:has(details:nth-of-type(4)[open])) .column:last-of-type .img-block:nth-of-type(5),
+  section:not(:has(details:nth-of-type(5)[open])) .column:last-of-type .img-block:nth-of-type(6) {
+    .img-wrapper {
+      transition-property: translate, opacity, scale;
+      transition-timing-function: ease-in, ease-out, ease-in;
+      translate: -40% 0;
+      scale: 0.9;
+      opacity: 0;
+      /* z-index: 1; */
+    }
+  }
+}
+
+@layer demo {
+  :root {
+    --ease: cubic-bezier(.42,0,.58,1);
+    --bounce:linear(
+      0 0%, 0.4214 6.61%, 0.5762 9.59%,
+      0.7047 12.55%, 0.8115 15.61%,
+      0.8964 18.78%, 0.9614 22.13%,
+      1.0078 25.74%, 1.0282 28.18%,
+      1.0422 30.82%, 1.0503 33.7%,
+      1.0527 36.95%, 1.0468 42.53%,
+      1.015 58.45%, 1.0045 67.2%,
+      0.9987 80.44%, 1 100%
+    );
+    /* --bounce: var(--ease); */
+    --speed: 0.5s;
+    --width: 300px;
+    --sizing: 56px;
+    --background: light-dark(hsl(0 0% 10% / 0.75), hsl(0 0% 40% / 0.5));
+    --hover-background: light-dark(hsl(0 0% 18% / 0.75), hsl(0 0% 48% / 0.5));
+  }
+
+  section {
+    display: flex;
+    grid-auto-flow: column;
+    place-items: center;
+    gap: 1rem;
+    position: relative;
+    min-height: 500px;
+    height: 70vh;
+    justify-content: center;
+    padding-left: 4rem;
+    overflow: hidden;
+    max-width: calc(100vw - 2rem);
+
+    border-radius: 1rem;
+    background: light-dark(#fff, #000);
+    border: 2px solid color-mix(in oklch, canvasText, canvas 50%);
+
+    [data-action] {
+      position: absolute;
+    }
+  }
+
+  .column:first-of-type {
+    display: grid;
+    grid-auto-rows: auto;
+    gap: .675rem;
+    width: var(--width);
+    place-items: center;
+    justify-items: start;
+    z-index: 2;
+  }
+
+  .column:last-of-type {
+    width: 100vw;
+    height: 100%;
+    position: relative;
+    display: grid;
+    grid-auto-flow: row;
+    place-items: center;
+    gap: .675rem;
+    pointer-events: none;
+    max-width: 500px;
+  }
+
+
+  .column:last-of-type .img-block {
+    position: absolute;
+    inset: 0;
+
+    .img-wrapper {
+      width: 100%;
+      object-fit: cover;
+      height: 100%;
+      
+      img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        aspect-ratio: 1;
+        height: 100%;
+        object-fit: contain;
+        
+      }
+    }
+  }
+  
+  summary {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 1.5rem;
+    border-radius: calc(var(--sizing) * 0.5);
+    height: var(--sizing);
+    min-height: var(--sizing);
+    cursor: pointer;
+    z-index: 20;
+    position: relative;
+    transition-property: opacity, width;
+    transition-duration: calc(var(--speed) * 0.5), calc(var(--speed) * 1.5);
+    transition-timing-function: var(--ease), var(--bounce);
+    transition-delay: calc(var(--speed) * 1.05), 0s;
+    white-space: nowrap;
+    font-weight: 600;
+
+    
+    svg {
+      width: 24px;
+      aspect-ratio: 1;
+    }
+  }
+  
+  [open] summary {
+    opacity: 0;
+    pointer-events: none;
+    transition-delay: 0s;
+    width: var(--width);
+  }
+  
+  details {
+    display: inline-block;
+    border-radius: calc(var(--sizing) * 0.5);
+    overflow: hidden;
+    min-height: var(--sizing);
+    background:var(--background);
+    backdrop-filter: blur(20px) saturate(180%);
+    color: #fff;
+    transition: background 0.2s var(--ease);;
+
+    &:hover:not([open]) {
+      background: var(--hover-background);
+    }
+  }
+  
+  summary:marker {
+    opacity: 0;
+  }
+  
+  details::details-content {
+    opacity: 0;
+    transition-property: content-visibility, height, width, opacity;
+    transition-duration: var(--speed), calc(var(--speed) * 1.6), calc(var(--speed) * 1.6), calc(var(--speed) * 0.5);
+    transition-behavior: allow-discrete;
+    transition-timing-function: var(--ease), var(--bounce), var(--bounce), var(--ease);
+    overflow: visible;
+    height: var(--sizing);
+    margin-top: calc(var(--sizing) * -1);
+    width: 120px;
+    min-height: var(--sizing);
+  }
+  
+  [open]::details-content {
+    height: fit-content;
+    width: var(--width);
+    opacity: 1;
+    transition-delay: 0s, 0s, 0s, calc(var(--speed) * 1);
+  }
+  .content {
+    width: var(--width);
+    min-height: var(--sizing);
+  }
+  
+  details,
+  details::details-content {
+    interpolate-size: allow-keywords;
+  }
+  
+  p {
+    margin: 0;
+    width: var(--width);
+    padding: 1.5rem;
+    display: inline-block;
+  }
+  
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+div.tp-dfwv {
+  width: 256px;
+  position: fixed;
+}

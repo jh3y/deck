@@ -216,9 +216,143 @@ h1 {
 ---
 <Demo src="/demos/tuggable-lightbulb/index.html" title="Signature flow" windowed="true"></Demo>
 ---
-# SVG Filters + Liquid Glass
+<h2 class="quote">
+  SVG Filters.
+</h2>
 ---
-# Animating auto height + grid + details
+<Demo src="/demos/tap-to-splat/index.html" title="Tap to splat"></Demo>
+---
+```html [] goo.svg
+<svg>
+  <defs>
+    <filter id="goo">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10 10">
+      </feGaussianBlur>
+      <feColorMatrix
+        values="
+          1 0 0 0
+          0 0 1 0 
+          0 0 0 0
+          1 0 0 0
+          0 0 25 -10
+        " type="matrix"></feColorMatrix>
+    </filter>
+  </defs>
+</svg>
+```
+```css [] goo.css
+.goo {
+  filter: url(#goo);
+}
+```
+---
+<!-- @theme="dark" -->
+<Demo src="/demos/flames/index.html" title="Tap to splat"></Demo>
+---
+<!-- @theme="dark" -->
+```html [] filters.svg
+<!-- flames -->
+<filter id="flames">
+  <feTurbulence
+    type="fractalNoise"
+    baseFrequency="0.05"
+    numOctaves="3"
+    result="noise"
+  ></feTurbulence>
+  <feDisplacementMap
+    in="SourceGraphic"
+    in2="noise"
+    scale="20"
+  ></feDisplacementMap>
+</filter>
+<!-- mosaic -->
+<filter id="tiled">
+  <feFlood
+    x="0"
+    y="0"
+    height="1"
+    width="1"
+    flood-color="red"
+    flood-opacity="1"
+  />
+  <feComposite width="10" height="10" operator="over" />
+  <feTile result="a" />
+  <feComposite in="SourceGraphic" in2="a" operator="in" />
+  <feMorphology operator="dilate" radius="5" />
+</filter>
+```
+---
+<Demo src="/demos/mosaic/index.html" title="Mosaic"></Demo>
+---
+<Demo src="/demos/stickers/index.html" title="Mosaic"></Demo>
+---
+<!-- @theme="dark" -->
+```html [] spotlight.svg
+<feSpecularLighting
+  result="lighting"
+  in="blur"
+  surfaceScale="5"
+  specularConstant="0.5"
+  specularExponent="120"
+  lighting-color="#ffffff"
+>
+  <fePointLight x="50" y="50" z="300"></fePointLight>
+</feSpecularLighting>
+```
+---
+<!-- @theme="dark" -->
+<Demo src="/demos/lighting/index.html" title="Lighting"></Demo>
+---
+<!-- @theme="dark" -->
+<Demo src="/demos/glass/index.html" title="Liquid Glass"></Demo>
+<BrowserSupport className="fixed top-4 right-4"  properties="css.properties.backdrop-filter" captions="backdrop-filter"></BrowserSupport>
+---
+<Demo src="/demos/liquid-toggle/index.html" title="Liquid Glass"></Demo>
+---
+<h2 class="quote">
+  Transitioning height.
+</h2>
+---
+<Demo src="/demos/sidebar/index.html" title="Sidebar"></Demo>
+---
+```css []
+li > div[inert] { grid-template-rows: 0fr; }
+li > div {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows .26s;
+}
+```
+<BrowserSupport className="fixed top-4 right-4" properties="html.global_attributes.inert" captions="inert"></BrowserSupport>
+---
+<Demo src="/demos/exclusive-details/index.html" title="Exclusive Details"></Demo>
+---
+```html [2]
+<section role="group">
+  <details name="accordion">
+    <summary>Exclusive</summary>
+    <span
+      >Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae
+      et sed consectetur aperiam repellendus, accusantium, facere id earum
+      omnis autem aspernatur perferendis labore ad obcaecati eveniet quasi
+      fuga nemo qui.</span
+    >
+  </details>
+```
+```css []
+details {
+  interpolate-size: allow-keywords;
+}
+details::details-content {
+  transition: content-visibility, opacity, height, background, filter, translate;
+  transition-behavior: allow-discrete;
+}
+[open]::details-content {
+  height: fit-content;
+}
+```
+<BrowserSupport className="fixed top-4 right-4" properties="css.properties.interpolate-size,css.selectors.details-content" captions="interpolate-size,:details-content"></BrowserSupport>
+---
+<Demo src="/demos/apple-disclosures/index.html" title="Apple Disclosures" />
 ---
 <h2 class="quote">
   Transitioning display: none.
@@ -303,13 +437,34 @@ dialog {
 <sub>No JavaScript necessary, aside from the dragging</sub>
 <BrowserSupport className="fixed top-4 right-4"  properties="css.types.anchor" captions="Anchor Positioning" />
 ---
-# Dynamic Anchoring magnetic links
+<!-- @theme="dark" -->
+<Demo src="/demos/cyber-popover/index.html" title="Scroll Select" />
+---
+<Demo src="/demos/magnetic-links/index.html" title="Apple Disclosures"></Demo>
+<sub className="fixed bottom-8 left-1/2 -translate-x-1/2 [&_a]:text-red-400">One of my Chrome demos raised [an issue](https://issues.chromium.org/issues/40248883) for getting transitions for anchoring.</sub>
+---
+<h2 class="quote">
+  Styleable select.
+</h2>
+---
+<Demo src="/demos/drop-down/" title="Drop Down" />
+---
+```css []
+select,
+::picker(select) {
+  appearance: base-select;
+}
+::picker(select) {
+  top: anchor(bottom);
+  width: anchor-size(width);
+}
+```
+<BrowserSupport className="fixed top-4 right-4"  properties="css.selectors.popover-open,css.types.anchor,css.properties.offset-path" captions="Popover, Anchor Positioning, Offset Path"></BrowserSupport>
+---
+<!-- @theme="dark" -->
+<Demo src="/demos/scroll-select/" title="Scroll Select" />
 ---
 <Demo src="/demos/parachute-bears/" title="Parachute Bears" />
----
-# Styleable Selects
----
-# scroll snapper + basic "dropdown"
 ---
 <h2 class="quote">
   Popovers in disguise.
@@ -362,20 +517,6 @@ dialog {
 }
 ```
 <BrowserSupport className="fixed top-4 right-4"  properties="css.selectors.popover-open,css.types.anchor,css.properties.offset-path" captions="Popover, Anchor Positioning, Offset Path" />
----
-```css [] easings.css
-:root {
-  --spring-ease: linear(
-    0 0%, 1.11438 8.491%, 1.37046 12.941%,
-    1.36433 14.481%, 1.31505 16.202%,
-    0.94104 24.012%, 0.8694 27.843%,
-    0.88235 30.713%, 1.01219 38.334%,
-    1.04596 42.714%, 0.98388 57.536%,
-    1.0056 72.237%, 1 100%
-  );
-}
-```
-<BrowserSupport className="fixed top-4 right-4"  properties="css.types.easing-function.linear-function" captions="linear()" />
 ---
 ```css [] dock-magnifier.css
 :root {
@@ -499,6 +640,8 @@ img {
 ```
 <BrowserSupport className="fixed top-4 right-4"  properties="css.properties.timeline-scope" captions="timeline-scope" />
 ---
+<Demo src="/demos/liquid-slider/index.html" title="Liquid Slider"></Demo>
+---
 <h2 class="quote">
   Put it all together.
 </h2>
@@ -509,9 +652,11 @@ img {
 <!-- @theme="dark" -->
 <video className="rounded-lg max-w-prose w-full mx-auto" src="/videos/scroll-carousel.mp4" autoplay muted loop></video>
 ---
-# So we can break down a viral meme of the iOS barrel
+<!-- @theme="dark" -->
+<video className="w-1/2 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" src="/videos/ios-barrel.mp4" loop autoplay muted></video>
 ---
-# Show the finished barrel
+<!-- @theme="dark" -->
+<Demo src="/demos/ios-barrel/index.html" title="ios barrel"></Demo>
 ---
 ## &lt;/Sprint&gt;
 <Demo src="/demos/matter-words/" title="Matter words"></Demo>

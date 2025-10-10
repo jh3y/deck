@@ -1,0 +1,195 @@
+@import 'normalize.css' layer(normalize);
+
+@layer normalize, foundation, demo;
+
+@layer demo {
+  .icon {
+    height: 80px;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    position: absolute;
+    z-index: 99999;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .filter {
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    inset: 0;
+  }
+
+  [data-light='light1'] {
+    translate: -70px 210px;
+  }
+  [data-light='light2'] {
+    translate: 70px -200px;
+  }
+  [data-light='light3'] {
+    translate: -180px -40px;
+  }
+  [data-light='light4'] {
+    translate: 170px 100px;
+  }
+
+  .surface {
+    width: 220px;
+    aspect-ratio: 3 / 4;
+    border-radius: 12px;
+    background: color-mix(in oklch, light-dark(canvas, hsl(240 3% 14%)), #0000);
+    backdrop-filter: blur(6px) saturate(0.9);
+    position: relative;
+
+    nav {
+      position: absolute;
+      height: 26px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-inline: 8px;
+      top: calc(var(--border) * 1px);
+      right: calc(var(--border) * 1px);
+      left: calc(var(--border) * 1px);
+
+      div {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+
+        &:nth-of-type(1) {
+          background: hsl(359 93% 67%);
+        }
+        &:nth-of-type(2) {
+          background: hsl(48 91% 52%);
+        }
+        &:nth-of-type(3) {
+          background: hsl(133 56% 50%);
+        }
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      border: calc(var(--border) * 1px) solid #0000;
+      background: color-mix(in oklch, canvasText, #0000 85%);
+      mask: linear-gradient(#0000 0 100%) padding-box,
+        linear-gradient(#fff 0 100%) border-box;
+      mask-composite: intersect;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      border: calc(var(--border) * 1px) solid #0000;
+      background: canvasText;
+      mask: linear-gradient(#0000 0 100%) padding-box,
+        linear-gradient(#fff 0 100%) border-box;
+      mask-composite: intersect;
+      filter: url(#lighting);
+    }
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+
+
+  body {
+    color-scheme: dark only;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}

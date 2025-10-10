@@ -1,0 +1,87 @@
+---
+import "./_style.css";
+---
+
+<!doctype html>
+<html lang="en" data-displace="false">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>flames</title>
+  </head>
+  <body>
+    <main>
+      <div class="holder">
+        <div class="strip">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="border">
+          <article class="flames">
+            <div class="strip">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <div></div>
+            <div></div>
+          </article>
+        </div>
+        
+      </div>
+    </main>
+    <svg class="sr-only" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Noise & Distortion -->
+        <filter id="noiseshow">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.05"
+            numOctaves="3"
+            result="noise"
+          ></feTurbulence>
+        </filter>
+        <filter id="distortion">
+          <!-- you can animate pretty much every property here to achieve rippling effects -->
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.05"
+            numOctaves="3"
+            result="noise"
+          ></feTurbulence>
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="20"
+          ></feDisplacementMap>
+          <!-- <feColorMatrix
+            type="matrix"
+            values="1 0 0 0 0
+                    0 1 0 0 0
+                    0 0 1 0 0
+                    0 0 0 1 0"
+          /> -->
+        </filter>
+        <filter id="tiled">
+          <!-- flood the area -->
+          <feFlood
+            x="0"
+            y="0"
+            height="1"
+            width="1"
+            flood-color="red"
+            flood-opacity="1"
+          />
+          <feComposite width="10" height="10" operator="over" />
+          <feTile result="a" />
+          <feComposite in="SourceGraphic" in2="a" operator="in" />
+          <feMorphology operator="dilate" radius="5" />
+        </filter>
+      </defs>
+    </svg>
+    <script>
+      import "./_script.js";
+    </script>
+  </body>
+</html>
