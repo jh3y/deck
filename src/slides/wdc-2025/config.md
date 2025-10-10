@@ -547,8 +547,6 @@ select,
 ```
 <BrowserSupport className="fixed top-4 right-4"  properties="css.selectors.has,css.types.sin" captions=":has(), sin()" />
 ---
-# Need to squeeze in scroll marker group somewhere with anchoring....
----
 <Demo src="/demos/scroll-introduction/" title="Scroll Introduction" ></Demo>
 ---
 ```css [] scroll-hello-world.css
@@ -565,6 +563,15 @@ img {
 ```
 <Demo src="/demos/view-timeline-basic/" title="View Timeline Basic"></Demo>
 <BrowserSupport className="fixed top-4 right-4"  properties="css.properties.view-timeline" captions="view-timeline" />
+---
+<Demo windowed="true" src="/demos/playbook-scroll/" title="You can scroll" ></Demo>
+---
+<Demo windowed="true" src="/demos/you-can-scroll/" title="You can scroll" ></Demo>
+---
+<Demo windowed="true" src="/demos/knockout-scroller/" title="Knockout scroller" ></Demo>
+---
+<!-- @theme="dark" -->
+<Demo src="/demos/scroll-to-type/" title="Scroll to type" ></Demo>
 ---
 <Demo windowed="true" src="/demos/scroll-micro-header/" title="Scroll Micro Header" ></Demo>
 ---
@@ -584,27 +591,10 @@ img {
 <BrowserSupport className="fixed top-4 right-4"  properties="css.properties.scroll-timeline" captions="scroll-timeline" />
 ---
 <!-- @theme="dark" -->
-<Demo windowed="true" src="/demos/scroll-parallax/" title="Scroll Parallax" ></Demo>
+<Demo windowed="true" src="/demos/scroll-index/" title="Scroll index" ></Demo>
 ---
 <!-- @theme="dark" -->
-```css [] scroll-parallax.css
-ul {
-  scroll-padding-inline: calc(50% - var(--card-size) * 0.5);
-}
-li {
-  view-timeline: --item inline;
-}
-img {
-  animation: parallax both linear;
-  animation-timeline: --item;
-}
-@​keyframes parallax {
-  cover 100% {
-    translate: calc(100% - var(--card-size)) -50%;
-  }
-}
-```
-<BrowserSupport className="fixed top-4 right-4"  properties="css.properties.view-timeline" captions="view-timeline" />
+<Demo windowed="true" src="/demos/scroll-goo/" title="Scroll Goo" ></Demo>
 ---
 <h2 class="quote">
   Sliders.

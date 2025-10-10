@@ -1,0 +1,449 @@
+@import url('https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap');
+@import 'normalize.css' layer(normalize);
+/* @import 'normalize.css' layer(normalize); */
+@layer normalize, foundation, demo, layers;
+
+@layer layers {
+  :root {
+    --move: 0.5s;
+    --clip: text;
+  }
+  body {
+    overflow-x: hidden;
+  }
+  [data-unclip='true'] {
+    --clip: border-box;
+  }
+  blockquote {
+    --step: 200px;
+    transform-style: preserve-3d;
+    transition: transform var(--move) var(--move);
+
+    h2:nth-of-type(1) {
+      transition: opacity var(--move) var(--move);
+    }
+  }
+  blockquote [aria-hidden] {
+    position: absolute;
+  }
+
+  blockquote h2::after {
+    position: absolute;
+    opacity: 0;
+    top: 50%;
+    left: calc(100% + 2ch);
+    translate: 0 -50%;
+    transition: opacity var(--move);
+  }
+
+  blockquote h2:nth-of-type(1)::after {
+    content: 'Result';
+  }
+  blockquote h2:nth-of-type(2)::after {
+    content: 'Quote layer';
+  }
+  blockquote h2:nth-of-type(3)::after {
+    content: 'Author layer';
+  }
+  blockquote h2:nth-of-type(4)::after {
+    content: 'Cursor layer';
+  }
+
+  blockquote [aria-hidden] {
+    outline: 0.1em dashed #0000;
+    outline-offset: 0.1em;
+    opacity: 0;
+    transform-style: preserve-3d;
+    transition-property: transform, outline-color, opacity;
+    transition-duration: var(--move);
+    transition-delay: 0;
+  }
+
+  [data-show-layers='true'] {
+    blockquote {
+      transform: rotateX(-30deg) rotateY(-32deg)
+        translate3d(0, calc(var(--step) * 1.5), 0) rotateX(90deg);
+      transition: transform var(--move);
+    }
+
+    blockquote h2::after {
+      opacity: 1;
+      transition: opacity var(--move) var(--move);
+    }
+
+    h2:nth-of-type(1) {
+      opacity: 0.5;
+      transition: opacity var(--move);
+    }
+
+    [aria-hidden] {
+      outline-color: canvasText;
+      opacity: 1;
+      transform: translate3d(0, 0, calc(var(--depth, 0) * var(--step)));
+      transition-property: transform, outline-color, opacity;
+      transition-duration: var(--move);
+      transition-delay: var(--move);
+    }
+
+    [aria-hidden]:nth-of-type(2) {
+      --depth: 1;
+      span {
+        background: linear-gradient(canvasText 0 0) 0 0 /
+          calc(min(var(--position), var(--text-length) - 13) * 1ch) 100%
+          no-repeat var(--clip) !important;
+      }
+    }
+    [aria-hidden]:nth-of-type(3) {
+      --depth: 2;
+      span {
+        background: linear-gradient(
+            color-mix(in hsl, canvasText, #0000 25%) 0 0
+          )
+          calc((var(--text-length) - 13) * 1ch) 0 /
+          calc((var(--position) - (var(--text-length) - 13)) * 1ch) 100%
+          no-repeat var(--clip) !important;
+      }
+    }
+    [aria-hidden]:nth-of-type(4) {
+      --depth: 3;
+      span {
+        background: linear-gradient(
+            hsl(
+                var(--cursor-hue) calc(var(--cursor-saturation) * 1%)
+                  calc(var(--cursor-lightness) * 1%) /
+                  calc(var(--alpha) + var(--velocity))
+              )
+              0 0
+          )
+          calc((var(--position) + 0.05) * 1ch) 50% / 0.95ch 1lh no-repeat
+          border-box !important;
+      }
+    }
+  }
+}
+
+@layer animation {
+  :root {
+    --cursor-hue: 320;
+    --cursor-saturation: 100;
+    --cursor-lightness: 50;
+  }
+  @property --idx {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+  }
+  @property --alpha {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+  }
+  @property --scrub {
+    initial-value: 0;
+    inherits: true;
+    syntax: '<number>';
+  }
+  @property --velocity {
+    initial-value: 0;
+    inherits: true;
+    syntax: '<number>';
+  }
+
+  @supports (animation-timeline: view()) and (animation-range: 0 100%) {
+    main section:first-of-type {
+      view-timeline: --header;
+    }
+    h2 span {
+      --velocity: round(
+        up,
+        clamp(
+          0,
+          max(
+            calc(var(--idx) - var(--scrub)),
+            calc(-1 * (var(--idx) - var(--scrub)))
+          ),
+          1
+        ),
+        1
+      );
+      animation-timeline: --header;
+      animation-range: exit-crossing 0% entry-crossing 100%;
+    }
+
+    h2 {
+      animation: index both steps(calc(var(--text-length) + 0));
+      animation-timeline: --header;
+      animation-range: exit-crossing 0% entry-crossing 100%;
+    }
+  }
+
+  h2 span {
+    --position: min(var(--idx), var(--text-length) - 1);
+    white-space: break-spaces;
+    background: linear-gradient(
+          hsl(
+              var(--cursor-hue) calc(var(--cursor-saturation) * 1%)
+                calc(var(--cursor-lightness) * 1%) /
+                calc(var(--alpha) + var(--velocity))
+            )
+            0 0
+        )
+        calc((var(--position) + 0.05) * 1ch) 50% / 0.95ch 1lh no-repeat
+        border-box,
+      linear-gradient(canvasText 0 0) 0 0 /
+        calc(min(var(--position), var(--text-length) - 13) * 1ch) 100% no-repeat
+        var(--clip),
+      linear-gradient(color-mix(in hsl, canvasText, #0000 25%) 0 0)
+        calc((var(--text-length) - 13) * 1ch) 0 /
+        calc((var(--position) - (var(--text-length) - 13)) * 1ch) 100% no-repeat
+        var(--clip);
+    color: transparent;
+    transition: --scrub 0.2s;
+  }
+  :root {
+    animation: blink calc(var(--cursor-blink, 0.8) * 1s) infinite;
+  }
+  @keyframes blink {
+    50% {
+      --alpha: 1;
+    }
+  }
+  @keyframes index {
+    to {
+      --idx: var(--text-length);
+      --scrub: var(--text-length);
+    }
+  }
+}
+
+@layer demo {
+  html {
+    scrollbar-color: hsl(
+        var(--cursor-hue) calc(var(--cursor-saturation) * 1%)
+          calc(var(--cursor-lightness) * 1%)
+      )
+      #0000;
+  }
+
+  h1,
+  h2 {
+    --font-level: 2.2;
+  }
+  header,
+  main,
+  footer {
+    font-family: 'Reddit Mono', monospace;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  header {
+    min-height: 100vh;
+    display: flex;
+    place-items: center;
+    justify-content: center;
+  }
+
+  footer {
+    font-size: 0.875rem;
+    padding: 1rem;
+    text-align: center;
+    opacity: 0.5;
+  }
+
+  main section:first-of-type {
+    min-height: 200vh;
+  }
+  main section:last-of-type {
+    --font-level: 2.2;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    place-items: center;
+    flex-direction: column;
+    width: 30ch;
+    max-width: calc(100% - 2rem);
+    margin: 0 auto;
+    opacity: 0.7;
+  }
+
+  ::selection {
+    color: canvasText;
+    background: hsl(
+      var(--cursor-hue) calc(var(--cursor-saturation) * 1%)
+        calc(var(--cursor-lightness) * 1%)
+    );
+  }
+
+  p a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: hsl(
+        var(--cursor-hue) calc(var(--cursor-saturation) * 1%)
+          calc(var(--cursor-lightness) * 1%)
+      );
+    }
+  }
+
+  hr {
+    border-color: hsl(
+      var(--cursor-hue) calc(var(--cursor-saturation) * 1%)
+        calc(var(--cursor-lightness) * 1%)
+    );
+  }
+
+  main section:last-of-type div {
+    --font-level: 2.2;
+    display: grid;
+    align-self: start;
+
+    hr {
+      flex: 1;
+      width: 100%;
+    }
+
+    p {
+      margin: 0;
+
+      &:last-of-type {
+        opacity: 0.5;
+      }
+    }
+
+    svg {
+      width: 50%;
+      margin-left: auto;
+      margin-top: 2em;
+      rotate: 10deg;
+    }
+  }
+
+  h1,
+  h2 {
+    --font-level: 2.2;
+    font-weight: 300;
+    opacity: 0.7;
+    margin: 0;
+    width: 30ch;
+    max-width: calc(100% - 2rem);
+    position: relative;
+  }
+
+  h1::after {
+    content: '';
+    position: absolute;
+    width: 1ch;
+    height: 1lh;
+    background: hsl(
+      var(--cursor-hue) calc(var(--cursor-saturation) * 1%)
+        calc(var(--cursor-lightness) * 1%)
+    );
+    opacity: var(--alpha);
+  }
+
+  main blockquote {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    display: flex;
+    place-items: center;
+    margin: 0;
+    justify-content: center;
+  }
+}
+
+@layer foundation {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  body {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] body {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] body {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: round(var(--fluid-type), 0.1rem);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    color: light-dark(#000, #fff);
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+div.tp-dfwv {
+  position: fixed;
+  width: 280px;
+}
